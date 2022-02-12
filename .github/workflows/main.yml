@@ -43,6 +43,7 @@ jobs:
       matrix:
         include:
           - os: macos-latest
+          - os: ubuntu-latest
           - os: windows-latest
     needs:
       - lint

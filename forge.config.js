@@ -9,7 +9,12 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-deb',
-      config: {},
+      config: {
+        options: {
+          genericName: 'ClamAV Desktop',
+          icon: './assets/icons/logo-clamav.ico',
+        },
+      },
     },
     {
       name: '@electron-forge/maker-dmg',
