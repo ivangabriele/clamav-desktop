@@ -13,9 +13,7 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-dmg',
-      config: {
-        name: 'ClamAV Desktop',
-      },
+      config: {},
       platforms: ['darwin'],
     },
     {
