@@ -1,6 +1,5 @@
 {
   "name": "clamav-desktop",
-  "productName": "Clamav Desktop",
   "description": "Cross-platform desktop GUI for ClamAV antivirus.",
   "version": "0.2.6",
   "main": ".webpack/main",
