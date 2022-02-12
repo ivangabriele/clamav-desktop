@@ -7,7 +7,7 @@
   "settings": {
     "import/core-modules": ["electron"]
   },
-  "ignorePatterns": ["/.webpack/", "/*.js"],
+  "ignorePatterns": ["/.webpack/", "/out/", "/*.js"],
   "rules": {
     "import/no-default-export": "error",
     "import/prefer-default-export": "off",

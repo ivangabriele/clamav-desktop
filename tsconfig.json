@@ -23,6 +23,6 @@
     "strict": true,
     "target": "ES2021"
   },
-  "exclude": [".webpack/*", "node_modules/*", "*.js"],
+  "exclude": [".webpack/*", "node_modules/*", "out/*", "*.js"],
   "include": ["common/**/*", "main/**/*", "renderer/**/*"]
 }

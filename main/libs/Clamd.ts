@@ -5,7 +5,6 @@ import { execa } from 'execa'
 import { promises as fs } from 'fs'
 import path from 'path'
 import psList from 'ps-list'
-// import shelljs from 'shelljs'
 import terminate from 'terminate/promise'
 
 import { handleError } from '../../common/helpers/handleError'
@@ -48,27 +47,7 @@ export class Clamd {
       await fs.access(this.#path)
 
       ß.info('Starting ClamAV daemon…')
-      const cp = await execa(this.#path)
-
-      console.log(cp.stdout)
-
-      // const childProcess = shelljs.exec(this.#path, {
-      //   async: true,
-      // })
-      // if (childProcess.stdout === null) {
-      //   throw new Error('childProcess.stdout is null.')
-      // }
-      // if (childProcess.stderr === null) {
-      //   throw new Error('childProcess.stdout is null.')
-      // }
-
-      // childProcess.stdout.on('data', data => {
-      //   console.log(data)
-      // })
-
-      // childProcess.stderr.on('data', data => {
-      //   console.error(data)
-      // })
+      await execa(this.#path)
 
       return [undefined, null]
     } catch (err) {

@@ -8,7 +8,9 @@
     "make": "rm -Rf ./out && electron-forge make",
     "package": "rm -Rf ./out && electron-forge package",
     "publish": "yarn make && electron-forge publish",
-    "start": "electron-forge start"
+    "start": "electron-forge start",
+    "test:lint": "eslint --ext js,ts,tsx .",
+    "test:type": "tsc"
   },
   "dependencies": {
     "@singularity/core": "2.5.0",
