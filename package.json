@@ -4,11 +4,10 @@
   "version": "0.0.0",
   "main": ".webpack/main",
   "license": "AGPL-3.0",
-  "private": "true",
   "scripts": {
     "make": "rm -Rf ./out && electron-forge make",
-    "package": "electron-forge package",
-    "publish": "electron-forge publish",
+    "package": "rm -Rf ./out && electron-forge package",
+    "publish": "yarn make && electron-forge publish",
     "start": "electron-forge start"
   },
   "dependencies": {
@@ -34,6 +33,7 @@
     "@electron-forge/maker-dmg": "6.0.0-beta.63",
     "@electron-forge/maker-squirrel": "6.0.0-beta.63",
     "@electron-forge/plugin-webpack": "6.0.0-beta.63",
+    "@electron-forge/publisher-github": "6.0.0-beta.63",
     "@ivangabriele/eslint-config-typescript-react": "3.0.1",
     "@ivangabriele/prettier-config": "3.0.2",
     "@types/ps-node": "0.1.1",

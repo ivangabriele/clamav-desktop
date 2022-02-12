@@ -55,4 +55,16 @@ module.exports = {
       },
     ],
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'ivangabriele',
+          name: 'clamav-desktop',
+        },
+        prerelease: true,
+      },
+    },
+  ],
 }
