@@ -71,7 +71,8 @@
     "typescript": "4.5.5"
   },
   "author": {
-    "name": "Ivan Gabriele"
+    "name": "Ivan Gabriele",
+    "url": "https://www.ivangabriele.com"
   },
   "config": {
     "forge": "./forge.config.js"
