@@ -50,9 +50,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          persist-credentials: false
       - name: Setup
         uses: actions/setup-node@v2
         with:
