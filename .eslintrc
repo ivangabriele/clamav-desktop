@@ -1,0 +1,25 @@
+{
+  "extends": "@ivangabriele/eslint-config-typescript-react",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "project": "./tsconfig.json"
+  },
+  "settings": {
+    "import/core-modules": ["electron"]
+  },
+  "ignorePatterns": ["/.webpack/", "/*.js"],
+  "rules": {
+    "import/no-default-export": "error",
+    "import/prefer-default-export": "off",
+
+    "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
+  },
+  "overrides": [
+    {
+      "files": ["./*.js"],
+      "rules": {
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+      }
+    }
+  ]
+}

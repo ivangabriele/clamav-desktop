@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "jsx": "react",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noEmit": true,
+    "noImplicitAny": false,
+    "paths": {
+      "@common/*": ["common/*"],
+      "@main/*": ["main/*"],
+      "@renderer/*": ["renderer/*"],
+      "*": ["node_modules/*"]
+    },
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2021"
+  },
+  "exclude": [".webpack/*", "node_modules/*", "*.js"],
+  "include": ["common/**/*", "main/**/*", "renderer/**/*"]
+}
