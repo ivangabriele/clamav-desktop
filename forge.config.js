@@ -13,15 +13,16 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-dmg',
+      config: {
+        name: 'ClamAV Desktop',
+      },
       platforms: ['darwin'],
     },
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        // exe: 'ClamAV Desktop',
+        iconUrl: 'https://raw.githubusercontent.com/ivangabriele/clamav-desktop/main/assets/icons/logo-clamav.ico',
         setupIcon: './assets/icons/logo-clamav.png',
-        // setupIcon: './assets/images/logo-clamav.svg',
-        name: 'ClamAV.Desktop',
       },
     },
   ],
