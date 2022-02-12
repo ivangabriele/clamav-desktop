@@ -1,4 +1,4 @@
-name: Check
+name: Main
 
 on: push
 
@@ -34,3 +34,27 @@ jobs:
         run: yarn
       - name: Lint
         run: yarn test:type
+
+  release:
+    name: Release
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    runs-on: ubuntu-latest
+    needs:
+      - pull_tag
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup
+        uses: actions/setup-node@v2
+        with:
+          cache: yarn
+          node-version: 16
+      - name: Install
+        run: yarn
+      - name: Release
+        run: yarn release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
