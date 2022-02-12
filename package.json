@@ -1,7 +1,7 @@
 {
   "name": "clamav-desktop",
   "description": "Cross-platform desktop GUI for ClamAV antivirus.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": ".webpack/main",
   "license": "AGPL-3.0",
   "scripts": {
