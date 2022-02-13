@@ -1,6 +1,8 @@
+const os = require('os')
+
 module.exports = {
   packagerConfig: {
-    executableName: 'ClamAV Desktop',
+    executableName: os.arch == 'linux' ? 'clamav-desktop' : 'ClamAV Desktop',
     icon: './assets/icons/logo-clamav.ico',
     win32metadata: {
       'requested-execution-level': 'requireAdministrator',
@@ -11,7 +13,7 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
-          genericName: 'ClamAV Desktop',
+          // genericName: 'ClamAV Desktop',
           icon: './assets/icons/logo-clamav.ico',
         },
       },
