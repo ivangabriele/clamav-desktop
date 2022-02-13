@@ -69,11 +69,11 @@ jobs:
       - name: Delete outdated drafts
         uses: hugo19941994/delete-draft-releases@v1.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       - name: Create Release Draft
         uses: softprops/action-gh-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         with:
           prerelease: true
           draft: true
@@ -111,6 +111,9 @@ jobs:
       - name: Release
         uses: samuelmeuli/action-electron-builder@v1
         env:
+          # https://www.electron.build/code-signing#how-to-disable-code-signing-during-the-build-process-on-macos
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           VITE_APP_VERSION: ${{ needs.draft.outputs.version }}
         with:
           build_script_name: build
