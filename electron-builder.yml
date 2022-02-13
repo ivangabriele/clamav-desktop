@@ -29,3 +29,8 @@ nsis:
   license: ./build/license.txt
   oneClick: false
   perMachine: false
+
+publish:
+  - provider: github
+    releaseType: prerelease
+    vPrefixedTagName: true
