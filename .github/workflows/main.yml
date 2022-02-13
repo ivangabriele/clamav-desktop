@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           cache: yarn
-          node-version: 16
+          node-version: 17
       - name: Install
         run: yarn
       - name: Lint
@@ -29,25 +29,19 @@ jobs:
         uses: actions/setup-node@v2
         with:
           cache: yarn
-          node-version: 16
+          node-version: 17
       - name: Install
         run: yarn
       - name: Lint
         run: yarn test:type
 
-  release:
-    name: Release
+  draft:
+    name: Draft
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: macos-latest
-          - os: ubuntu-latest
-          - os: windows-latest
     needs:
       - lint
       - type
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -55,10 +49,69 @@ jobs:
         uses: actions/setup-node@v2
         with:
           cache: yarn
-          node-version: 16
+          node-version: 17
+      - name: Get Git tag
+        id: tag
+        run: echo "::set-output name=last-tag::$(git describe --tags --abbrev=0 || git rev-list --max-parents=0 ${{github.ref}})"
+      - name: Generate release notes
+        uses: ./.github/actions/release-notes
+        id: release-note
+        with:
+          from: ${{ steps.tag.outputs.last-tag }}
+          to: ${{ github.ref }}
+          include-commit-body: true
+          include-abbreviated-commit: true
+      - name: Get version
+        id: version
+        run: echo "::set-output name=build-version::$(node -e "try{console.log(require('./.electron-builder.config.js').extraMetadata.version)}catch(e){console.error(e);process.exit(1)}")"
+      - name: Delete outdated drafts
+        uses: hugo19941994/delete-draft-releases@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release Draft
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          prerelease: true
+          draft: true
+          tag_name: v${{ steps.version.outputs.build-version }}
+          name: v${{ steps.version.outputs.build-version }}
+          body: ${{ steps.release-note.outputs.release-note }}
+
+  release:
+    name: Release
+    needs:
+      - lint
+      - type
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+          - os: ubuntu-latest
+          - os: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup
+        uses: actions/setup-node@v2
+        with:
+          cache: yarn
+          node-version: 17
       - name: Install
         run: yarn
-      - name: Release
-        run: yarn release
+      - name: Prepare release notes
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          RELEASE_NOTE: ${{ needs.draft.outputs.release-note }}
+        run: echo "$RELEASE_NOTE" >> ./build/release-notes.md
+      - name: Compile
+        run: yarn compile
+      - name: Release
+        uses: samuelmeuli/action-electron-builder@v1
+        env:
+          VITE_APP_VERSION: ${{ needs.draft.outputs.version }}
+        with:
+          build_script_name: build
+          github_token: ${{ secrets.GH_PAT }}
+          release: true

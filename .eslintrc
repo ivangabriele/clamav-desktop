@@ -7,7 +7,7 @@
   "settings": {
     "import/core-modules": ["electron"]
   },
-  "ignorePatterns": ["/.webpack/", "/out/", "/*.js"],
+  "ignorePatterns": ["dist/", "/bin/", "/node_modules/"],
   "rules": {
     "import/no-default-export": "error",
     "import/prefer-default-export": "off",
@@ -19,9 +19,29 @@
   },
   "overrides": [
     {
-      "files": ["./*.js"],
+      "files": ["./packages/main/**/*"],
+      "env": {
+        "browser": false,
+        "node": true
+      }
+    },
+    {
+      "files": ["./packages/preload/**/*", "./packages/renderer/**/*"],
+      "env": {
+        "browser": true,
+        "node": false
+      }
+    },
+    {
+      "files": ["./scripts/**/*", "vite.config.js"],
+      "env": {
+        "browser": false,
+        "node": true
+      },
       "rules": {
-        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+        "import/no-default-export": "off",
+        "import/prefer-default-export": "error"
       }
     }
   ]

@@ -8,9 +8,6 @@ const getErrorConstructorName = (error: any) => {
   return error.constructor.name
 }
 
-function handleError(error: any, path: string): void
-function handleError(error: any, path: string, isMain: false): void
-function handleError(error: any, path: string, isMain: true): [null, Common.Main.MainError]
 /**
  * Handle all kinds of errors. Any error should be caught and handled by this function.
  *
@@ -19,7 +16,7 @@ function handleError(error: any, path: string, isMain: true): [null, Common.Main
  * handleError(err, "helpers/myFunction()");
  * handleError(err, "scripts/myFileName#oneOfTheScriptFunctions()");
  */
-function handleError(error: any, path: string, isMain: boolean = false): void | [null, Common.Main.MainError] {
+export function handleError(error: any, path: string): [null, Common.Main.MainError] {
   let errorString: string
 
   switch (true) {
@@ -43,16 +40,10 @@ function handleError(error: any, path: string, isMain: boolean = false): void | 
   // eslint-disable-next-line no-console
   console.error(error)
 
-  if (isMain) {
-    return [
-      null,
-      {
-        message: errorString,
-      },
-    ]
-  }
-
-  return undefined as never
+  return [
+    null,
+    {
+      message: errorString,
+    },
+  ]
 }
-
-export { handleError }

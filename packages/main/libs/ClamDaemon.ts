@@ -7,7 +7,7 @@ import path from 'path'
 import psList from 'ps-list'
 import terminate from 'terminate/promise'
 
-import { handleError } from '../../common/helpers/handleError'
+import { handleError } from '../helpers/handleError'
 import { waitFor } from '../helpers/waitFor'
 
 import type { BrowserWindow } from 'electron'
@@ -15,7 +15,7 @@ import type { ExecaChildProcess } from 'execa'
 
 const TIMEOUT_IN_MINUTES = 1
 
-export class ClamScan {
+export class ClamDaemon {
   #childProcess: ExecaChildProcess | null
   #name: string
   #mainWindow: BrowserWindow
@@ -25,8 +25,8 @@ export class ClamScan {
   constructor({ mainWindow }: { mainWindow: BrowserWindow }) {
     this.#childProcess = null
     this.#mainWindow = mainWindow
-    this.#name = 'clamscan.exe'
-    this.#path = path.normalize('C:/Program Files/ClamAV/clamscan.exe')
+    this.#name = 'clamd.exe'
+    this.#path = path.normalize('C:/Program Files/ClamAV/clamd.exe')
     this.#wasRunning = null
 
     this.isRunning = this.isRunning.bind(this)
@@ -37,11 +37,11 @@ export class ClamScan {
 
   public async isRunning(): Promise<Common.Main.IpcResponse<boolean>> {
     try {
-      this.#wasRunning = await this.#isRunning()
+      const isRunning = await this.#isRunning()
 
-      return [this.#wasRunning, null]
+      return [isRunning, null]
     } catch (err) {
-      return handleError(err, 'main/libs/ClamScan.isRunning()', true)
+      return handleError(err, 'main/libs/ClamDaemon.isRunning()')
     }
   }
 
@@ -53,28 +53,28 @@ export class ClamScan {
       }
 
       if (isRunning as boolean) {
-        throw new Error('ClamScan is already running.')
+        throw new Error('ClamAV is already running.')
       }
 
       await fs.access(this.#path)
 
-      ß.info('Main: Starting ClamScan…')
-      this.#childProcess = execa(this.#path, ['--recursive', 'C:'])
+      ß.info('Main: Starting ClamAV ')
+      this.#childProcess = execa(this.#path)
       if (this.#childProcess.stdout === null) {
-        throw new Error('ClamScan {sdtout} is null.')
+        throw new Error('ClamAV {sdtout} is null.')
       }
 
       this.#childProcess.stdout.on('data', (stream: ReadableStream) => {
         const outputChunk = stream.toString()
 
-        this.#mainWindow.webContents.send('log:clamScan', outputChunk)
+        this.#mainWindow.webContents.send('log:clamDaemon', outputChunk)
       })
 
       await this.#waitForStatus(true)
 
       return [undefined, null]
     } catch (err) {
-      return handleError(err, 'main/libs/ClamScan.start()', true)
+      return handleError(err, 'main/libs/ClamDaemon.start()')
     }
   }
 
@@ -82,7 +82,7 @@ export class ClamScan {
     try {
       // https://github.com/sindresorhus/execa#cancelling-a-spawned-process
       if (this.#childProcess !== null && !this.#childProcess.killed) {
-        ß.info('Main: Stopping ClamScan…')
+        ß.info('Main: Stopping ClamAV ')
         this.#childProcess.cancel()
 
         const [, err] = await this.#waitForStatus(false)
@@ -93,29 +93,29 @@ export class ClamScan {
         return [undefined, null]
       }
 
-      ß.info('Main: Killing ClamScan(s)…')
+      ß.info('Main: Killing ClamAV ')
       const processIds = await this.#getProcessIds()
       await Promise.all(processIds.map(terminate))
 
       return [undefined, null]
     } catch (err) {
-      return handleError(err, 'main/libs/ClamScan.stop()', true)
+      return handleError(err, 'main/libs/ClamDaemon.stop()')
     }
   }
 
-  async watch() {
+  public async watch() {
     try {
       const isRunning = await this.#isRunning()
 
       if (isRunning !== this.#wasRunning) {
         this.#wasRunning = isRunning
 
-        this.#mainWindow.webContents.send('status:clamScan', isRunning)
+        this.#mainWindow.webContents.send('status:clamDaemon', isRunning)
       }
 
       setTimeout(this.watch, 500)
     } catch (err) {
-      handleError(err, 'main/libs/ClamScan.watch()', true)
+      handleError(err, 'main/libs/ClamDaemon.watch()')
 
       process.exit(1)
     }
@@ -128,7 +128,7 @@ export class ClamScan {
 
       return isRunning
     } catch (err) {
-      handleError(err, 'main/libs/ClamScan.#isRunning()', true)
+      handleError(err, 'main/libs/ClamDaemon.#isRunning()')
 
       return false
     }
@@ -141,7 +141,7 @@ export class ClamScan {
 
       return processIds
     } catch (err) {
-      handleError(err, 'main/libs/ClamScan.#getProcessIds()', true)
+      handleError(err, 'main/libs/ClamDaemon.#getProcessIds()')
 
       return []
     }
@@ -163,10 +163,10 @@ export class ClamScan {
       }
 
       throw new Error(
-        `Waiting for ClamScan to ${isStarted ? 'start' : 'stop'} timed out after ${TIMEOUT_IN_MINUTES} minute(s).`,
+        `Waiting for ClamAV to ${isStarted ? 'start' : 'stop'} timed out after ${TIMEOUT_IN_MINUTES} minute(s).`,
       )
     } catch (err) {
-      return handleError(err, 'main/libs/ClamScan.#waitForStatus()', true)
+      return handleError(err, 'main/libs/ClamDaemon.#waitForStatus()')
     }
   }
 }

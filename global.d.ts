@@ -1,6 +1,6 @@
-import type { ClamDaemon } from '@main/libs/ClamDaemon'
-import type { ClamScan } from '@main/libs/ClamScan'
-import type { FreshClam } from '@main/libs/FreshClam'
+import type { ClamDaemon } from './packages/main/libs/ClamDaemon'
+import type { ClamScan } from './packages/main/libs/ClamScan'
+import type { FreshClam } from './packages/main/libs/FreshClam'
 import type { IpcRenderer, IpcRendererEvent } from 'electron'
 
 declare global {

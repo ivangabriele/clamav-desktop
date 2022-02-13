@@ -3,18 +3,18 @@
     "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
+    "inlineSources": true,
     "jsx": "react",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "noEmit": true,
     "noImplicitAny": false,
+    "noImplicitReturns": false,
     "paths": {
-      "@common/*": ["common/*"],
-      "@main/*": ["main/*"],
-      "@renderer/*": ["renderer/*"],
       "*": ["node_modules/*"]
     },
     "resolveJsonModule": true,
@@ -23,6 +23,6 @@
     "strict": true,
     "target": "ES2021"
   },
-  "exclude": [".webpack/*", "node_modules/*", "out/*", "*.js"],
-  "include": ["common/**/*", "main/**/*", "renderer/**/*"]
+  "exclude": ["bin/*", "dist/*", "node_modules/*"],
+  "include": ["packages/**/*", "scripts/**/*", "common.d.ts", "global.d.ts"]
 }

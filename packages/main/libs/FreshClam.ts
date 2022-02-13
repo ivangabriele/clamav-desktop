@@ -6,7 +6,7 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import psList from 'ps-list'
 
-import { handleError } from '../../common/helpers/handleError'
+import { handleError } from '../helpers/handleError'
 
 export class FreshClam {
   #name: string = ''

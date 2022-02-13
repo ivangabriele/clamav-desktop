@@ -1,11 +1,21 @@
 {
   "name": "clamav-desktop",
   "description": "Cross-platform desktop GUI for ClamAV antivirus.",
-  "version": "0.3.3",
-  "main": ".webpack/main",
   "license": "AGPL-3.0",
+  "version": "0.3.3",
+  "type": "module",
+  "main": "./packages/main/dist/index.cjs",
+  "engines": {
+    "node": ">=17",
+    "npm": ">=8"
+  },
   "scripts": {
-    "dev": "electron-forge start --inspect-electron -- --trace-warnings",
+    "build": "yarn build:main && yarn build:preload && yarn build:renderer",
+    "build:main": "cd ./packages/main && vite build",
+    "build:preload": "cd ./packages/preload && vite build",
+    "build:renderer": "cd ./packages/renderer && vite build",
+    "compile": "cross-env MODE=production yarn build && electron-builder build",
+    "dev": "node scripts/dev/watch.js",
     "make": "rm -Rf ./out && electron-forge make",
     "package": "rm -Rf ./out && electron-forge package",
     "release": "yarn make && electron-forge publish",
@@ -27,16 +37,11 @@
     "react-hot-toast": "2.2.0",
     "react-icons": "4.3.1",
     "shelljs": "0.8.5",
+    "source-map-support": "0.5.21",
     "styled-components": "5.3.3",
     "terminate": "2.5.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "6.0.0-beta.63",
-    "@electron-forge/maker-deb": "6.0.0-beta.63",
-    "@electron-forge/maker-dmg": "6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "6.0.0-beta.63",
-    "@electron-forge/plugin-webpack": "6.0.0-beta.63",
-    "@electron-forge/publisher-github": "6.0.0-beta.63",
     "@ivangabriele/eslint-config-typescript-react": "3.0.1",
     "@ivangabriele/prettier-config": "3.0.2",
     "@types/ps-node": "0.1.1",
@@ -46,10 +51,11 @@
     "@types/styled-components": "5.1.22",
     "@typescript-eslint/eslint-plugin": "5.10.0",
     "@typescript-eslint/parser": "5.10.0",
-    "@vercel/webpack-asset-relocator-loader": "1.7.0",
+    "@vitejs/plugin-react": "1.2.0",
     "copy-webpack-plugin": "10.2.4",
-    "css-loader": "6.6.0",
+    "cross-env": "7.0.3",
     "electron": "17.0.0",
+    "electron-builder": "22.14.13",
     "eslint": "7.32.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "15.0.0",
@@ -63,19 +69,15 @@
     "eslint-plugin-sort-destructure-keys": "1.4.0",
     "eslint-plugin-sort-keys-fix": "1.1.2",
     "eslint-plugin-typescript-sort-keys": "2.1.0",
-    "fork-ts-checker-webpack-plugin": ">=6",
-    "node-loader": "2.0.0",
+    "fs-extra": "10.0.0",
     "prettier": "2.5.1",
-    "style-loader": "3.3.1",
-    "ts-loader": "9.2.6",
-    "typescript": "4.5.5"
+    "typescript": "4.5.5",
+    "vite": "2.8.1",
+    "webpack": "5.68.0"
   },
   "author": {
     "name": "Ivan Gabriele",
     "url": "https://www.ivangabriele.com"
-  },
-  "config": {
-    "forge": "./forge.config.js"
   },
   "prettier": "@ivangabriele/prettier-config"
 }
