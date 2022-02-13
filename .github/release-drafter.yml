@@ -1,4 +1,5 @@
-name-template: v$RESOLVED_VERSION 🌈
+# name-template: v$RESOLVED_VERSION 🌈
+name-template: $RESOLVED_VERSION
 prerelease: true
 tag-template: v$RESOLVED_VERSION
 categories:
