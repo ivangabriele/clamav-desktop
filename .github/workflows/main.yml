@@ -71,8 +71,8 @@ jobs:
           node-version: 17
       - name: Install
         run: yarn
-      - name: Compile
-        run: yarn compile
+      - name: Build
+        run: yarn build
       - name: Release
         run: yarn release
         env:
