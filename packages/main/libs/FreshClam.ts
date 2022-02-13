@@ -27,7 +27,7 @@ export class FreshClam {
 
       return [isRunning, null]
     } catch (err) {
-      return handleError(err, 'main/libs/clamd.isRunning()', true)
+      return handleError(err, 'main/libs/clamd.isRunning()')
     }
   }
 
@@ -49,7 +49,7 @@ export class FreshClam {
 
       return [childProcess.stdout, null]
     } catch (err) {
-      return handleError(err, 'main/libs/FreshClam.run()', true)
+      return handleError(err, 'main/libs/FreshClam.run()')
     }
   }
 
@@ -60,7 +60,7 @@ export class FreshClam {
 
       return processIds
     } catch (err) {
-      handleError(err, 'main/libs/FreshClam.#getProcessIds()', true)
+      handleError(err, 'main/libs/FreshClam.#getProcessIds()')
 
       return []
     }
