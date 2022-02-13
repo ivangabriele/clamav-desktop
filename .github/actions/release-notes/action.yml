@@ -22,4 +22,4 @@ outputs:
     description: "Release notes"
 runs:
   using: "node16"
-  main: "main.ejs"
+  main: "main.js"
