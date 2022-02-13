@@ -82,8 +82,7 @@ jobs:
   release:
     name: Release
     needs:
-      - lint
-      - type
+      - draft
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
