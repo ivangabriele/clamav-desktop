@@ -2,7 +2,7 @@ const os = require('os')
 
 module.exports = {
   packagerConfig: {
-    executableName: os.arch == 'linux' ? undefined : 'ClamAV Desktop',
+    executableName: os.platform == 'linux' ? undefined : 'ClamAV Desktop',
     icon: './assets/icons/logo-clamav.ico',
     win32metadata: {
       'requested-execution-level': 'requireAdministrator',
