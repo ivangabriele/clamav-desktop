@@ -43,8 +43,13 @@ jobs:
       - type
     runs-on: ubuntu-latest
     steps:
+      - name: Get Version
+        id: get_version
+        uses: battila7/get-version-action@v2.2.1
       - name: Draft
         uses: release-drafter/release-drafter@v5
+        with:
+          version: ${{ steps.get_version.outputs.version-without-v }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
