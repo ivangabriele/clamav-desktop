@@ -2,7 +2,7 @@
   "name": "clamav-desktop",
   "description": "Cross-platform desktop GUI for ClamAV antivirus.",
   "license": "AGPL-3.0",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "type": "module",
   "main": "./packages/main/dist/index.cjs",
   "engines": {
