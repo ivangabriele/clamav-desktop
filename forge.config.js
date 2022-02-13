@@ -13,7 +13,7 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
-          // genericName: 'ClamAV Desktop',
+          genericName: 'ClamAV Desktop',
           icon: './assets/icons/logo-clamav.ico',
         },
       },
