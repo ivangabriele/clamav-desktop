@@ -13,16 +13,16 @@ const Box = styled.div`
   padding: 1rem;
 `
 
-type DashboardProps = {
+type ScannerProps = {
   isRunning: boolean | null
   log: string
   onLogLine: (newLogLine: string) => void
 }
 
-export function Dashboard({ isRunning, log, onLogLine }: DashboardProps) {
+export function Scanner({ isRunning, log, onLogLine }: ScannerProps) {
   const start = React.useCallback(async () => {
-    onLogLine('Starting Clam Daemon…')
-    const [, err] = await window.electronApi.startClamDaemon()
+    onLogLine('Starting Clam Scan…')
+    const [, err] = await window.electronApi.startClamScan()
 
     if (err !== null) {
       toast.error(err.message)
@@ -30,8 +30,8 @@ export function Dashboard({ isRunning, log, onLogLine }: DashboardProps) {
   }, [])
 
   const stop = React.useCallback(async () => {
-    onLogLine('Stopping Clam Daemon…')
-    const [, err] = await window.electronApi.stopClamDaemon()
+    onLogLine('Stopping Clam Scan…')
+    const [, err] = await window.electronApi.stopClamScan()
     if (err !== null) {
       toast.error(err.message)
       onLogLine(err.message)
@@ -39,14 +39,14 @@ export function Dashboard({ isRunning, log, onLogLine }: DashboardProps) {
       return
     }
 
-    onLogLine('Clam Daemon successfully stopped.')
+    onLogLine('Clam Scan successfully stopped.')
   }, [])
 
   return (
     <Box>
-      {isRunning === null && <Button onClick={start}>Waiting for Daemon status…</Button>}
-      {isRunning === false && <Button onClick={start}>Start Daemon</Button>}
-      {isRunning === true && <Button onClick={stop}>Stop Daemon</Button>}
+      {isRunning === null && <Button onClick={start}>Waiting for ClamScan status…</Button>}
+      {isRunning === false && <Button onClick={start}>Start Scan</Button>}
+      {isRunning === true && <Button onClick={stop}>Stop Scan</Button>}
 
       <Logger>{log}</Logger>
     </Box>

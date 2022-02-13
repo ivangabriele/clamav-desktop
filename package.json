@@ -5,10 +5,10 @@
   "main": ".webpack/main",
   "license": "AGPL-3.0",
   "scripts": {
+    "dev": "electron-forge start --inspect-electron -- --trace-warnings",
     "make": "rm -Rf ./out && electron-forge make",
     "package": "rm -Rf ./out && electron-forge package",
     "release": "yarn make && electron-forge publish",
-    "start": "electron-forge start",
     "test:lint": "eslint --ext js,ts,tsx .",
     "test:type": "tsc",
     "postversion": "git push origin HEAD --tags"

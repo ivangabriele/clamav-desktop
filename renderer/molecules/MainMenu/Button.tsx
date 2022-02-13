@@ -6,21 +6,32 @@ import type { ButtonProps as SuiButtonProps } from '@singularity/core'
 
 const StyledButton = styled(SuiButton)<{
   isActive: boolean
+  isSafe: boolean | null
 }>`
-  background-color: ${p => (p.isActive ? 'rgb(21, 23, 44, 0.65)' : 'rgb(21, 23, 44)')};
+  background-color: ${p => (p.isActive ? 'rgb(21, 23, 44, 0)' : 'rgb(21, 23, 44)')};
   border: 0;
   border-radius: 0;
   height: 6rem;
   width: 6rem;
 
   :hover:not(:disabled) {
-    background-color: #15172c;
+    background-color: ${p => (p.isActive ? 'rgb(21, 23, 44, 0)' : '#15172c')};
   }
 
   > svg {
-    fill: white;
+    fill: ${p => {
+      if (p.isSafe === true) {
+        return p.theme.color.success.active
+      }
+
+      if (p.isSafe === false) {
+        return p.theme.color.danger.active
+      }
+
+      return 'white'
+    }};
     height: 3rem;
-    opacity: ${p => (p.isActive ? 1 : 0.25)};
+    opacity: ${p => (p.isActive ? 1 : 0.5)};
     width: 3rem;
   }
   :hover:not(:disabled) svg {
@@ -30,10 +41,11 @@ const StyledButton = styled(SuiButton)<{
 
 type ButtonProps = SuiButtonProps & {
   isActive: boolean
+  isSafe: boolean | null
   onClick: () => void
 }
 
-export function Button({ isActive, onClick, ...props }: ButtonProps) {
+export function Button({ isActive, isSafe = false, onClick, ...props }: ButtonProps) {
   const handleOnClick = () => {
     if (isActive) {
       return
@@ -42,6 +54,5 @@ export function Button({ isActive, onClick, ...props }: ButtonProps) {
     onClick()
   }
 
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <StyledButton disabled={isActive} isActive={isActive} onClick={handleOnClick} {...props} />
+  return <StyledButton isActive={isActive} isSafe={isSafe} onClick={handleOnClick} {...props} />
 }

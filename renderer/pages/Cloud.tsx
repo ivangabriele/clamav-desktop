@@ -3,25 +3,14 @@ import React from 'react'
 import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
+import { Logger } from '../atoms/Logger'
+
 const Box = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
   padding: 1rem;
-`
-
-const Logger = styled.pre`
-  background-color: black;
-  border-radius: 0.33rem;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  margin: 1rem 0 0;
-  opacity: 0.65;
-  overflow-y: scroll;
-  padding: 0.5rem 1rem;
 `
 
 export function Cloud() {
@@ -31,7 +20,7 @@ export function Cloud() {
 
   const check = React.useCallback(async () => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    const [isFreshClamRunning, err] = await window.electronAPI.isFreshClamRunning()
+    const [isFreshClamRunning, err] = await window.electronApi.isFreshClamRunning()
     if (err !== null) {
       toast.error(err.message)
 
@@ -48,7 +37,7 @@ export function Cloud() {
     setIsFreshClamRunning(true)
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    const [output, err] = await window.electronAPI.runFreshClam()
+    const [output, err] = await window.electronApi.runFreshClam()
 
     if (err !== null) {
       // toast.error(err.message)

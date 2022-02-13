@@ -5,8 +5,6 @@ import { execa } from 'execa'
 import { promises as fs } from 'fs'
 import path from 'path'
 import psList from 'ps-list'
-// import shelljs from 'shelljs'
-import terminate from 'terminate/promise'
 
 import { handleError } from '../../common/helpers/handleError'
 
@@ -52,20 +50,6 @@ export class FreshClam {
       return [childProcess.stdout, null]
     } catch (err) {
       return handleError(err, 'main/libs/FreshClam.run()', true)
-    }
-  }
-
-  public async stop(): Promise<Common.Main.IpcResponse<undefined>> {
-    try {
-      ß.info('Stopping ClamAV daemon…')
-
-      const processIds = await this.#getProcessIds()
-
-      await Promise.all(processIds.map(terminate))
-
-      return [undefined, null]
-    } catch (err) {
-      return handleError(err, 'main/libs/FreshClam.stop()', true)
     }
   }
 

@@ -12,6 +12,9 @@
     "import/no-default-export": "error",
     "import/prefer-default-export": "off",
 
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+
     "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
   },
   "overrides": [

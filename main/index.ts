@@ -6,7 +6,8 @@ import electronIsDev from 'electron-is-dev'
 import { autoUpdater, ProgressInfo } from 'electron-updater'
 import path from 'path'
 
-import { Clamd } from './libs/Clamd'
+import { ClamDaemon } from './libs/ClamDaemon'
+import { ClamScan } from './libs/ClamScan'
 import { FreshClam } from './libs/FreshClam'
 
 import type { UpdateInfo } from 'electron-updater'
@@ -22,10 +23,13 @@ if (require('electron-squirrel-startup')) {
   app.quit()
 }
 
-let isHidden = false
-let isQuitting = false
 const isStarting = false
 const isUpdating = false
+let clamDaemon: ClamDaemon
+let clamScan: ClamScan
+let freshClam: FreshClam
+let isHidden = false
+let isQuitting = false
 let mainWindow: BrowserWindow
 let tray: Tray
 
@@ -55,6 +59,10 @@ const createWindow = (): void => {
   mainWindow.setPosition(primaryDisplay.workAreaSize.width - 683 - 20, primaryDisplay.workAreaSize.height - 384 - 20)
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
+  clamDaemon = new ClamDaemon({ mainWindow })
+  clamScan = new ClamScan({ mainWindow })
+  freshClam = new FreshClam()
+
   mainWindow.once('ready-to-show', async () => {
     if (electronIsDev) {
       mainWindow.setResizable(true)
@@ -75,6 +83,8 @@ const createWindow = (): void => {
 }
 
 app.once('ready', async () => {
+  createWindow()
+
   if (!electronIsDev) {
     session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
       callback({
@@ -88,17 +98,16 @@ app.once('ready', async () => {
     })
   }
 
-  const clamd = new Clamd()
-  const freshClam = new FreshClam()
+  ipcMain.handle('clamDaemon:start', clamDaemon.start)
+  ipcMain.handle('clamDaemon:stop', clamDaemon.stop)
+  ipcMain.handle('clamDaemon:watch', clamDaemon.watch)
 
-  ipcMain.handle('clamd:isRunning', clamd.isRunning)
-  ipcMain.handle('clamd:start', clamd.start)
-  ipcMain.handle('clamd:stop', clamd.stop)
+  ipcMain.handle('clamScan:start', clamScan.start)
+  ipcMain.handle('clamScan:stop', clamScan.stop)
+  ipcMain.handle('clamScan:watch', clamScan.watch)
 
   ipcMain.handle('freshClam:run', freshClam.run)
   ipcMain.handle('freshClam:isRunning', freshClam.isRunning)
-
-  createWindow()
 
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
@@ -162,8 +171,8 @@ async function exitApp(toInstallUpdate = false): Promise<void> {
   try {
     mainWindow.webContents.send('ipcMain:app:quit')
 
-    const clamd = new Clamd()
-    await clamd.stop()
+    await clamDaemon.stop()
+    await clamScan.stop()
   } catch (err) {
     ß.error(err)
 

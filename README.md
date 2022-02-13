@@ -18,3 +18,13 @@
 ---
 
 > A work in progress.
+
+# Screenshots
+
+## Dashboard Preview
+
+![ClamAV Desktop Dashboard](/docs/screenshot-dashboard.png)
+
+## Scanner Preview
+
+![ClamAV Desktop Scanner](/docs/screenshot-scanner.png)
