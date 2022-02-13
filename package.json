@@ -76,6 +76,7 @@
   },
   "author": {
     "name": "Ivan Gabriele",
+    "email": "ivan.gabriele@gmail.com",
     "url": "https://www.ivangabriele.com"
   },
   "prettier": "@ivangabriele/prettier-config"
