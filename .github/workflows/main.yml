@@ -32,7 +32,7 @@ jobs:
           node-version: 17
       - name: Install
         run: yarn
-      - name: Lint
+      - name: Type
         run: yarn test:type
 
   draft:
