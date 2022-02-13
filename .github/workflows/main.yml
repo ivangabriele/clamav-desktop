@@ -106,14 +106,11 @@ jobs:
         env:
           RELEASE_NOTE: ${{ needs.draft.outputs.release-note }}
         run: echo "$RELEASE_NOTE" >> ./build/release-notes.md
-      - name: Compile
-        run: yarn compile
       - name: Release
         uses: samuelmeuli/action-electron-builder@v1
         env:
           # https://www.electron.build/code-signing#how-to-disable-code-signing-during-the-build-process-on-macos
           CSC_IDENTITY_AUTO_DISCOVERY: false
-          GH_TOKEN: ${{ secrets.GH_PAT }}
           VITE_APP_VERSION: ${{ needs.draft.outputs.version }}
         with:
           build_script_name: build
