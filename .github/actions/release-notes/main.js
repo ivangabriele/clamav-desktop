@@ -1,6 +1,8 @@
-// TODO: Refactor this action
+/**
+ * @see https://github.com/cawa-93/vite-electron-builder/blob/main/.github/actions/release-notes/main.js
+ */
 
-const { execSync } = require('child_process')
+import { execSync } from 'child_process'
 
 /**
  * Gets the value of an input.  The value is also trimmed.
