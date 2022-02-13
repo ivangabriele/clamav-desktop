@@ -4,23 +4,16 @@ categories:
   - title: 🚀 Features
     labels:
       - feat
+  - title: 💮 Improvements
+    labels:
+      - style
   - title: 🐛 Bug Fixes
     labels:
       - fix
   - title: 🧰 Maintenance
     labels:
       - build
-version-resolver:
-  major:
-    labels:
-      - major
-  minor:
-    labels:
-      - minor
-  patch:
-    labels:
-      - patch
-  default: patch
+      - refactor
 template: |
   ## Changes
 
