@@ -83,6 +83,6 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: false
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       - name: Publish
-        uses: ivangabriele/publish-latest-release@v1
+        uses: ivangabriele/publish-latest-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
