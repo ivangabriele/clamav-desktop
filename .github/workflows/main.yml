@@ -45,7 +45,7 @@ jobs:
     steps:
       - name: Get Version
         id: get_version
-        uses: battila7/get-version-action@v2.2.1
+        uses: battila7/get-version-action@v2.3.0
       - name: Draft
         uses: release-drafter/release-drafter@v5
         with:
