@@ -82,3 +82,7 @@ jobs:
           # https://www.electron.build/code-signing#how-to-disable-code-signing-during-the-build-process-on-macos
           CSC_IDENTITY_AUTO_DISCOVERY: false
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      - name: Publish
+        uses: ivangabriele/publish-latest-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
