@@ -87,13 +87,7 @@ jobs:
     name: Publish
     needs:
       - release
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: macos-latest
-          - os: ubuntu-latest
-          - os: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Publish
         uses: ivangabriele/publish-latest-release@v3
