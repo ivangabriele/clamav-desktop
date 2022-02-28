@@ -488,10 +488,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
-"@singularity/core@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-2.5.0.tgz#2c13888e239a226b012206cde4ebc78eb21e03c5"
-  integrity sha512-WADalJVGQ42EZHe/Ujlq8v3iHLeU4SCQxpPAHmcorI/XVSIM2gX0gt13/PRzRpgpRnPpJr8uekRFBwzJ5/kr8A==
+"@singularity/core@3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@singularity/core/-/core-3.0.4.tgz#2e1ff3957b60325457a2986ccd287a88aedba333"
+  integrity sha512-MGR+Is0p69DEbMZuRzz6lG5vsleFdB4uVriTmceGCW3NefY5n4wQRKHoTcEsnJGv8VxAC+IMD1//OsziCJIC0Q==
   dependencies:
     better-prop-types "1.1.1"
     is-hotkey "0.2.0"
@@ -502,7 +502,7 @@
     sha1 "1.1.1"
     slate "0.72.8"
     slate-history "0.66.0"
-    slate-react "0.72.8"
+    slate-react "0.72.9"
     tslib "2.3.1"
     unified "10.1.1"
 
@@ -4485,10 +4485,10 @@ slate-history@0.66.0:
   dependencies:
     is-plain-object "^5.0.0"
 
-slate-react@0.72.8:
-  version "0.72.8"
-  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.72.8.tgz#b6b5d88ce8f89ba26965066b628757c60866cb23"
-  integrity sha512-asgRV/msGqfzm6cPxhrRo2Iuj5RhoDvicfkwpVD63b4K4yfPpL7a8sx0zO5WY7gqggBLjrYnNth6mAbdlHPzMg==
+slate-react@0.72.9:
+  version "0.72.9"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.72.9.tgz#b05dd533bd29dd2d4796b614a8d8e01f214bb714"
+  integrity sha512-FEsqB+D1R/h+w1eCtHH367Krw2X7vju2GjMRL/d0bUiCRXlV50J9I9TJizvi7aaZyqBY8BypCuIiq9nNmsulCA==
   dependencies:
     "@types/is-hotkey" "^0.1.1"
     "@types/lodash" "^4.14.149"
