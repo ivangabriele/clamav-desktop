@@ -40,7 +40,7 @@
     "terminate": "2.5.0"
   },
   "devDependencies": {
-    "@ivangabriele/eslint-config-typescript-react": "3.0.1",
+    "@ivangabriele/eslint-config-typescript-react": "4.0.0",
     "@ivangabriele/prettier-config": "3.0.2",
     "@types/ps-node": "0.1.1",
     "@types/react": "17.0.44",
