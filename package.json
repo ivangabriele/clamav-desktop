@@ -55,7 +55,7 @@
     "electron-builder": "23.0.3",
     "eslint": "8.14.0",
     "eslint-config-airbnb": "19.0.4",
-    "eslint-config-airbnb-typescript": "16.2.0",
+    "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jest": "26.1.5",
