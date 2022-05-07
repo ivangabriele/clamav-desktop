@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 17
+          node-version: 18
       - name: Install
         run: yarn
       - name: Lint
@@ -29,7 +29,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 17
+          node-version: 18
       - name: Install
         run: yarn
       - name: Type
@@ -71,7 +71,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 17
+          node-version: 18
       - name: Install
         run: yarn
       - name: Build

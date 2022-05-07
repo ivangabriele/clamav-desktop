@@ -6,8 +6,8 @@
   "type": "module",
   "main": "./packages/main/dist/index.cjs",
   "engines": {
-    "node": ">=17",
-    "npm": ">=8"
+    "node": "18",
+    "npm": "8"
   },
   "scripts": {
     "build": "yarn build:main && yarn build:preload && yarn build:renderer",
