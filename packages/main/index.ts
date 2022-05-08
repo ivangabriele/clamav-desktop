@@ -4,8 +4,7 @@ import ß from 'bhala'
 import { app, BrowserWindow, ipcMain, Menu, nativeImage, screen, session, Tray } from 'electron'
 import electronIsDev from 'electron-is-dev'
 import { autoUpdater, ProgressInfo } from 'electron-updater'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import { getAbsolutePath } from 'esm-path'
 
 import { ClamDaemon } from './libs/ClamDaemon'
 import { ClamScan } from './libs/ClamScan'
@@ -18,8 +17,6 @@ import type { UpdateInfo } from 'electron-updater'
 if (require('electron-squirrel-startup')) {
   app.quit()
 }
-
-const CURRENT_DIRECTORY_PATH = dirname(fileURLToPath(import.meta.url))
 
 const isStarting = false
 const isUpdating = false
@@ -38,10 +35,9 @@ if (!app.requestSingleInstanceLock()) {
 
 const createWindow = (): void => {
   const primaryDisplay = screen.getPrimaryDisplay()
-  const pageUrl =
-    (import.meta as any).env.DEV && (import.meta as any).env.VITE_DEV_SERVER_URL !== undefined
-      ? (import.meta as any).env.VITE_DEV_SERVER_URL
-      : new URL('../renderer/dist/index.html', `file://${CURRENT_DIRECTORY_PATH}`).toString()
+  const pageUrl = electronIsDev
+    ? (import.meta as any).env.VITE_DEV_SERVER_URL
+    : new URL('../renderer/dist/index.html', import.meta.url).toString()
 
   mainWindow = new BrowserWindow({
     fullscreenable: false,
@@ -52,7 +48,7 @@ const createWindow = (): void => {
     titleBarStyle: 'hidden',
     transparent: false,
     webPreferences: {
-      preload: join(CURRENT_DIRECTORY_PATH, '../../preload/dist/index.cjs'),
+      preload: getAbsolutePath(import.meta.url, '../../preload/dist/index.cjs'),
     },
     width: 683,
   })
@@ -119,7 +115,7 @@ app.once('ready', async () => {
     }
   })
 
-  const icon = nativeImage.createFromPath(join(__dirname, '../assets/icons/logo-clamav.ico'))
+  const icon = nativeImage.createFromPath(getAbsolutePath(import.meta.url, '../assets/icons/logo-clamav.ico'))
   tray = new Tray(icon)
   tray.setToolTip('ClamAV Desktop')
   tray.on('click', toggleMainWindows)

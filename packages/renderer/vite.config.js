@@ -1,10 +1,9 @@
 import react from '@vitejs/plugin-react'
+import { getAbsolutePath } from 'esm-path'
 import { builtinModules } from 'module'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
 
 const CHROME_VERSION = 98
-const PACKAGE_ROOT = dirname(fileURLToPath(import.meta.url))
+const PACKAGE_ROOT = getAbsolutePath(import.meta.url)
 
 /**
  * @type {import('vite').UserConfig}
@@ -19,7 +18,7 @@ export default {
     outDir: 'dist',
     rollupOptions: {
       external: [...builtinModules.flatMap(p => [p, `node:${p}`])],
-      input: join(PACKAGE_ROOT, 'index.html'),
+      input: getAbsolutePath(import.meta.url, 'index.html'),
     },
     sourcemap: true,
     target: `chrome${CHROME_VERSION}`,

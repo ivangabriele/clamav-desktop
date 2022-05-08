@@ -1,9 +1,8 @@
+import { getAbsolutePath } from 'esm-path'
 import { builtinModules } from 'module'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
 
 const CHROME_VERSION = 98
-const PACKAGE_ROOT = dirname(fileURLToPath(import.meta.url))
+const PACKAGE_ROOT = getAbsolutePath(import.meta.url)
 
 /**
  * @type {import('vite').UserConfig}

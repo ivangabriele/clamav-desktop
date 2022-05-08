@@ -1,32 +1,39 @@
+import { getAbsolutePath } from 'esm-path'
 import { copy, pathExists } from 'fs-extra'
 import { builtinModules } from 'module'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
 
 const NODE_VERSION = 16
-const PACKAGE_ROOT = dirname(fileURLToPath(import.meta.url))
+const PACKAGE_ROOT = getAbsolutePath(import.meta.url)
 
 function copyPlugin() {
   return [
     {
       apply: 'build',
       async closeBundle() {
-        await copy(join(PACKAGE_ROOT, '../../node_modules/ps-list/vendor'), join(PACKAGE_ROOT, 'dist/vendor'), {
-          recursive: true,
-        })
+        await copy(
+          getAbsolutePath(import.meta.url, '../../node_modules/ps-list/vendor'),
+          getAbsolutePath(import.meta.url, 'dist/vendor'),
+          {
+            recursive: true,
+          },
+        )
       },
       name: 'copy:build',
     },
     {
       apply: 'serve',
       async closeBundle() {
-        if (await pathExists(join(PACKAGE_ROOT, 'dist/vendor'))) {
+        if (await pathExists(getAbsolutePath(import.meta.url, 'dist/vendor'))) {
           return
         }
 
-        await copy(join(PACKAGE_ROOT, '../../node_modules/ps-list/vendor'), join(PACKAGE_ROOT, 'dist/vendor'), {
-          recursive: true,
-        })
+        await copy(
+          getAbsolutePath(import.meta.url, '../../node_modules/ps-list/vendor'),
+          getAbsolutePath(import.meta.url, 'dist/vendor'),
+          {
+            recursive: true,
+          },
+        )
       },
       name: 'copy:serve',
     },
