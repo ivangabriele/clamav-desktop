@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows:
+      - Unit
+      - Integration
+    types:
+      - completed
+
+jobs:
+  draft:
+    name: Draft
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    needs:
+      - lint
+      - type
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Version
+        id: get_version
+        uses: battila7/get-version-action@v2.3.0
+      - name: Draft
+        uses: release-drafter/release-drafter@v5
+        with:
+          version: ${{ steps.get_version.outputs.version-without-v }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+  # release:
+  #   name: Release
+  #   needs:
+  #     - draft
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       include:
+  #         - os: macos-latest
+  #         - os: ubuntu-latest
+  #         - os: windows-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Setup
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         cache: yarn
+  #         node-version: 18
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn build
+  #     - name: Release
+  #       run: yarn release
+  #       env:
+  #         # https://www.electron.build/code-signing#how-to-disable-code-signing-during-the-build-process-on-macos
+  #         CSC_IDENTITY_AUTO_DISCOVERY: false
+  #         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+  # publish:
+  #   name: Publish
+  #   needs:
+  #     - release
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Publish
+  #       uses: ivangabriele/publish-latest-release@v3
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GH_PAT }}

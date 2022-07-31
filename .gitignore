@@ -125,11 +125,11 @@ dist
 .vscode-test
 
 # yarn v2
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
+# .yarn/cache
+# .yarn/unplugged
+# .yarn/build-state.yml
+# .yarn/install-state.gz
+# .pnp.*
 
 ### Node Patch ###
 # Serverless Webpack directories
@@ -143,4 +143,19 @@ dist
 ########################################
 # Custom
 
-/bin
+# Create React App build output
+/build/*
+# /clamav/build
+
+# Coverage output
+/src-tauri/cobertura.xml
+
+# Yarn without Zero-Installs
+# https://yarnpkg.com/getting-started/qa/#which-files-should-be-gitignored
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

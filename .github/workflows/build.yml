@@ -1,0 +1,58 @@
+name: Build
+
+on: workflow_dispatch
+
+jobs:
+  build_linux_debian:
+    name: Build Linux Debian
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 18
+      - name: Install
+        run: yarn
+      - name: Build
+        run: yarn build:linux:debian
+
+  # build_macos:
+  #   name: Build macOS
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #       with:
+  #         submodules: true
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         cache: yarn
+  #         node-version: 18
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn build
+
+  # build_windows:
+  #   name: Build Windows
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #       with:
+  #         submodules: true
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         cache: yarn
+  #         node-version: 18
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn build

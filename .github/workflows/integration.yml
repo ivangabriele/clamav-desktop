@@ -1,0 +1,39 @@
+name: Integration
+
+on: push
+
+jobs:
+  e2e_debian:
+    name: E2E (debian-latest)
+    runs-on: ubuntu-latest
+    container:
+      image: ivangabriele/tauri:debian-bullseye-node18
+    env:
+      DISABLE_ESLINT_PLUGIN: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get Clamav Desktop version
+        id: get_version
+        uses: battila7/get-version-action@v2.3.0
+      # https://github.com/Swatinem/rust-cache#example-usage
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: integration_e2e_debian-latest
+          shared-key: ${{ steps.get_version.outputs.version }}
+          workspaces: "./src-tauri -> target"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 18
+      - name: Install ClamAV
+        run: |
+          apt-get update
+          apt-get install -y clamav
+      - name: Print ClamAV version
+        run: clamscan -V
+      - name: Install Node.js dependencies
+        run: yarn --frozen-lockfile
+      - name: Run tests
+        run: yarn test:e2e
