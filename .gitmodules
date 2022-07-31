@@ -1,0 +1,3 @@
+[submodule "clamav"]
+	path = clamav
+	url = https://github.com/Cisco-Talos/clamav.git

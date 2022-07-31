@@ -144,3 +144,5 @@ dist
 # Custom
 
 /bin
+/build
+/clamav/build

@@ -1,28 +1,8 @@
 {
+  "extends": "@ivangabriele/tsconfig-react",
   "compilerOptions": {
-    "allowJs": true,
-    "baseUrl": ".",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "inlineSources": true,
-    "jsx": "react",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "noEmit": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "paths": {
-      "*": ["node_modules/*"]
-    },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "ES2021"
+    "jsx": "react-jsx"
   },
-  "exclude": ["bin/*", "dist/*", "node_modules/*"],
-  "include": ["packages/**/*", "scripts/**/*", "common.d.ts", "global.d.ts"]
+  "exclude": ["build/*", "node_modules/*", "packages/*", "src-tauri/*"],
+  "include": ["scripts/*", "src/*"]
 }
