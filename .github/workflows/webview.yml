@@ -1,0 +1,11 @@
+name: Webview
+
+on: workflow_dispatch
+
+jobs:
+  dummy:
+    name: Dummy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
