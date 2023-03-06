@@ -12,9 +12,6 @@ jobs:
   draft:
     name: Draft
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    needs:
-      - lint
-      - type
     runs-on: ubuntu-latest
     steps:
       - name: Get Version
