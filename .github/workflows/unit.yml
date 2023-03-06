@@ -1,0 +1,204 @@
+name: Unit
+
+on: push
+
+jobs:
+  webview_lint:
+    name: Lint Webview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 18
+      - name: Install
+        run: yarn
+      - name: Run
+        run: yarn test:lint
+
+  webview_type:
+    name: Type Webview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 18
+      - name: Install
+        run: yarn
+      - name: Run
+        run: yarn test:type
+
+  webview_test:
+    name: Test Webview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 18
+      - name: Install Node.js dependencies
+        run: yarn
+      - name: Run
+        run: yarn test:unit:webview --coverage
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  core_test_debian:
+    name: Test Core (debian-latest)
+    runs-on: ubuntu-latest
+    container:
+      image: ivangabriele/tauri:debian-bullseye-node18
+      options: --security-opt seccomp=unconfined
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get Clamav Desktop version
+        id: get_version
+        uses: battila7/get-version-action@v2.3.0
+      # https://github.com/Swatinem/rust-cache#example-usage
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: unit_core_test_debian-latest
+          shared-key: ${{ steps.get_version.outputs.version }}
+          workspaces: "./src-tauri -> target"
+      - name: Install ClamAV
+        run: |
+          apt-get update
+          apt-get install -y clamav
+      - name: Print versions
+        run: |
+          lsb_release -a
+          rustc -V
+          cargo -V
+          clamscan -V
+      - name: Run tests (with coverage)
+        run: cargo tarpaulin --timeout 120 --out Xml
+        working-directory: ./src-tauri
+      - name: Upload tests coverage
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./src-tauri
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  core_test_macos_and_windows:
+    name: Test Core
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get Clamav Desktop version
+        id: get_version
+        uses: battila7/get-version-action@v2.3.0
+      # https://github.com/Swatinem/rust-cache#example-usage
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: unit_core_test_${{ matrix.os }}
+          shared-key: ${{ steps.get_version.outputs.version }}
+          workspaces: "./src-tauri -> target"
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Print versions
+        run: |
+          rustc -V
+          cargo -V
+          # clamscan -V
+      - name: Build
+        run: cargo build
+        working-directory: ./src-tauri
+      - name: Run tests
+        run: cargo test
+        working-directory: ./src-tauri
+
+  # webview_build:
+  #   name: Build Webview
+  #   needs:
+  #     - webview_lint
+  #     - webview_type
+  #     - webview_test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         cache: yarn
+  #         node-version: 18
+  #     - name: Install Node.js dependencies
+  #       run: yarn
+  #     - name: Run
+  #       run: yarn build:webview
+  #     - name: Upload Webview Artifact
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: webview
+  #         path: ./build
+
+  # core_test:
+  #   name: Test Core
+  #   needs:
+  #     - webview_build
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: ivangabriele/tauri:bullseye-node18
+  #     options: --security-opt seccomp=unconfined
+  #   env:
+  #     CARGO_TERM_COLOR: always
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Download Webview Artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: webview
+  #         path: ./build
+  #     - name: Get Clamav Desktop version
+  #       id: get_version
+  #       uses: battila7/get-version-action@v2.3.0
+  #     - uses: Swatinem/rust-cache@v2
+  #       with:
+  #         key: unit
+  #         shared-key: ${{ steps.get_version.outputs.version }}
+  #         workspaces: "./src-tauri -> target"
+  #     - name: Install ClamAV
+  #       run: |
+  #         apt-get update
+  #         apt-get install -y clamav
+  #     - name: Print ClamAV version
+  #       run: clamscan -V
+  #     - name: Build
+  #       run: cargo build
+  #       working-directory: ./src-tauri
+  #     - name: Run
+  #       run: cargo test
+  #       working-directory: ./src-tauri
+  # TODO Investigate why this is so slow.
+  # https://github.com/xd009642/tarpaulin#github-actions
+  # - name: Generate Coverage
+  #   run: cargo tarpaulin --timeout 120 --out Xml
+  #   working-directory: ./src-tauri
+  # - name: Upload Coverage
+  #   uses: codecov/codecov-action@v3
+  #   with:
+  #     directory: ./src-tauri
+  #     fail_ci_if_error: true

@@ -1,28 +1,26 @@
 {
+  "extends": "@ivangabriele/tsconfig-react/tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
-    "baseUrl": ".",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "inlineSources": true,
-    "jsx": "react",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "noEmit": true,
+    "exactOptionalPropertyTypes": true,
+    "importsNotUsedAsValues": "error",
+    "jsx": "react-jsx",
     "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "paths": {
-      "*": ["node_modules/*"]
-    },
-    "resolveJsonModule": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
-    "target": "ES2021"
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "target": "ES2022",
+    "types": ["node"],
+    "useUnknownInCatchVariables": true
   },
-  "exclude": ["bin/*", "dist/*", "node_modules/*"],
-  "include": ["packages/**/*", "scripts/**/*", "common.d.ts", "global.d.ts"]
+  "exclude": [".yarn", "build/*", "clamav/*", "node_modules/*", "src-tauri/*"],
+  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
 }

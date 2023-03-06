@@ -1,47 +1,43 @@
 {
   "extends": "@ivangabriele/eslint-config-typescript-react",
+  "env": {
+    "browser": true,
+    "node": false
+  },
   "parserOptions": {
-    "ecmaVersion": "latest",
+    "ecmaVersion": 2022,
     "project": "./tsconfig.json"
   },
-  "settings": {
-    "import/core-modules": ["electron"]
-  },
-  "ignorePatterns": ["dist/", "/bin/", "/node_modules/"],
+  "ignorePatterns": ["/.yarn/", "/build/", "/clamav/", "/node_modules/", "/src-tauri/"],
   "rules": {
-    "import/no-default-export": "error",
-    "import/prefer-default-export": "off",
-
     "react/jsx-props-no-spreading": "off",
-    "react/require-default-props": "off",
-
-    "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
+    "react/react-in-jsx-scope": "off"
   },
   "overrides": [
     {
-      "files": ["./packages/main/**/*"],
-      "env": {
-        "browser": false,
-        "node": true
-      }
-    },
-    {
-      "files": ["./packages/preload/**/*", "./packages/renderer/**/*"],
-      "env": {
-        "browser": true,
-        "node": false
-      }
-    },
-    {
-      "files": ["./scripts/**/*", "vite.config.js"],
+      "files": ["configs/*", "scripts/*"],
       "env": {
         "browser": false,
         "node": true
       },
       "rules": {
-        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-        "import/no-default-export": "off",
-        "import/prefer-default-export": "error"
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+      }
+    },
+    {
+      "files": ["e2e/*"],
+      "env": {
+        "browser": false,
+        "jest": false,
+        "mocha": true,
+        "node": true
+      },
+      "globals": {
+        "$": "readonly",
+        "expect": "readonly"
+      },
+      "rules": {
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
       }
     }
   ]
