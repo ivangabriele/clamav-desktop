@@ -3848,6 +3848,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/numeral@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@types/numeral@npm:2.0.2"
+  checksum: d8b778ef5d1b20cb5919fb2cf41108b324ccfaeccb0238caaf54bd9d4bffbbd57d7b860844f05831fb356a5dc0115b477891531325180a670076036ee1b4a8ca
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -6311,6 +6318,7 @@ __metadata:
     "@types/jest": 29.4.0
     "@types/lodash.debounce": 4.0.7
     "@types/node": 18.14.6
+    "@types/numeral": 2.0.2
     "@types/react": 18.0.28
     "@types/react-dom": 18.0.11
     "@types/shelljs": 0.8.11
@@ -6346,6 +6354,7 @@ __metadata:
     lodash.debounce: 4.0.8
     lodash.throttle: 4.1.1
     make-dir-cli: 3.0.0
+    numeral: 2.0.6
     prettier: 2.8.4
     react: 18.2.0
     react-dom: 18.2.0
@@ -13812,6 +13821,13 @@ __metadata:
   dependencies:
     boolbase: ^1.0.0
   checksum: 5afc3dafcd1573b08877ca8e6148c52abd565f1d06b1eb08caf982e3fa289a82f2cae697ffb55b5021e146d60443f1590a5d6b944844e944714a5b549675bcd3
+  languageName: node
+  linkType: hard
+
+"numeral@npm:2.0.6":
+  version: 2.0.6
+  resolution: "numeral@npm:2.0.6"
+  checksum: 89f011116539692bf53fde380adeb0579623d00f782703c71c0062d4a8686770c404a041ff4eef454de53925a9f75bba1fa52726057b13d40473f707730b07c2
   languageName: node
   linkType: hard
 

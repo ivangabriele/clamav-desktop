@@ -256,6 +256,7 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 name = "clamav-desktop"
 version = "0.3.24"
 dependencies = [
+ "glob",
  "serde",
  "serde_json",
  "tauri",

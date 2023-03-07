@@ -15,15 +15,12 @@ export function App() {
   // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-unused-vars
   const $clamDaemonLog = useRef<string>('')
   const $clamDaemonIsRunning = useRef<boolean | undefined>(undefined)
-  const $clamScanLog = useRef<string>('')
-  const $clamScanIsRunning = useRef<boolean>(false)
 
   const [page, setPage] = useState<Page>(Page.DASHBOARD)
 
-  const { forceDebouncedUpdate, forceUpdate } = useForceUpdate()
+  const { forceUpdate } = useForceUpdate()
 
   const clamDaemonLog = normalizeLog($clamDaemonLog.current)
-  const clamScanLog = normalizeLog($clamScanLog.current)
 
   const logNewClamDaemonLine = useCallback(
     (newLogLine: string) => {
@@ -32,15 +29,6 @@ export function App() {
       forceUpdate()
     },
     [forceUpdate],
-  )
-
-  const logNewClamScanLine = useCallback(
-    (newLogLine: string) => {
-      $clamScanLog.current = `${$clamScanLog.current}\n${newLogLine}`
-
-      forceDebouncedUpdate()
-    },
-    [forceDebouncedUpdate],
   )
 
   // useEffect(() => {
@@ -73,9 +61,7 @@ export function App() {
         {page === Page.DASHBOARD && (
           <Dashboard isRunning={$clamDaemonIsRunning.current} log={clamDaemonLog} onLogLine={logNewClamDaemonLine} />
         )}
-        {page === Page.SCANNER && (
-          <Scanner isRunning={$clamScanIsRunning.current} log={clamScanLog} onLogLine={logNewClamScanLine} />
-        )}
+        {page === Page.SCANNER && <Scanner />}
         {page === Page.CLOUD && <Cloud />}
         {page === Page.CONFIGURATOR && <Configurator />}
 

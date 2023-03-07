@@ -5,8 +5,8 @@
   - [First Setup](#first-setup)
   - [Local development](#local-development)
   - [Build a release](#build-a-release)
-- [IDEs](#ides)
-  - [Recommended Visual Studio Code settings](#recommended-visual-studio-code-settings)
+- [Style Guide \& Conventions](#style-guide--conventions)
+  - [Tests](#tests)
 
 ## Get Started
 
@@ -69,30 +69,12 @@ yarn dev
 yarn build
 ```
 
-## IDEs
+## Style Guide & Conventions
 
-### Recommended Visual Studio Code settings
+### Tests
 
-`.vscode/settings.json`
+For Rust unit tests, to avoid overwhelming main files with tests code, we follow 
+[Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html#File_Names) and split unit test files
+into a separate `filename_test.rs`.
 
-```json
-{
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  },
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "editor.formatOnSave": true,
-  "eslint.codeActionsOnSave.mode": "all",
-  "eslint.format.enable": true,
-  "eslint.packageManager": "yarn",
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  }
-}
-```
+The idea comes from this [Karol Kuczmarski's blog post](http://xion.io/post/code/rust-unit-test-placement.html).

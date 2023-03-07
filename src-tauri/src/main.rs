@@ -1,9 +1,13 @@
+// We allow `unused_imports` & `unused_variables` here because the `debug_assertions` are unused in production
+// but required for development.
+
 #[allow(unused_imports)]
 use tauri::{LogicalSize, Manager};
 
 mod commands;
 mod libs;
 
+#[cfg(not(tarpaulin_include))]
 fn main() {
     println!("Hello Clamav Desktop!");
 
@@ -11,7 +15,7 @@ fn main() {
         .setup(
             #[allow(unused_variables)]
             |app| {
-                #[cfg(debug_assertions)] // = only include this code in debug builds
+                #[cfg(debug_assertions)]
                 {
                     let window = app.get_window("ClamAV").unwrap();
                     window
@@ -28,7 +32,7 @@ fn main() {
                 Ok(())
             },
         )
-        .invoke_handler(tauri::generate_handler![commands::find,])
+        .invoke_handler(tauri::generate_handler![commands::start_scan])
         .run(tauri::generate_context!())
         .expect("An error happened while running Tauri application.");
 }

@@ -13,14 +13,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Get Clamav Desktop version
-        id: get_version
-        uses: battila7/get-version-action@v2.3.0
       # https://github.com/Swatinem/rust-cache#example-usage
       - uses: Swatinem/rust-cache@v2
         with:
+          cache-on-failure: true
           key: integration_e2e_debian-latest
-          shared-key: ${{ steps.get_version.outputs.version }}
+          prefix-key: rust-cache
+          shared-key: v0
           workspaces: "./src-tauri -> target"
       - name: Setup Node.js
         uses: actions/setup-node@v3
