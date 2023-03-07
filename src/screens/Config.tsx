@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api'
 import { useCallback } from 'react'
 
-export function Configurator() {
+export function Config() {
   const click = useCallback(async () => {
     const result = await invoke('greet', {
       name: 'Bob',

@@ -147,9 +147,6 @@ dist
 /build/*
 # /clamav/build
 
-# Coverage output
-/src-tauri/cobertura.xml
-
 # Yarn without Zero-Installs
 # https://yarnpkg.com/getting-started/qa/#which-files-should-be-gitignored
 .pnp.*

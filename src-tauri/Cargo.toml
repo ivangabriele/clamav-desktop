@@ -20,11 +20,19 @@ default = ["custom-protocol"]
 # DO NOT remove this
 custom-protocol = ["tauri/custom-protocol"]
 
+[workspace]
+members = ["cli", "common", "filer", "jest"]
+
 [build-dependencies]
 tauri-build = { version = "1.2", features = [] }
 
 [dependencies]
-glob = "0.3.1"
+# TODO Replace that with the v0.3.2 once it's released.
+# This release will include https://github.com/rust-lang/glob/pull/112 is released.
+cli = { path = "./cli" }
+glob = { git = "https://github.com/rust-lang/glob", branch = "master" }
+filer = { path = "./filer" }
+jest = { path = "./jest" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 tauri = { version = "1.2", features = ["api-all"] }

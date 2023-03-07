@@ -1,0 +1,4 @@
+[env]
+# Local absolute path of clamav-desktop project
+# This path is used for `filer` crate tests
+PROJECT_ROOT_PATH = "/home/me/projects/clamav-desktop"

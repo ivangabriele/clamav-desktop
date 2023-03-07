@@ -59,6 +59,7 @@ where
         .spawn()
     {
         Ok(child) => child,
+        // TODO Properly handle this error.
         Err(error) => {
             println!("{:?}", error);
 
@@ -71,6 +72,7 @@ where
         .ok_or_else(|| println!("Could not capture standard output."))
     {
         Ok(stdout) => stdout,
+        // TODO Properly handle this error.
         Err(error) => {
             println!("{:?}", error);
 
@@ -106,73 +108,30 @@ where
 }
 
 #[allow(dead_code)]
-pub fn run_in_thread(app_handle: AppHandle, binary_path: String, args: Vec<String>, event: String) {
+pub fn run_in_thread<B, F, P>(
+    app_handle: AppHandle,
+    binary_path: String,
+    args: Vec<String>,
+    event_name: String,
+    event_payload_builder: B,
+    filter_log: F,
+) -> ()
+where
+    B: Fn(String, usize) -> P,
+    B: Send + 'static,
+    F: Fn(String) -> bool,
+    F: Send + 'static,
+    P: Serialize + Clone,
+{
     let join_handle = thread::spawn(move || {
-        let app_handle_clone = app_handle.clone();
-        let event_as_str = &*event;
-
-        let child = match Command::new(binary_path)
-            .args(args)
-            .stdout(Stdio::piped())
-            .spawn()
-        {
-            Ok(child) => child,
-            Err(error) => {
-                println!("{:?}", error);
-
-                panic!("Bye");
-            }
-        };
-
-        let stdout = match child
-            .stdout
-            .ok_or_else(|| println!("Could not capture standard output."))
-        {
-            Ok(stdout) => stdout,
-            Err(error) => {
-                println!("{:?}", error);
-
-                panic!("Bye");
-            }
-        };
-
-        let mut current_logs: Vec<String> = Vec::new();
-        let reader = BufReader::new(stdout);
-        reader.lines().filter_map(|line| line.ok()).for_each({
-            let current_logs_binding = &mut current_logs;
-
-            move |line| {
-                // println!("{}", line);
-
-                if current_logs_binding.len() == 100 {
-                    app_handle
-                        .emit_all(
-                            event_as_str,
-                            LogPayload {
-                                logs: current_logs_binding.clone(),
-                            },
-                        )
-                        .unwrap();
-
-                    current_logs_binding.clear();
-                }
-
-                current_logs_binding.push(line);
-
-                println!("{}", current_logs_binding.len());
-            }
-        });
-
-        app_handle_clone
-            .emit_all(
-                event_as_str,
-                LogPayload {
-                    logs: current_logs.clone(),
-                },
-            )
-            .unwrap();
-
-        println!("{}", current_logs.len());
+        run(
+            app_handle,
+            binary_path,
+            args,
+            event_name,
+            event_payload_builder,
+            filter_log,
+        );
     });
 
     join_handle.join().unwrap();

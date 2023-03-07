@@ -7,7 +7,7 @@ jobs:
     name: E2E (debian-latest)
     runs-on: ubuntu-latest
     container:
-      image: ivangabriele/tauri:debian-bullseye-node18
+      image: ivangabriele/tauri:debian-bullseye-18
     env:
       DISABLE_ESLINT_PLUGIN: true
     steps:
@@ -35,4 +35,11 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn --frozen-lockfile
       - name: Run tests
-        run: yarn test:e2e
+        uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 600
+          max_attempts: 3
+          retry_on: error
+          command: |
+            fuser -n tcp -k 4445
+            yarn test:e2e

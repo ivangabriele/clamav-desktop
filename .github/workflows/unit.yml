@@ -53,17 +53,16 @@ jobs:
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
         with:
-          fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
   core_test_debian:
     name: Test Core (debian-latest)
     runs-on: ubuntu-latest
     container:
-      image: ivangabriele/tauri:debian-bullseye-node18
+      image: ivangabriele/tauri:debian-bullseye-18
       options: --security-opt seccomp=unconfined
     env:
-      CARGO_TERM_COLOR: always
+      PROJECT_ROOT_PATH: /__w/clamav-desktop/clamav-desktop
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -86,13 +85,12 @@ jobs:
           cargo -V
           clamscan -V
       - name: Run tests (with coverage)
-        run: cargo tarpaulin --timeout 120 --out Xml
+        run: cargo tarpaulin --no-fail-fast --out Xml --skip-clean --workspace
         working-directory: ./src-tauri
       - name: Upload tests coverage
         uses: codecov/codecov-action@v3
         with:
           directory: ./src-tauri
-          fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
   core_test_macos_and_windows:
@@ -101,6 +99,8 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      PROJECT_ROOT_PATH: ${{ matrix.os == 'macos-latest' && '/Users/runner/work/clamav-desktop/clamav-desktop' || 'D:\a\clamav-desktop\clamav-desktop' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -124,7 +124,7 @@ jobs:
         run: cargo build
         working-directory: ./src-tauri
       - name: Run tests
-        run: cargo test
+        run: cargo test --no-fail-fast --workspace
         working-directory: ./src-tauri
 
   # webview_build:
@@ -158,7 +158,7 @@ jobs:
   #     - webview_build
   #   runs-on: ubuntu-latest
   #   container:
-  #     image: ivangabriele/tauri:bullseye-node18
+  #     image: ivangabriele/tauri:bullseye-18
   #     options: --security-opt seccomp=unconfined
   #   env:
   #     CARGO_TERM_COLOR: always
@@ -188,7 +188,7 @@ jobs:
   #       run: cargo build
   #       working-directory: ./src-tauri
   #     - name: Run
-  #       run: cargo test
+  #       run: cargo test --no-fail-fast
   #       working-directory: ./src-tauri
   # TODO Investigate why this is so slow.
   # https://github.com/xd009642/tarpaulin#github-actions
@@ -199,4 +199,3 @@ jobs:
   #   uses: codecov/codecov-action@v3
   #   with:
   #     directory: ./src-tauri
-  #     fail_ci_if_error: true

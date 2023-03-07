@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 // import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
-import { Logger } from '../atoms/Logger'
+import { Logger } from '../elements/Logger'
 
 const Box = styled.div`
   display: flex;

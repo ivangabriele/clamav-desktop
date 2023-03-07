@@ -1,15 +1,22 @@
 // We allow `unused_imports` & `unused_variables` here because the `debug_assertions` are unused in production
 // but required for development.
 
+use std::sync::Mutex;
+
 #[allow(unused_imports)]
 use tauri::{LogicalSize, Manager};
 
-mod commands;
+mod core;
 mod libs;
+mod scanner;
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
     println!("Hello Clamav Desktop!");
+
+    let initial_core_state = core::state::CoreState {
+        scanner: scanner::INITIAL_SCANNER_STATE,
+    };
 
     tauri::Builder::default()
         .setup(
@@ -32,8 +39,16 @@ fn main() {
                 Ok(())
             },
         )
-        .invoke_handler(tauri::generate_handler![commands::start_scan])
+        .manage(core::state::CoreStateMutex(Mutex::new(initial_core_state)))
+        .invoke_handler(tauri::generate_handler![
+            scanner::get_scanner_state,
+            scanner::load_scanner_state,
+            scanner::start_scanner,
+            scanner::toggle_file_explorer_node_check,
+            scanner::toggle_file_explorer_node_expansion
+        ])
         .run(tauri::generate_context!())
+        // TODO Properly handle errors here.
         .expect("An error happened while running Tauri application.");
 }
 
