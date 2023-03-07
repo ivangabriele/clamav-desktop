@@ -1,11 +1,10 @@
 import { Button } from '@singularity/core'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
-import { useCallback, useEffect, useRef } from 'react'
+import numeral from 'numeral'
+import { useCallback, useEffect, useState } from 'react'
 // import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
-
-import { Logger } from '../atoms/Logger'
 
 const Box = styled.div`
   display: flex;
@@ -15,48 +14,54 @@ const Box = styled.div`
   padding: 1rem;
 `
 
-type ScannerProps = {
-  isRunning: boolean | undefined
-  log: string
-  onLogLine: (newLogLine: string) => void
-}
-export function Scanner({ isRunning, log, onLogLine }: ScannerProps) {
-  const logsRef = useRef<string[]>([])
+type ScannerProps = {}
+// eslint-disable-next-line no-empty-pattern
+export function Scanner({}: ScannerProps) {
+  const [status, setStatus] = useState<
+    | {
+        current_file_path: string
+        progress: number
+      }
+    | undefined
+  >(undefined)
 
   const start = useCallback(async () => {
-    onLogLine('Starting Clam Scan…')
-
-    invoke('find', {
-      // path: '/home/ivan/Workspace/ivangabriele/clamav-desktop/src',
-      path: '/usr',
+    invoke('start_scan', {
+      // directoryAbsolutePath: `${process.env.REACT_APP_PROJECT_ROOT_PATH}/e2e/samples/directory`,
+      directoryAbsolutePath: `${process.env.REACT_APP_PROJECT_ROOT_PATH}`,
     })
-  }, [onLogLine])
-
-  const stop = useCallback(async () => {
-    onLogLine('Stopping Clam Scan…')
-
-    onLogLine('Clam Scan successfully stopped.')
-  }, [onLogLine])
+  }, [])
 
   useEffect(() => {
     listen<{
-      logs: string[]
-    }>('find:log', event => {
-      // onLogLine(event.payload.message)
-      // console.log(event.payload)
+      current_file_path: string
+      progress: number
+    }>('scan:status', event => {
+      if (event.payload.progress === 1) {
+        setStatus(undefined)
 
-      logsRef.current = [...logsRef.current, ...event.payload.logs]
+        return
+      }
+
+      setStatus(event.payload)
     })
   }, [])
 
   return (
     <Box>
-      {/* {isRunning === undefined && <Button onClick={start}>Waiting for ClamScan status…</Button>}
-      {isRunning === false && <Button onClick={start}>Start Scan</Button>} */}
-      {isRunning !== true && <Button onClick={start}>Start Scan</Button>}
-      {isRunning === true && <Button onClick={stop}>Stop Scan</Button>}
+      {!status && <Button onClick={start}>Start Scan</Button>}
+      {status && (
+        <Button disabled onClick={start}>
+          Stop Scan
+        </Button>
+      )}
 
-      <Logger>{log}</Logger>
+      {status && (
+        <>
+          <p>Path: {status.current_file_path}</p>
+          <p>Progress: {numeral(status.progress).format('0.00%')}</p>
+        </>
+      )}
     </Box>
   )
 }

@@ -67,14 +67,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Get Clamav Desktop version
-        id: get_version
-        uses: battila7/get-version-action@v2.3.0
       # https://github.com/Swatinem/rust-cache#example-usage
       - uses: Swatinem/rust-cache@v2
         with:
+          cache-on-failure: true
           key: unit_core_test_debian-latest
-          shared-key: ${{ steps.get_version.outputs.version }}
+          prefix-key: rust-cache
+          shared-key: v0
           workspaces: "./src-tauri -> target"
       - name: Install ClamAV
         run: |
@@ -105,14 +104,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Get Clamav Desktop version
-        id: get_version
-        uses: battila7/get-version-action@v2.3.0
       # https://github.com/Swatinem/rust-cache#example-usage
       - uses: Swatinem/rust-cache@v2
         with:
+          cache-on-failure: true
           key: unit_core_test_${{ matrix.os }}
-          shared-key: ${{ steps.get_version.outputs.version }}
+          prefix-key: rust-cache
+          shared-key: v0
           workspaces: "./src-tauri -> target"
       - uses: actions-rs/toolchain@v1
         with:

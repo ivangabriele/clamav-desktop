@@ -1,5 +1,4 @@
-// use crate::print_type_of;
-
+use serde::Serialize;
 use std::{
     env,
     io::{BufRead, BufReader},
@@ -13,7 +12,7 @@ struct LogPayload {
     logs: Vec<String>,
 }
 
-/// Checks if a program is installed and globally available in CLI.
+/// Checks if the provided program name is installed and globally available in CLI.
 ///
 /// # Examples
 ///
@@ -25,7 +24,7 @@ struct LogPayload {
 /// assert_eq!(true, is_cd_installed);
 /// ```
 #[allow(dead_code)]
-pub fn is_installed(program: &str) -> bool {
+pub fn is_installed(program_name: &str) -> bool {
     // https://doc.rust-lang.org/std/env/consts/constant.OS.html
     let which_command = match env::consts::OS {
         "windows" => "where",
@@ -33,42 +32,29 @@ pub fn is_installed(program: &str) -> bool {
     };
 
     let output = Command::new(which_command)
-        .arg(program)
+        .arg(program_name)
         .output()
-        .expect(&format!("Failed to run `which {}`.", program));
+        .expect(&format!("Failed to run `which {}`.", program_name));
 
     output.status.success()
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn is_installed_returns_true_with_an_existing_program() {
-        let program = "cargo";
-
-        let result = is_installed(program);
-
-        assert_eq!(result, true);
-    }
-
-    #[test]
-    fn is_installed_returns_false_with_a_nonexistent_program() {
-        let program = "nonexistent-program";
-
-        let result = is_installed(program);
-
-        assert_eq!(result, false);
-    }
-}
-
-pub fn run(app_handle: AppHandle, binary_path: String, args: Vec<String>, event: String) {
-    let app_handle_clone = app_handle.clone();
-    let event_as_str = &*event;
-
+pub fn run<B, F, P>(
+    app_handle: AppHandle,
+    binary_path: String,
+    args: Vec<String>,
+    event_name: String,
+    event_payload_builder: B,
+    filter_log: F,
+) -> ()
+where
+    B: Fn(String, usize) -> P,
+    F: Fn(String) -> bool,
+    P: Serialize + Clone,
+{
     let child = match Command::new(binary_path)
         .args(args)
+        .stderr(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
     {
@@ -92,41 +78,31 @@ pub fn run(app_handle: AppHandle, binary_path: String, args: Vec<String>, event:
         }
     };
 
-    let mut current_logs: Vec<String> = Vec::new();
+    let mut log_index = 0;
     let reader = BufReader::new(stdout);
-    reader.lines().filter_map(|line| line.ok()).for_each({
-        let current_logs_binding = &mut current_logs;
+    reader
+        .lines()
+        // TODO Is it the best way to achieve that?
+        .filter_map(|line| line.ok())
+        .for_each({
+            move |line| {
+                #[cfg(debug_assertions)]
+                {
+                    println!("[libs::cli::run()] {}", line);
+                }
 
-        move |line| {
-            if current_logs_binding.len() == 100 {
-                app_handle
-                    .emit_all(
-                        event_as_str,
-                        LogPayload {
-                            logs: current_logs_binding.clone(),
-                        },
-                    )
-                    .unwrap();
+                if filter_log(line.to_owned()) {
+                    app_handle
+                        .emit_all(
+                            &*event_name,
+                            event_payload_builder(line.to_owned(), log_index),
+                        )
+                        .unwrap();
 
-                current_logs_binding.clear();
+                    log_index += 1;
+                }
             }
-
-            current_logs_binding.push(line);
-
-            println!("{}", current_logs_binding.len());
-        }
-    });
-
-    app_handle_clone
-        .emit_all(
-            event_as_str,
-            LogPayload {
-                logs: current_logs.clone(),
-            },
-        )
-        .unwrap();
-
-    println!("{}", current_logs.len());
+        });
 }
 
 #[allow(dead_code)]

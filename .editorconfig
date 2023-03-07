@@ -16,6 +16,7 @@ trim_trailing_whitespace = false
 
 [*.rs]
 indent_size = 4
+max_line_length = 80
 
 [COMMIT_EDITMSG]
 max_line_length = 0
