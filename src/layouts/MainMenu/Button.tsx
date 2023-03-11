@@ -3,6 +3,23 @@ import styled from 'styled-components'
 
 import type { ButtonProps as SuiButtonProps } from '@singularity/core'
 
+type ButtonProps = SuiButtonProps & {
+  isActive: boolean
+  isSafe: boolean | undefined
+  onClick: () => void
+}
+export function Button({ isActive, isSafe = false, onClick, ...props }: ButtonProps) {
+  const handleOnClick = () => {
+    if (isActive) {
+      return
+    }
+
+    onClick()
+  }
+
+  return <StyledButton isActive={isActive} isSafe={isSafe} onClick={handleOnClick} {...props} />
+}
+
 const StyledButton = styled(SuiButton)<{
   isActive: boolean
   isSafe: boolean | undefined
@@ -37,21 +54,3 @@ const StyledButton = styled(SuiButton)<{
     opacity: 1;
   }
 `
-
-type ButtonProps = SuiButtonProps & {
-  isActive: boolean
-  isSafe: boolean | undefined
-  onClick: () => void
-}
-
-export function Button({ isActive, isSafe = false, onClick, ...props }: ButtonProps) {
-  const handleOnClick = () => {
-    if (isActive) {
-      return
-    }
-
-    onClick()
-  }
-
-  return <StyledButton isActive={isActive} isSafe={isSafe} onClick={handleOnClick} {...props} />
-}

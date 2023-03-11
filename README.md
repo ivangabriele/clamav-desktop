@@ -21,16 +21,62 @@
   </a>
 </p>
 
+**Note: this README is for _users_ rather than _contributors_.**  
+If you wish to _contribute_ to ClamAV Desktop, you should read [CONTRIBUTING.md](CONTRIBUTING.md) instead.
+
+---
+
+- [Screenshots](#screenshots)
+  - [Dashboard Preview](#dashboard-preview)
+  - [Scanner Preview](#scanner-preview)
+- [Roadmap](#roadmap)
+    - [v.0.4.0](#v040)
+    - [v.0.5.0](#v050)
+    - [v.0.?.0](#v00)
+- [Contributing](#contributing)
+
 ---
 
 > A work in progress.
 
-# Screenshots
+## Screenshots
 
-## Dashboard Preview
+### Dashboard Preview
 
 ![ClamAV Desktop Dashboard](/docs/screenshot-dashboard.png)
 
-## Scanner Preview
+### Scanner Preview
 
 ![ClamAV Desktop Scanner](/docs/screenshot-scanner.png)
+
+## Roadmap
+
+This roadmap is not set in stone and is prone to change unexpectedly while we're still in alpha (v0) stage.
+
+#### v.0.4.0
+
+- [ ] Cloud: Definitions update
+- [ ] Config: Raw clamd.conf editor 
+- [ ] Dashboard: Daemon control & status
+- [ ] Global: Tray icon 
+- [ ] Scanner: Drives selection
+- [x] Scanner: Folders selection
+- [ ] Scanner: Abort scan
+- [ ] Technical: Releases in `.x64.deb`, `.x64.dmg`, `.x64.msi` and `.x64.rpm` formats
+
+#### v.0.5.0
+
+- [ ] Technical: Releases in `.arm64.deb`, `.arm64.dmg`, `.arm64.msi` and `.arm64.rpm` formats
+
+#### v.0.?.0
+
+- [ ] Config: Form-like `clamd.conf` editor
+- [ ] Global: Automated updates (if/where possible)
+- [ ] Publication: OpenSuse Build availibility (to challenge)
+- [ ] Publication: PPA availibility
+- [ ] Technical: macOS & Windows Code signing
+- [ ] Technical: Binaries embedding (check with official ClamAV team)
+- [ ] UX/UI: Full redesign
+
+## Contributing
+

@@ -1,12 +1,12 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { Main } from './atoms/Main'
+import { Toaster } from './components/Toaster'
 import { Page } from './constants'
+import { Main } from './elements/Main'
 import { useForceUpdate } from './hooks/useForceUpdate'
-import { MainMenu } from './molecules/MainMenu'
-import { Toaster } from './molecules/Toaster'
+import { MainMenu } from './layouts/MainMenu'
 import { Cloud } from './screens/Cloud'
-import { Configurator } from './screens/Configurator'
+import { Config } from './screens/Config'
 import { Dashboard } from './screens/Dashboard'
 import { Scanner } from './screens/Scanner'
 import { normalizeLog } from './utils/normalizeLog'
@@ -63,7 +63,7 @@ export function App() {
         )}
         {page === Page.SCANNER && <Scanner />}
         {page === Page.CLOUD && <Cloud />}
-        {page === Page.CONFIGURATOR && <Configurator />}
+        {page === Page.CONFIG && <Config />}
 
         <Toaster />
       </Main>

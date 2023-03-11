@@ -10,6 +10,8 @@
   },
   "ignorePatterns": ["/.yarn/", "/build/", "/clamav/", "/node_modules/", "/src-tauri/"],
   "rules": {
+    "@typescript-eslint/no-use-before-define": "off",
+
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off"
   },

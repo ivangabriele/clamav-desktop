@@ -4,18 +4,11 @@ import styled from 'styled-components'
 import { Button } from './Button'
 import { Page } from '../../constants'
 
-const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 6rem;
-`
-
 type MainMenuProps = {
   currentPage: Page
   isClamDeamonRunning: boolean | undefined
   onChange: (newPage: Page) => void
 }
-
 export function MainMenu({ currentPage, isClamDeamonRunning, onChange }: MainMenuProps) {
   return (
     <Box data-tauri-drag-region>
@@ -32,13 +25,15 @@ export function MainMenu({ currentPage, isClamDeamonRunning, onChange }: MainMen
       <Button isActive={currentPage === Page.CLOUD} isSafe={undefined} onClick={() => onChange(Page.CLOUD)}>
         <MdOutlineCloudDownload />
       </Button>
-      <Button
-        isActive={currentPage === Page.CONFIGURATOR}
-        isSafe={undefined}
-        onClick={() => onChange(Page.CONFIGURATOR)}
-      >
+      <Button isActive={currentPage === Page.CONFIG} isSafe={undefined} onClick={() => onChange(Page.CONFIG)}>
         <MdOutlineSettings />
       </Button>
     </Box>
   )
 }
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 6rem;
+`
