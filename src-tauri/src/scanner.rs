@@ -2,13 +2,13 @@ use tauri::{AppHandle, Manager, State};
 
 use crate::{core, libs};
 // use cli;
-use filer;
+use filer::{self, FileExplorer};
 
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct ScannerState {
-    drives: Vec<String>,
     file_explorer_tree: filer::FileExplorerTree,
     is_ready: bool,
+    pub is_running: bool,
 }
 
 #[derive(Debug, Clone, serde::Serialize)]
@@ -18,11 +18,12 @@ struct ScannerStatus {
 }
 
 pub const INITIAL_SCANNER_STATE: ScannerState = ScannerState {
-    drives: Vec::new(),
     file_explorer_tree: Vec::new(),
     is_ready: false,
+    is_running: false,
 };
 
+#[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub fn toggle_file_explorer_node_check(
     app_handle: AppHandle,
@@ -54,6 +55,7 @@ pub fn toggle_file_explorer_node_check(
     Ok(())
 }
 
+#[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub fn toggle_file_explorer_node_expansion(
     app_handle: AppHandle,
@@ -86,6 +88,7 @@ pub fn toggle_file_explorer_node_expansion(
 }
 
 // TODO Dry this function, most of it is already in `load_scanner_state()`.
+#[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub async fn get_scanner_state(
     app_handle: AppHandle,
@@ -93,34 +96,16 @@ pub async fn get_scanner_state(
 ) -> Result<(), ()> {
     println!("Calling command get_scanner_state().");
 
-    let mut core_state_mutable = state
+    let core_state_mutable = state
         .0
         .lock()
         // TODO Properly handle errors here.
         .unwrap();
 
-    if !&core_state_mutable.scanner.is_ready {
-        let drives = filer::drive::list();
-        let file_explorer_tree = filer::list(&drives[0], false, Some(filer::FileKind::Directory))
-            .into_file_explorer()
-            .into_tree();
-        let updated_scanner_state = ScannerState {
-            drives: drives.to_owned(),
-            file_explorer_tree: file_explorer_tree.to_owned(),
-            is_ready: true,
-        };
-
-        println!("{:?}", &updated_scanner_state);
-
-        core_state_mutable.scanner = updated_scanner_state;
-
-        app_handle
-            .emit_all("scanner:state", &core_state_mutable.scanner)
-            // TODO Properly handle errors here.
-            .unwrap();
-
-        return Ok(());
-    }
+    println!(
+        "core_state_mutable.scanner: {:?}",
+        &core_state_mutable.scanner
+    );
 
     app_handle
         .emit_all("scanner:state", &core_state_mutable.scanner)
@@ -130,6 +115,7 @@ pub async fn get_scanner_state(
     Ok(())
 }
 
+#[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub async fn load_scanner_state(
     app_handle: AppHandle,
@@ -137,25 +123,40 @@ pub async fn load_scanner_state(
 ) -> Result<(), ()> {
     println!("Calling command load_scanner_state().");
 
+    println!("1");
+
     let mut core_state_mutable = state
         .0
         .lock()
         // TODO Properly handle errors here.
-        .unwrap();
+        .unwrap_or_else(|error| {
+            println!("{:?}", &error);
 
-    let drives = filer::drive::list();
-    let file_explorer_tree = filer::list(&drives[0], false, Some(filer::FileKind::Directory))
-        .into_file_explorer()
-        .into_tree();
-    let updated_scanner_state = ScannerState {
-        drives: drives.to_owned(),
-        file_explorer_tree: file_explorer_tree.to_owned(),
-        is_ready: true,
-    };
+            panic!("{:?}", &error)
+        });
 
-    println!("{:?}", &updated_scanner_state);
+    println!("2");
 
-    core_state_mutable.scanner = updated_scanner_state;
+    if !&core_state_mutable.scanner.is_ready {
+        let file_explorer_tree =
+            filer::list::<String>(false, None, Some(filer::FileKind::Directory))
+                .into_file_explorer()
+                .into_tree();
+        let updated_scanner_state = ScannerState {
+            file_explorer_tree: file_explorer_tree.to_owned(),
+            is_ready: true,
+            ..core_state_mutable.scanner
+        };
+
+        core_state_mutable.scanner = updated_scanner_state;
+    }
+
+    println!("3");
+
+    println!(
+        "core_state_mutable.scanner: {:?}",
+        &core_state_mutable.scanner
+    );
 
     app_handle
         .emit_all("scanner:state", &core_state_mutable.scanner)
@@ -166,43 +167,82 @@ pub async fn load_scanner_state(
 }
 
 // TODO Add and use safe numeric type casting utils: https://stackoverflow.com/a/28280042/2736233.
+#[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub async fn start_scanner(
     app_handle: AppHandle,
-    directory_absolute_path: String,
+    state: State<'_, core::state::CoreStateMutex>,
 ) -> Result<(), String> {
-    println!(
-        "Calling command start_scan() with directory_absolute_path = {}.",
-        directory_absolute_path
-    );
+    println!("Calling command start_scan().",);
 
-    let file_list = filer::list(
-        directory_absolute_path.to_owned(),
-        true,
-        Some(filer::FileKind::File),
-    )
-    .into_strings();
-    let file_list_length = file_list.len() as f64;
+    let mut core_state_mutable = state
+        .0
+        .lock()
+        // TODO Properly handle errors here.
+        .unwrap();
+    core_state_mutable.scanner.is_running = true;
+    app_handle
+        .emit_all("scanner:state", &core_state_mutable.scanner)
+        // TODO Properly handle errors here.
+        .unwrap();
+
+    let paths = FileExplorer::new(core_state_mutable.scanner.file_explorer_tree.to_owned())
+        .into_checked_paths();
+    let args: Vec<String> = vec![
+        "-rv".to_string(),
+        "--follow-dir-symlinks=0".to_string(),
+        "--follow-file-symlinks=0".to_string(),
+    ]
+    .into_iter()
+    .chain(paths.to_owned().into_iter())
+    .collect();
+    println!("Args: {:?}", &args);
+
+    let total_files_length = paths
+        .to_owned()
+        .into_iter()
+        .map(|path| filer::count(true, Some(path), Some(filer::FileKind::File)))
+        .sum::<usize>();
 
     libs::cli::run(
         app_handle,
+        state.to_owned(),
         String::from("clamscan"),
-        vec![String::from("-rv"), directory_absolute_path],
+        args,
         String::from("scanner:status"),
         |log, index| {
-            let index_as_f64 = index as f64;
-            let progress = (index_as_f64 + f64::from(1)) / file_list_length;
-            // TODO Find a better way to extract the path (maybe via a regex).
-            // This actually removes the "Scanning " part at the start of each log line
-            let current_file_path = &*log[9..].to_owned();
-            let current_file_path_as_string = current_file_path.to_string();
+            let progress = (index as f64 + f64::from(1)) / total_files_length as f64;
+            let current_file_path: String;
+            if log.starts_with("Scanning ") {
+                current_file_path = log.replace("Scanning ", "");
+            } else if log.ends_with(": Empty file") {
+                current_file_path = log.replace(": Empty file", "");
+            } else if log.ends_with(": Access denied") {
+                current_file_path = log.replace(": Access denied", "");
+            } else {
+                current_file_path = "unknown".to_string();
+            }
+
+            println!("current_file_path: {:?}", &current_file_path);
+            println!("progress: {:?}", &progress);
+
+            if progress == 1 as f64 {
+                return ScannerStatus {
+                    current_file_path: "".to_string(),
+                    progress: 0 as f64,
+                };
+            }
 
             ScannerStatus {
-                current_file_path: current_file_path_as_string,
+                current_file_path,
                 progress,
             }
         },
-        |log| log.starts_with("Scanning "),
+        |log| {
+            log.starts_with("Scanning ")
+                || log.ends_with(": Empty file")
+                || log.ends_with(": Access denied")
+        },
     );
 
     Ok(())

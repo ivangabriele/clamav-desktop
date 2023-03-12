@@ -9,6 +9,8 @@ edition = "2021"
 cli = { path = "../cli" }
 common = { path = "../common" }
 glob = "0.3.1"
-jest = { path = "../jest" }
 serde = { version = "1.0.154", features = ["derive"] }
-serde_test = "1.0.154"
+
+[dev-dependencies]
+dev = { path = "../dev" }
+jest = { path = "../jest" }

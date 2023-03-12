@@ -10,14 +10,14 @@ use error::CliError;
 
 mod error;
 
-pub fn exec(command: &str, args: Vec<&str>) -> Result<String, CliError> {
-    match Command::new(command).args(args.to_owned()).output() {
+pub fn exec(command: String, args: Vec<String>) -> Result<String, CliError> {
+    match Command::new(command.to_owned())
+        .args(args.to_owned())
+        .output()
+    {
         Ok(output) => {
             let stdout_as_string = String::from_utf8_lossy(&output.stdout).trim().to_string();
             let stderr_as_string = String::from_utf8_lossy(&output.stderr).trim().to_string();
-
-            println!("stdout: {:?}", output.stdout);
-            println!("stderr: {:?}", output.stderr);
 
             if stdout_as_string.is_empty() {
                 return Err(CliError::new(
@@ -48,11 +48,11 @@ pub fn exec(command: &str, args: Vec<&str>) -> Result<String, CliError> {
 /// ```
 /// use cli;
 ///
-/// let is_cargo_installed = cli::is_installed("cargo");
+/// let is_cargo_installed = cli::is_installed("cargo".to_string());
 ///
 /// assert_eq!(true, is_cargo_installed);
 /// ```
-pub fn is_installed(program_name: &str) -> bool {
+pub fn is_installed(program_name: String) -> bool {
     // https://doc.rust-lang.org/std/env/consts/constant.OS.html
     let command = match env::consts::OS {
         "windows" => "where",
@@ -60,12 +60,13 @@ pub fn is_installed(program_name: &str) -> bool {
     };
     let args = Vec::from(&[program_name][..]);
 
-    exec(command, args).is_ok()
+    exec(command.to_string(), args).is_ok()
 }
 
 pub fn run<C>(command: String, args: Vec<String>, callback_option: Option<C>) -> ()
 where
     C: Fn(usize, String) -> (),
+    C: Send + 'static,
 {
     let child = match Command::new(command)
         .args(args)
@@ -102,15 +103,13 @@ where
         // TODO Is it the best way to achieve that?
         .filter_map(|line| line.ok())
         .for_each({
-            let callback_option_borrowed = &callback_option;
-
             move |line| {
                 #[cfg(debug_assertions)]
                 {
                     println!("[cli::run()] {}", line);
                 }
 
-                match callback_option_borrowed {
+                match &callback_option {
                     Some(callback) => {
                         callback(line_index, line);
 
@@ -122,6 +121,7 @@ where
         });
 }
 
+#[cfg(not(tarpaulin_include))]
 pub fn run_in_thread<C>(command: String, args: Vec<String>, callback_option: Option<C>) -> ()
 where
     C: Fn(usize, String) -> (),

@@ -1,27 +1,19 @@
-use std::{env, path::Path, vec};
+use std::vec;
 
 use filer::{list, FileKind};
 
-fn get_sample_directory_absolute_path() -> String {
-    let project_root_path_as_string = env::var("PROJECT_ROOT_PATH").unwrap();
-    let project_root_path_as_str = &*project_root_path_as_string;
-
-    Path::new(project_root_path_as_str)
-        .join("e2e/samples/directory")
-        .as_os_str()
-        .to_str()
-        .unwrap()
-        .to_string()
-}
-
 #[test]
 fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tree() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = false;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = Some(FileKind::Directory);
 
-    let mut file_explorer =
-        list(directory_absolute_path, is_recursive, file_kind_option).into_file_explorer();
+    let mut file_explorer = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_file_explorer();
 
     file_explorer.toggle_is_checked(vec![1]);
 
@@ -35,7 +27,7 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_1[0].is_expanded, false);
     assert_eq!(result_1[0].kind, FileKind::Directory);
     assert_eq!(
-        result_1[0].path[result_1[0].path.len() - 2..],
+        result_1[0].path_components[result_1[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -45,7 +37,7 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_1[1].is_expanded, false);
     assert_eq!(result_1[1].kind, FileKind::Directory);
     assert_eq!(
-        result_1[1].path[result_1[0].path.len() - 2..],
+        result_1[1].path_components[result_1[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 
@@ -61,7 +53,7 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_2[0].is_expanded, false);
     assert_eq!(result_2[0].kind, FileKind::Directory);
     assert_eq!(
-        result_2[0].path[result_2[0].path.len() - 2..],
+        result_2[0].path_components[result_2[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -71,7 +63,7 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_2[1].is_expanded, false);
     assert_eq!(result_2[1].kind, FileKind::Directory);
     assert_eq!(
-        result_2[1].path[result_2[0].path.len() - 2..],
+        result_2[1].path_components[result_2[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 
@@ -88,7 +80,7 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_3[0].is_expanded, true);
     assert_eq!(result_3[0].kind, FileKind::Directory);
     assert_eq!(
-        result_3[0].path[result_3[0].path.len() - 2..],
+        result_3[0].path_components[result_3[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -98,7 +90,8 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_3[0].children[0].is_expanded, false);
     assert_eq!(result_3[0].children[0].kind, FileKind::Directory);
     assert_eq!(
-        result_3[0].children[0].path[result_3[0].children[0].path.len() - 3..],
+        result_3[0].children[0].path_components
+            [result_3[0].children[0].path_components.len() - 3..],
         vec!["directory".to_string(), "Da".to_string(), "Daa".to_string()]
     );
 
@@ -108,7 +101,7 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_3[1].is_expanded, false);
     assert_eq!(result_3[1].kind, FileKind::Directory);
     assert_eq!(
-        result_3[1].path[result_3[0].path.len() - 2..],
+        result_3[1].path_components[result_3[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 
@@ -124,7 +117,7 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_4[0].is_expanded, true);
     assert_eq!(result_4[0].kind, FileKind::Directory);
     assert_eq!(
-        result_4[0].path[result_4[0].path.len() - 2..],
+        result_4[0].path_components[result_4[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -134,7 +127,8 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_4[0].children[0].is_expanded, false);
     assert_eq!(result_4[0].children[0].kind, FileKind::Directory);
     assert_eq!(
-        result_4[0].children[0].path[result_4[0].children[0].path.len() - 3..],
+        result_4[0].children[0].path_components
+            [result_4[0].children[0].path_components.len() - 3..],
         vec!["directory".to_string(), "Da".to_string(), "Daa".to_string()]
     );
 
@@ -144,19 +138,23 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
     assert_eq!(result_4[1].is_expanded, false);
     assert_eq!(result_4[1].kind, FileKind::Directory);
     assert_eq!(
-        result_4[1].path[result_4[0].path.len() - 2..],
+        result_4[1].path_components[result_4[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 }
 
 #[test]
 fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tree() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = false;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = Some(FileKind::Directory);
 
-    let mut file_explorer =
-        list(directory_absolute_path, is_recursive, file_kind_option).into_file_explorer();
+    let mut file_explorer = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_file_explorer();
     file_explorer.toggle_is_expanded(vec![0]);
 
     let result_1 = file_explorer.into_tree();
@@ -169,7 +167,7 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_1[0].is_expanded, true);
     assert_eq!(result_1[0].kind, FileKind::Directory);
     assert_eq!(
-        result_1[0].path[result_1[0].path.len() - 2..],
+        result_1[0].path_components[result_1[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -179,7 +177,8 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_1[0].children[0].is_expanded, false);
     assert_eq!(result_1[0].children[0].kind, FileKind::Directory);
     assert_eq!(
-        result_1[0].children[0].path[result_1[0].children[0].path.len() - 3..],
+        result_1[0].children[0].path_components
+            [result_1[0].children[0].path_components.len() - 3..],
         vec!["directory".to_string(), "Da".to_string(), "Daa".to_string()]
     );
 
@@ -189,7 +188,7 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_1[1].is_expanded, false);
     assert_eq!(result_1[1].kind, FileKind::Directory);
     assert_eq!(
-        result_1[1].path[result_1[0].path.len() - 2..],
+        result_1[1].path_components[result_1[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 
@@ -205,7 +204,7 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_2[0].is_expanded, true);
     assert_eq!(result_2[0].kind, FileKind::Directory);
     assert_eq!(
-        result_2[0].path[result_2[0].path.len() - 2..],
+        result_2[0].path_components[result_2[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -215,7 +214,8 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_2[0].children[0].is_expanded, true);
     assert_eq!(result_2[0].children[0].kind, FileKind::Directory);
     assert_eq!(
-        result_2[0].children[0].path[result_2[0].children[0].path.len() - 3..],
+        result_2[0].children[0].path_components
+            [result_2[0].children[0].path_components.len() - 3..],
         vec!["directory".to_string(), "Da".to_string(), "Daa".to_string()]
     );
 
@@ -225,7 +225,7 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_2[1].is_expanded, false);
     assert_eq!(result_2[1].kind, FileKind::Directory);
     assert_eq!(
-        result_2[1].path[result_2[0].path.len() - 2..],
+        result_2[1].path_components[result_2[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 
@@ -241,7 +241,7 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_3[0].is_expanded, true);
     assert_eq!(result_3[0].kind, FileKind::Directory);
     assert_eq!(
-        result_3[0].path[result_3[0].path.len() - 2..],
+        result_3[0].path_components[result_3[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -251,7 +251,8 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_3[0].children[0].is_expanded, false);
     assert_eq!(result_3[0].children[0].kind, FileKind::Directory);
     assert_eq!(
-        result_3[0].children[0].path[result_3[0].children[0].path.len() - 3..],
+        result_3[0].children[0].path_components
+            [result_3[0].children[0].path_components.len() - 3..],
         vec!["directory".to_string(), "Da".to_string(), "Daa".to_string()]
     );
 
@@ -261,7 +262,7 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_3[1].is_expanded, false);
     assert_eq!(result_3[1].kind, FileKind::Directory);
     assert_eq!(
-        result_3[1].path[result_3[0].path.len() - 2..],
+        result_3[1].path_components[result_3[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 
@@ -277,7 +278,7 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_4[0].is_expanded, false);
     assert_eq!(result_4[0].kind, FileKind::Directory);
     assert_eq!(
-        result_4[0].path[result_4[0].path.len() - 2..],
+        result_4[0].path_components[result_4[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -287,7 +288,7 @@ fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tr
     assert_eq!(result_4[1].is_expanded, false);
     assert_eq!(result_4[1].kind, FileKind::Directory);
     assert_eq!(
-        result_4[1].path[result_4[0].path.len() - 2..],
+        result_4[1].path_components[result_4[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 }

@@ -14,7 +14,7 @@ export function FileExplorer({ onCheck, onExpand, tree }: FileExplorerProps) {
   return (
     <Box>
       {tree.map(node => (
-        <Node key={node.path.join('/')} node={node} onCheck={onCheck} onExpand={onExpand} parentIsChecked={false} />
+        <Node key={node.path} node={node} onCheck={onCheck} onExpand={onExpand} parentIsChecked={false} />
       ))}
     </Box>
   )
