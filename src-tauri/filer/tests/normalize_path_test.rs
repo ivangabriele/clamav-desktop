@@ -2,7 +2,7 @@ use filer;
 
 #[test]
 fn normalize_path_returns_the_expected_result() {
-    let path = "/a/path/";
+    let path = "//a/path/";
 
     let result = filer::normalize_path(path);
 

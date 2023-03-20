@@ -3,8 +3,10 @@ import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import numeral from 'numeral'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 
-import { FileExplorer } from '../layouts/FileExplorer'
+import { FileExplorer } from '../components/FileExplorer'
+import { ScanningSpinner } from '../elements/ScanningSpinner'
 import { Screen } from '../layouts/Screen'
 // import { toast } from 'react-hot-toast'
 
@@ -17,7 +19,6 @@ export function Scanner({}: ScannerProps) {
   const [status, setStatus] = useState<Core.ScannerStatus | undefined>(undefined)
 
   const isLoading = useMemo(() => !state || !state.is_ready, [state])
-  const isScanning = useMemo(() => !!status && status.progress < 1, [status])
 
   const handleFileExplorerCheck = useCallback(async (node: Core.FileExplorerNode) => {
     invoke('toggle_file_explorer_node_check', {
@@ -43,7 +44,7 @@ export function Scanner({}: ScannerProps) {
   }, [])
 
   useEffect(() => {
-    invoke('get_scanner_state')
+    invoke('load_scanner_state')
 
     listen<Core.ScannerState>('scanner:state', event => {
       setState(event.payload)
@@ -56,7 +57,7 @@ export function Scanner({}: ScannerProps) {
 
   return (
     <Screen isLoading={isLoading}>
-      {!isScanning && !!state && (
+      {!!state && !state.is_running && (
         <>
           <FileExplorer
             onCheck={handleFileExplorerCheck}
@@ -68,12 +69,14 @@ export function Scanner({}: ScannerProps) {
         </>
       )}
 
-      {isScanning && !!status && (
+      {!!state && state.is_running && (
         <>
-          <div>
-            <p>Path: {status.current_file_path}</p>
-            <p>Progress: {numeral(status.progress).format('0.00%')}</p>
-          </div>
+          <Box>
+            <ScanningSpinner />
+            <Progress>{numeral(status?.progress || 0).format('0.00%')}</Progress>
+
+            <Status>{status ? status.current_file_path : 'Starting...'}</Status>
+          </Box>
 
           <Button disabled onClick={stopScanner}>
             Stop Scan
@@ -83,3 +86,26 @@ export function Scanner({}: ScannerProps) {
     </Screen>
   )
 }
+
+const Box = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+`
+
+const Status = styled.p`
+  color: white;
+  padding-top: 16px;
+`
+
+const Progress = styled.span`
+  color: gold;
+  font-size: 10px;
+  position: absolute;
+  margin-top: -40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`

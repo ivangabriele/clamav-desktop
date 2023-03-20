@@ -26,6 +26,7 @@ If you wish to _contribute_ to ClamAV Desktop, you should read [CONTRIBUTING.md]
 
 ---
 
+- [Introduction](#introduction)
 - [Screenshots](#screenshots)
   - [Dashboard Preview](#dashboard-preview)
   - [Scanner Preview](#scanner-preview)
@@ -33,11 +34,14 @@ If you wish to _contribute_ to ClamAV Desktop, you should read [CONTRIBUTING.md]
     - [v.0.4.0](#v040)
     - [v.0.5.0](#v050)
     - [v.0.?.0](#v00)
-- [Contributing](#contributing)
 
 ---
 
-> A work in progress.
+## Introduction
+
+Clamav Desktop is a work in progress. I don't advise you to use the old version which were based on Electron and were
+laggy as hell. Once released, the v0.4.0 will include full installation intructions and should work on most 64bits
+common platforms.
 
 ## Screenshots
 
@@ -59,14 +63,15 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 - [ ] Config: Raw clamd.conf editor 
 - [ ] Dashboard: Daemon control & status
 - [ ] Global: Tray icon 
-- [ ] Scanner: Drives selection
+- [x] Scanner: Drives selection
 - [x] Scanner: Folders selection
 - [ ] Scanner: Abort scan
-- [ ] Technical: Releases in `.x64.deb`, `.x64.dmg`, `.x64.msi` and `.x64.rpm` formats
+- [ ] Technical: Releases in `.x64.deb`, `.x64.dmg`, and `.x64.msi` formats
 
 #### v.0.5.0
 
-- [ ] Technical: Releases in `.arm64.deb`, `.arm64.dmg`, `.arm64.msi` and `.arm64.rpm` formats
+- [ ] Technical: Store errors in local logs
+- [ ] Technical: Releases in `.arm64.deb`, `.arm64.dmg`, and `.arm64.msi` formats
 
 #### v.0.?.0
 
@@ -76,7 +81,8 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 - [ ] Publication: PPA availibility
 - [ ] Technical: macOS & Windows Code signing
 - [ ] Technical: Binaries embedding (check with official ClamAV team)
+- [ ] Technical: Releases `.x64.rpm` and `.arm64.rpm` formats  
+  (waiting for tauri-apps/tauri#4402 & tauri-apps/tauri#5202)
 - [ ] UX/UI: Full redesign
 
-## Contributing
 

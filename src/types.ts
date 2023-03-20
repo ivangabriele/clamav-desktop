@@ -5,18 +5,22 @@ export namespace Core {
 
   export type FileExplorerNode = {
     children: FileExplorerTree
+    depth: number
+    drive: string
     index_path: string[]
     is_checked: boolean
     is_expanded: boolean
     kind: FileKind
-    path: string[]
+    name: string
+    path: string
+    path_components: string[]
   }
   export type FileExplorerTree = FileExplorerNode[]
 
   export type ScannerState = {
-    drives: string[]
     file_explorer_tree: FileExplorerTree
     is_ready: boolean
+    is_running: boolean
   }
 
   export type ScannerStatus = {

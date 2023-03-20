@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
 import { App } from './App'
-import { reportWebVitals } from './utils/reportWebVitals'
 
 const GlobalStyleCustom = createGlobalStyle`
   html, body, #root {
@@ -40,7 +39,3 @@ root.render(
     ,
   </React.StrictMode>,
 )
-
-// https://bit.ly/CRA-vitals
-// eslint-disable-next-line no-console
-reportWebVitals(console.debug)

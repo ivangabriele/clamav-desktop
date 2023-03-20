@@ -1,6 +1,4 @@
 import { Checkbox } from '@singularity/core'
-import { last } from 'ramda'
-import { useMemo } from 'react'
 import styled from 'styled-components'
 
 import type { Core } from '../../types'
@@ -13,24 +11,18 @@ type NodeProps = {
   parentIsChecked: boolean
 }
 export function Node({ node, onCheck, onExpand, parentIsChecked }: NodeProps) {
-  const indentationCount = useMemo(() => node.path.length - 1, [node.path])
-
   return (
-    <Box $indentationCount={indentationCount}>
+    <Box $depth={node.depth}>
       <Row>
         <ExpansionButton onClick={() => onExpand(node)} type="button">
           {node.is_expanded ? '🞃' : '🞂'}
         </ExpansionButton>
-        <Checkbox
-          checked={node.is_checked || parentIsChecked}
-          label={last(node.path) as string}
-          onChange={() => onCheck(node)}
-        />
+        <Checkbox checked={node.is_checked || parentIsChecked} label={node.name} onChange={() => onCheck(node)} />
       </Row>
 
       {node.children.map(nodeChild => (
         <Node
-          key={nodeChild.path.join('/')}
+          key={nodeChild.path}
           node={nodeChild}
           onCheck={onCheck}
           onExpand={onExpand}
@@ -42,13 +34,13 @@ export function Node({ node, onCheck, onExpand, parentIsChecked }: NodeProps) {
 }
 
 const Box = styled.div<{
-  $indentationCount: number
+  $depth: number
 }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
-  padding-left: ${p => p.$indentationCount}rem;
+  padding-left: ${p => p.$depth}rem;
 `
 
 const Row = styled.div`

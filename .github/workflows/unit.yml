@@ -53,6 +53,7 @@ jobs:
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
         with:
+          flags: webview
           token: ${{ secrets.CODECOV_TOKEN }}
 
   core_test_debian:
@@ -91,6 +92,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           directory: ./src-tauri
+          flags: core
           token: ${{ secrets.CODECOV_TOKEN }}
 
   core_test_macos_and_windows:

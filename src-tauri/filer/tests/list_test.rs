@@ -1,28 +1,19 @@
-use std::{env, path::Path};
-
 use filer::{list, FileKind};
-
-fn get_sample_directory_absolute_path() -> String {
-    let project_root_path_as_string = env::var("PROJECT_ROOT_PATH").unwrap();
-    let project_root_path_as_str = &*project_root_path_as_string;
-
-    Path::new(project_root_path_as_str)
-        .join("e2e/samples/directory")
-        .as_os_str()
-        .to_str()
-        .unwrap()
-        .to_string()
-}
+use jest::expect;
 
 #[test]
 fn list_as_file_explorer_returns_the_expected_file_paths_tree() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = false;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = Some(FileKind::Directory);
 
-    let result = list(directory_absolute_path, is_recursive, file_kind_option)
-        .into_file_explorer()
-        .into_tree();
+    let result = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_file_explorer()
+    .into_tree();
 
     assert_eq!(result.len(), 2);
 
@@ -31,7 +22,7 @@ fn list_as_file_explorer_returns_the_expected_file_paths_tree() {
     assert_eq!(result[0].is_expanded, false);
     assert_eq!(result[0].kind, FileKind::Directory);
     assert_eq!(
-        result[0].path[result[0].path.len() - 2..],
+        result[0].path_components[result[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Da".to_string()]
     );
 
@@ -40,156 +31,194 @@ fn list_as_file_explorer_returns_the_expected_file_paths_tree() {
     assert_eq!(result[1].is_expanded, false);
     assert_eq!(result[1].kind, FileKind::Directory);
     assert_eq!(
-        result[1].path[result[0].path.len() - 2..],
+        result[1].path_components[result[0].path_components.len() - 2..],
         vec!["directory".to_string(), "Db".to_string()]
     );
 }
 
 #[test]
 fn list_into_strings_returns_the_expected_file_paths_list() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = false;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = None;
 
-    let result = list(directory_absolute_path, is_recursive, file_kind_option).into_strings();
+    let result = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_strings();
 
-    assert_eq!(result.len(), 4);
+    assert_eq!(result.len(), 5);
 
     if cfg!(windows) {
-        jest::assert_ends_with(&result[0], "\\directory\\Da");
-        jest::assert_ends_with(&result[1], "\\directory\\Db");
-        jest::assert_ends_with(&result[2], "\\directory\\F1.txt");
-        jest::assert_ends_with(&result[3], "\\directory\\F2.txt");
+        expect!(&result[0]).to_end_with("\\directory\\Da");
+        expect!(&result[1]).to_end_with("\\directory\\Db");
+        expect!(&result[2]).to_end_with("\\directory\\F1.txt");
+        expect!(&result[3]).to_end_with("\\directory\\F2.txt");
+        expect!(&result[4]).to_end_with("\\directory\\INFECTED.eicar.com.txt");
     } else {
-        jest::assert_ends_with(&result[0], "/directory/Da");
-        jest::assert_ends_with(&result[1], "/directory/Db");
-        jest::assert_ends_with(&result[2], "/directory/F1.txt");
-        jest::assert_ends_with(&result[3], "/directory/F2.txt");
+        expect!(&result[0]).to_end_with("/directory/Da");
+        expect!(&result[1]).to_end_with("/directory/Db");
+        expect!(&result[2]).to_end_with("/directory/F1.txt");
+        expect!(&result[3]).to_end_with("/directory/F2.txt");
+        expect!(&result[4]).to_end_with("/directory/INFECTED.eicar.com.txt");
     }
 }
 #[test]
 fn list_into_strings_returns_the_expected_recursive_file_paths_list() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = true;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = None;
 
-    let result = list(directory_absolute_path, is_recursive, file_kind_option).into_strings();
+    let result = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_strings();
 
-    assert_eq!(result.len(), 11);
+    assert_eq!(result.len(), 12);
 
     if cfg!(windows) {
-        jest::assert_ends_with(&result[0], "\\directory\\Da");
-        jest::assert_ends_with(&result[1], "\\directory\\Da\\DaF1.txt");
-        jest::assert_ends_with(&result[2], "\\directory\\Da\\DaF2.txt");
-        jest::assert_ends_with(&result[3], "\\directory\\Da\\Daa");
-        jest::assert_ends_with(&result[4], "\\directory\\Da\\Daa\\DaaF1.txt");
-        jest::assert_ends_with(&result[5], "\\directory\\Da\\Daa\\DaaF2.txt");
-        jest::assert_ends_with(&result[6], "\\directory\\Db");
-        jest::assert_ends_with(&result[7], "\\directory\\Db\\DbF1.txt");
-        jest::assert_ends_with(&result[8], "\\directory\\Db\\DbF2.txt");
-        jest::assert_ends_with(&result[9], "\\directory\\F1.txt");
-        jest::assert_ends_with(&result[10], "\\directory\\F2.txt");
+        expect!(&result[0]).to_end_with("\\directory\\Da");
+        expect!(&result[1]).to_end_with("\\directory\\Da\\DaF1.txt");
+        expect!(&result[2]).to_end_with("\\directory\\Da\\DaF2.txt");
+        expect!(&result[3]).to_end_with("\\directory\\Da\\Daa");
+        expect!(&result[4]).to_end_with("\\directory\\Da\\Daa\\DaaF1.txt");
+        expect!(&result[5]).to_end_with("\\directory\\Da\\Daa\\DaaF2.txt");
+        expect!(&result[6]).to_end_with("\\directory\\Db");
+        expect!(&result[7]).to_end_with("\\directory\\Db\\DbF1.txt");
+        expect!(&result[8]).to_end_with("\\directory\\Db\\DbF2.txt");
+        expect!(&result[9]).to_end_with("\\directory\\F1.txt");
+        expect!(&result[10]).to_end_with("\\directory\\F2.txt");
+        expect!(&result[11]).to_end_with("\\directory\\INFECTED.eicar.com.txt");
     } else {
-        jest::assert_ends_with(&result[0], "/directory/Da");
-        jest::assert_ends_with(&result[1], "/directory/Da/DaF1.txt");
-        jest::assert_ends_with(&result[2], "/directory/Da/DaF2.txt");
-        jest::assert_ends_with(&result[3], "/directory/Da/Daa");
-        jest::assert_ends_with(&result[4], "/directory/Da/Daa/DaaF1.txt");
-        jest::assert_ends_with(&result[5], "/directory/Da/Daa/DaaF2.txt");
-        jest::assert_ends_with(&result[6], "/directory/Db");
-        jest::assert_ends_with(&result[7], "/directory/Db/DbF1.txt");
-        jest::assert_ends_with(&result[8], "/directory/Db/DbF2.txt");
-        jest::assert_ends_with(&result[9], "/directory/F1.txt");
-        jest::assert_ends_with(&result[10], "/directory/F2.txt");
+        expect!(&result[0]).to_end_with("/directory/Da");
+        expect!(&result[1]).to_end_with("/directory/Da/DaF1.txt");
+        expect!(&result[2]).to_end_with("/directory/Da/DaF2.txt");
+        expect!(&result[3]).to_end_with("/directory/Da/Daa");
+        expect!(&result[4]).to_end_with("/directory/Da/Daa/DaaF1.txt");
+        expect!(&result[5]).to_end_with("/directory/Da/Daa/DaaF2.txt");
+        expect!(&result[6]).to_end_with("/directory/Db");
+        expect!(&result[7]).to_end_with("/directory/Db/DbF1.txt");
+        expect!(&result[8]).to_end_with("/directory/Db/DbF2.txt");
+        expect!(&result[9]).to_end_with("/directory/F1.txt");
+        expect!(&result[10]).to_end_with("/directory/F2.txt");
+        expect!(&result[11]).to_end_with("/directory/INFECTED.eicar.com.txt");
     }
 }
 
 #[test]
 fn list_into_strings_returns_the_expected_directory_paths_list() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = false;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = Some(FileKind::Directory);
 
-    let result = list(directory_absolute_path, is_recursive, file_kind_option).into_strings();
+    let result = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_strings();
 
     assert_eq!(result.len(), 2);
 
     if cfg!(windows) {
-        jest::assert_ends_with(&result[0], "\\directory\\Da");
-        jest::assert_ends_with(&result[1], "\\directory\\Db");
+        expect!(&result[0]).to_end_with("\\directory\\Da");
+        expect!(&result[1]).to_end_with("\\directory\\Db");
     } else {
-        jest::assert_ends_with(&result[0], "/directory/Da");
-        jest::assert_ends_with(&result[1], "/directory/Db");
+        expect!(&result[0]).to_end_with("/directory/Da");
+        expect!(&result[1]).to_end_with("/directory/Db");
     }
 }
 
 #[test]
 fn list_into_strings_returns_the_expected_recursive_directory_paths_list() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = true;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = Some(FileKind::Directory);
 
-    let result = list(directory_absolute_path, is_recursive, file_kind_option).into_strings();
+    let result = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_strings();
 
     assert_eq!(result.len(), 3);
 
     if cfg!(windows) {
-        jest::assert_ends_with(&result[0], "\\directory\\Da");
-        jest::assert_ends_with(&result[1], "\\directory\\Da\\Daa");
-        jest::assert_ends_with(&result[2], "\\directory\\Db");
+        expect!(&result[0]).to_end_with("\\directory\\Da");
+        expect!(&result[1]).to_end_with("\\directory\\Da\\Daa");
+        expect!(&result[2]).to_end_with("\\directory\\Db");
     } else {
-        jest::assert_ends_with(&result[0], "/directory/Da");
-        jest::assert_ends_with(&result[1], "/directory/Da/Daa");
-        jest::assert_ends_with(&result[2], "/directory/Db");
+        expect!(&result[0]).to_end_with("/directory/Da");
+        expect!(&result[1]).to_end_with("/directory/Da/Daa");
+        expect!(&result[2]).to_end_with("/directory/Db");
     }
 }
 
 #[test]
 fn list_into_strings_returns_the_expected_non_directory_file_paths_list() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = false;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = Some(FileKind::File);
 
-    let result = list(directory_absolute_path, is_recursive, file_kind_option).into_strings();
+    let result = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_strings();
 
-    assert_eq!(result.len(), 2);
+    assert_eq!(result.len(), 3);
 
     if cfg!(windows) {
-        jest::assert_ends_with(&result[0], "\\directory\\F1.txt");
-        jest::assert_ends_with(&result[1], "\\directory\\F2.txt");
+        expect!(&result[0]).to_end_with("\\directory\\F1.txt");
+        expect!(&result[1]).to_end_with("\\directory\\F2.txt");
+        expect!(&result[2]).to_end_with("\\directory\\INFECTED.eicar.com.txt");
     } else {
-        jest::assert_ends_with(&result[0], "/directory/F1.txt");
-        jest::assert_ends_with(&result[1], "/directory/F2.txt");
+        expect!(&result[0]).to_end_with("/directory/F1.txt");
+        expect!(&result[1]).to_end_with("/directory/F2.txt");
+        expect!(&result[2]).to_end_with("/directory/INFECTED.eicar.com.txt");
     }
 }
 
 #[test]
 fn list_into_strings_returns_the_expected_recursive_non_directory_file_paths_list() {
-    let directory_absolute_path = get_sample_directory_absolute_path();
     let is_recursive = true;
+    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
     let file_kind_option = Some(FileKind::File);
 
-    let result = list(directory_absolute_path, is_recursive, file_kind_option).into_strings();
+    let result = list(
+        is_recursive,
+        directory_absolute_path_option,
+        file_kind_option,
+    )
+    .into_strings();
 
-    assert_eq!(result.len(), 8);
+    assert_eq!(result.len(), 9);
 
     if cfg!(windows) {
-        jest::assert_ends_with(&result[0], "\\directory\\Da\\DaF1.txt");
-        jest::assert_ends_with(&result[1], "\\directory\\Da\\DaF2.txt");
-        jest::assert_ends_with(&result[2], "\\directory\\Da\\Daa\\DaaF1.txt");
-        jest::assert_ends_with(&result[3], "\\directory\\Da\\Daa\\DaaF2.txt");
-        jest::assert_ends_with(&result[4], "\\directory\\Db\\DbF1.txt");
-        jest::assert_ends_with(&result[5], "\\directory\\Db\\DbF2.txt");
-        jest::assert_ends_with(&result[6], "\\directory\\F1.txt");
-        jest::assert_ends_with(&result[7], "\\directory\\F2.txt");
+        expect!(&result[0]).to_end_with("\\directory\\Da\\DaF1.txt");
+        expect!(&result[1]).to_end_with("\\directory\\Da\\DaF2.txt");
+        expect!(&result[2]).to_end_with("\\directory\\Da\\Daa\\DaaF1.txt");
+        expect!(&result[3]).to_end_with("\\directory\\Da\\Daa\\DaaF2.txt");
+        expect!(&result[4]).to_end_with("\\directory\\Db\\DbF1.txt");
+        expect!(&result[5]).to_end_with("\\directory\\Db\\DbF2.txt");
+        expect!(&result[6]).to_end_with("\\directory\\F1.txt");
+        expect!(&result[7]).to_end_with("\\directory\\F2.txt");
+        expect!(&result[8]).to_end_with("\\directory\\INFECTED.eicar.com.txt");
     } else {
-        jest::assert_ends_with(&result[0], "/directory/Da/DaF1.txt");
-        jest::assert_ends_with(&result[1], "/directory/Da/DaF2.txt");
-        jest::assert_ends_with(&result[2], "/directory/Da/Daa/DaaF1.txt");
-        jest::assert_ends_with(&result[3], "/directory/Da/Daa/DaaF2.txt");
-        jest::assert_ends_with(&result[4], "/directory/Db/DbF1.txt");
-        jest::assert_ends_with(&result[5], "/directory/Db/DbF2.txt");
-        jest::assert_ends_with(&result[6], "/directory/F1.txt");
-        jest::assert_ends_with(&result[7], "/directory/F2.txt");
+        expect!(&result[0]).to_end_with("/directory/Da/DaF1.txt");
+        expect!(&result[1]).to_end_with("/directory/Da/DaF2.txt");
+        expect!(&result[2]).to_end_with("/directory/Da/Daa/DaaF1.txt");
+        expect!(&result[3]).to_end_with("/directory/Da/Daa/DaaF2.txt");
+        expect!(&result[4]).to_end_with("/directory/Db/DbF1.txt");
+        expect!(&result[5]).to_end_with("/directory/Db/DbF2.txt");
+        expect!(&result[6]).to_end_with("/directory/F1.txt");
+        expect!(&result[7]).to_end_with("/directory/F2.txt");
+        expect!(&result[8]).to_end_with("/directory/INFECTED.eicar.com.txt");
     }
 }

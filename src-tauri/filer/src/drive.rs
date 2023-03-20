@@ -1,6 +1,7 @@
 use std::env;
 
 use cli;
+use common;
 
 const EMPTY_STRING_VECTOR: Vec<String> = Vec::new();
 
@@ -16,7 +17,9 @@ pub fn list() -> Vec<String> {
     // TODO Use `winapi` for that (but it seems dead)?
     // https://docs.rs/winapi/latest/winapi/
     if cfg!(windows) {
-        return match cli::exec("wmic", Vec::from(&["logicaldisk", "get", "name"][..])) {
+        let args = common::utils::as_strings(vec!["logicaldisk", "get", "name"]);
+
+        return match cli::exec("wmic".to_string(), args) {
             Ok(stdout) => {
                 let mut drives: Vec<String> = stdout
                     .split("\n")
