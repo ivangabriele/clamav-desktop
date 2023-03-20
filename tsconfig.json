@@ -1,8 +1,6 @@
 {
   "extends": "@ivangabriele/tsconfig-react/tsconfig.json",
   "compilerOptions": {
-    "exactOptionalPropertyTypes": true,
-    "importsNotUsedAsValues": "error",
     "jsx": "react-jsx",
     "noImplicitAny": false,
     "noImplicitOverride": true,
@@ -19,7 +17,8 @@
     "strictPropertyInitialization": true,
     "target": "ES2022",
     "types": ["node"],
-    "useUnknownInCatchVariables": true
+    "useUnknownInCatchVariables": true,
+    "verbatimModuleSyntax": true
   },
   "exclude": [".yarn", "build/*", "clamav/*", "node_modules/*", "src-tauri/*"],
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
