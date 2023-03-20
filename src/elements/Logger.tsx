@@ -1,5 +1,7 @@
-import { CSSProperties, DOMAttributes, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+
+import type { CSSProperties, DOMAttributes } from 'react'
 
 const Pre = styled.pre`
   background-color: black;
