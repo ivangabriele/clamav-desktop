@@ -75,7 +75,7 @@ export function Scanner({}: ScannerProps) {
             <ScanningSpinner />
             <Progress>{numeral(status?.progress || 0).format('0.00%')}</Progress>
 
-            <Status>{status ? status.current_file_path : 'Starting...'}</Status>
+            <Status>{status && status.current_file_path.length > 0 ? status.current_file_path : 'Starting...'}</Status>
           </Box>
 
           <Button disabled onClick={stopScanner}>
@@ -97,15 +97,18 @@ const Box = styled.div`
 
 const Status = styled.p`
   color: white;
+  overflow: hidden;
   padding-top: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 640px;
+  text-align: center;
 `
 
 const Progress = styled.span`
   color: gold;
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 700;
   position: absolute;
   margin-top: -40px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `

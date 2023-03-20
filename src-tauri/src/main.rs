@@ -12,8 +12,6 @@ mod scanner;
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
-    println!("Hello Clamav Desktop!");
-
     let initial_core_state = core::state::CoreState {
         scanner: scanner::INITIAL_SCANNER_STATE,
     };
@@ -49,7 +47,7 @@ fn main() {
         ])
         .run(tauri::generate_context!())
         // TODO Properly handle errors here.
-        .expect("An error happened while running Tauri application.");
+        .expect("An error happened during ClamAV Desktop boot.");
 }
 
 // fn run() {
