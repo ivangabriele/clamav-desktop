@@ -65,11 +65,13 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 - [ ] Global: Tray icon 
 - [x] Scanner: Drives selection
 - [x] Scanner: Folders selection
-- [ ] Scanner: Abort scan
 - [ ] Technical: Releases in `.x64.deb`, `.x64.dmg`, and `.x64.msi` formats
 
 #### v.0.5.0
 
+- [ ] Scanner: Abort scan
+- [ ] Scanner: Summary
+- [ ] Scanner: Threats handling management
 - [ ] Technical: Store errors in local logs
 - [ ] Technical: Releases in `.arm64.deb`, `.arm64.dmg`, and `.arm64.msi` formats
 

@@ -85,17 +85,18 @@ where
             }
         });
 
-    let mut core_state_mutable = state
+    let mut core_state_mutex_guard_mutable = state
         .0
         .lock()
         // TODO Properly handle errors here.
-        .unwrap_or_else(|error| panic!("{:?}", &error));
-    core_state_mutable.scanner.is_running = false;
-    println!("{:?}", core_state_mutable.scanner);
+        .unwrap();
+    core_state_mutex_guard_mutable.scanner.is_running = false;
     app_handle_owner
-        .emit_all("scanner:state", &core_state_mutable.scanner)
+        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
         // TODO Properly handle errors here.
         .unwrap();
+
+    drop(core_state_mutex_guard_mutable)
 }
 
 // #[allow(dead_code)]

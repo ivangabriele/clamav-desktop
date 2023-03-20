@@ -67,22 +67,29 @@ pub fn toggle_file_explorer_node_expansion(
         index_path
     );
 
-    let mut core_state_mutable = state
+    let mut core_state_mutex_guard_mutable = state
         .0
         .lock()
         // TODO Properly handle errors here.
         .unwrap();
 
-    let mut next_file_explorer =
-        filer::FileExplorer::new(core_state_mutable.scanner.file_explorer_tree.to_owned());
+    let mut next_file_explorer = filer::FileExplorer::new(
+        core_state_mutex_guard_mutable
+            .scanner
+            .file_explorer_tree
+            .to_owned(),
+    );
     next_file_explorer.toggle_is_expanded(index_path);
 
-    core_state_mutable.scanner.file_explorer_tree = next_file_explorer.into_tree().to_owned();
+    core_state_mutex_guard_mutable.scanner.file_explorer_tree =
+        next_file_explorer.into_tree().to_owned();
 
     app_handle
-        .emit_all("scanner:state", &core_state_mutable.scanner)
+        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
         // TODO Properly handle errors here.
         .unwrap();
+
+    drop(core_state_mutex_guard_mutable);
 
     Ok(())
 }
@@ -96,21 +103,23 @@ pub async fn get_scanner_state(
 ) -> Result<(), ()> {
     println!("Calling command get_scanner_state().");
 
-    let core_state_mutable = state
+    let core_state_mutex_guard_mutable = state
         .0
         .lock()
         // TODO Properly handle errors here.
         .unwrap();
 
     println!(
-        "core_state_mutable.scanner: {:?}",
-        &core_state_mutable.scanner
+        "core_state_mutex_guard_mutable.scanner: {:?}",
+        &core_state_mutex_guard_mutable.scanner
     );
 
     app_handle
-        .emit_all("scanner:state", &core_state_mutable.scanner)
+        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
         // TODO Properly handle errors here.
         .unwrap();
+
+    drop(core_state_mutex_guard_mutable);
 
     Ok(())
 }
@@ -123,21 +132,13 @@ pub async fn load_scanner_state(
 ) -> Result<(), ()> {
     println!("Calling command load_scanner_state().");
 
-    println!("1");
-
-    let mut core_state_mutable = state
+    let mut core_state_mutex_guard_mutable = state
         .0
         .lock()
         // TODO Properly handle errors here.
-        .unwrap_or_else(|error| {
-            println!("{:?}", &error);
+        .unwrap();
 
-            panic!("{:?}", &error)
-        });
-
-    println!("2");
-
-    if !&core_state_mutable.scanner.is_ready {
+    if !&core_state_mutex_guard_mutable.scanner.is_ready {
         let file_explorer_tree =
             filer::list::<String>(false, None, Some(filer::FileKind::Directory))
                 .into_file_explorer()
@@ -145,23 +146,18 @@ pub async fn load_scanner_state(
         let updated_scanner_state = ScannerState {
             file_explorer_tree: file_explorer_tree.to_owned(),
             is_ready: true,
-            ..core_state_mutable.scanner
+            ..core_state_mutex_guard_mutable.scanner
         };
 
-        core_state_mutable.scanner = updated_scanner_state;
+        core_state_mutex_guard_mutable.scanner = updated_scanner_state;
     }
 
-    println!("3");
-
-    println!(
-        "core_state_mutable.scanner: {:?}",
-        &core_state_mutable.scanner
-    );
-
     app_handle
-        .emit_all("scanner:state", &core_state_mutable.scanner)
+        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
         // TODO Properly handle errors here.
         .unwrap();
+
+    drop(core_state_mutex_guard_mutable);
 
     Ok(())
 }
@@ -175,19 +171,38 @@ pub async fn start_scanner(
 ) -> Result<(), String> {
     println!("Calling command start_scan().",);
 
-    let mut core_state_mutable = state
+    // Reset scanner status
+    app_handle
+        .to_owned()
+        .emit_all(
+            "scanner:status",
+            ScannerStatus {
+                current_file_path: "".to_string(),
+                progress: 0 as f64,
+            },
+        )
+        .unwrap();
+
+    // Set scanner state as "running"
+    let mut core_state_mutex_guard_mutable = state
         .0
         .lock()
         // TODO Properly handle errors here.
         .unwrap();
-    core_state_mutable.scanner.is_running = true;
+    core_state_mutex_guard_mutable.scanner.is_running = true;
     app_handle
-        .emit_all("scanner:state", &core_state_mutable.scanner)
+        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
         // TODO Properly handle errors here.
         .unwrap();
 
-    let paths = FileExplorer::new(core_state_mutable.scanner.file_explorer_tree.to_owned())
-        .into_checked_paths();
+    // List selected paths
+    let paths = FileExplorer::new(
+        core_state_mutex_guard_mutable
+            .scanner
+            .file_explorer_tree
+            .to_owned(),
+    )
+    .into_checked_paths();
     let args: Vec<String> = vec![
         "-rv".to_string(),
         "--follow-dir-symlinks=0".to_string(),
@@ -196,13 +211,15 @@ pub async fn start_scanner(
     .into_iter()
     .chain(paths.to_owned().into_iter())
     .collect();
-    println!("Args: {:?}", &args);
 
+    // Recursively count all the non-directory files within the selected paths
     let total_files_length = paths
         .to_owned()
         .into_iter()
         .map(|path| filer::count(true, Some(path), Some(filer::FileKind::File)))
         .sum::<usize>();
+
+    drop(core_state_mutex_guard_mutable);
 
     libs::cli::run(
         app_handle,
@@ -223,13 +240,10 @@ pub async fn start_scanner(
                 current_file_path = "unknown".to_string();
             }
 
-            println!("current_file_path: {:?}", &current_file_path);
-            println!("progress: {:?}", &progress);
-
             if progress == 1 as f64 {
                 return ScannerStatus {
-                    current_file_path: "".to_string(),
-                    progress: 0 as f64,
+                    current_file_path: "Done".to_string(),
+                    progress,
                 };
             }
 

@@ -37,7 +37,6 @@ impl FileList {
                     let drive = common::ok_or_return_none!(path_components.get(0)).to_owned();
                     let name = common::ok_or_return_none!(path_components.last()).to_owned();
                     let path = utils::normalize_path(path_components.join("/"));
-                    println!("{}", path);
 
                     Some(file_explorer::FileExplorerNode {
                         index_path: vec![index],
