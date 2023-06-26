@@ -1,4 +1,5 @@
 use common::utils::as_string;
+use jrest::expect;
 
 #[test]
 fn as_string_returns_the_expected_string_with_str() {
@@ -6,7 +7,7 @@ fn as_string_returns_the_expected_string_with_str() {
 
     let result = as_string(string);
 
-    assert_eq!(result, "A string");
+    expect!(result).to_be("A string".to_string());
 }
 
 #[test]
@@ -15,5 +16,5 @@ fn as_string_returns_the_expected_string_with_string() {
 
     let result = as_string(string);
 
-    assert_eq!(result, "A string");
+    expect!(result).to_be("A string".to_string());
 }

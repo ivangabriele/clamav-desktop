@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 18
+          node-version: 20
       - name: Install
         run: yarn
       - name: Run
@@ -29,7 +29,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 18
+          node-version: 20
       - name: Install
         run: yarn
       - name: Run
@@ -45,7 +45,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 18
+          node-version: 20
       - name: Install Node.js dependencies
         run: yarn
       - name: Run
@@ -53,6 +53,7 @@ jobs:
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
         with:
+          fail_ci_if_error: true
           flags: webview
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -67,6 +68,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
       # https://github.com/Swatinem/rust-cache#example-usage
       - uses: Swatinem/rust-cache@v2
         with:
@@ -74,7 +77,7 @@ jobs:
           key: unit_core_test_debian-latest
           prefix-key: rust-cache
           shared-key: v0
-          workspaces: "./src-tauri -> target"
+          workspaces: './src-tauri -> target'
       - name: Install ClamAV
         run: |
           apt-get update
@@ -85,13 +88,17 @@ jobs:
           rustc -V
           cargo -V
           clamscan -V
-      - name: Run tests (with coverage)
-        run: cargo tarpaulin --no-fail-fast --out Xml --skip-clean --workspace
+      # https://github.com/tauri-apps/tauri/issues/3142
+      - name: Create fake /dist directory
+        run: mkdir ./dist
+      - name: Run unit tests (with coverage)
+        run: cargo tarpaulin --exclude glob --frozen --no-fail-fast --out Xml --workspace -- --nocapture
         working-directory: ./src-tauri
       - name: Upload tests coverage
         uses: codecov/codecov-action@v3
         with:
           directory: ./src-tauri
+          fail_ci_if_error: true
           flags: core
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -102,10 +109,14 @@ jobs:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     env:
-      PROJECT_ROOT_PATH: ${{ matrix.os == 'macos-latest' && '/Users/runner/work/clamav-desktop/clamav-desktop' || 'D:\a\clamav-desktop\clamav-desktop' }}
+      PROJECT_ROOT_PATH:
+        ${{ matrix.os == 'macos-latest' && '/Users/runner/work/clamav-desktop/clamav-desktop' ||
+        'D:\a\clamav-desktop\clamav-desktop' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
       # https://github.com/Swatinem/rust-cache#example-usage
       - uses: Swatinem/rust-cache@v2
         with:
@@ -113,7 +124,7 @@ jobs:
           key: unit_core_test_${{ matrix.os }}
           prefix-key: rust-cache
           shared-key: v0
-          workspaces: "./src-tauri -> target"
+          workspaces: './src-tauri -> target'
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -122,11 +133,14 @@ jobs:
           rustc -V
           cargo -V
           # clamscan -V
+      # https://github.com/tauri-apps/tauri/issues/3142
+      - name: Create fake /dist directory
+        run: mkdir ./dist
       - name: Build
         run: cargo build
         working-directory: ./src-tauri
       - name: Run tests
-        run: cargo test --no-fail-fast --workspace
+        run: cargo test --exclude glob --no-fail-fast --workspace -- --nocapture
         working-directory: ./src-tauri
 
   # webview_build:
@@ -143,7 +157,7 @@ jobs:
   #       uses: actions/setup-node@v3
   #       with:
   #         cache: yarn
-  #         node-version: 18
+  #         node-version: 20
   #     - name: Install Node.js dependencies
   #       run: yarn
   #     - name: Run

@@ -1,5 +1,5 @@
 use cli::exec;
-use jest::expect;
+use jrest::expect;
 
 #[test]
 fn exec_returns_the_expected_output() {

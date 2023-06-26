@@ -1,3 +1,6 @@
 [submodule "clamav"]
 	path = clamav
 	url = https://github.com/Cisco-Talos/clamav.git
+[submodule "src-tauri/glob"]
+	path = src-tauri/glob
+	url = https://github.com/rust-lang/glob.git

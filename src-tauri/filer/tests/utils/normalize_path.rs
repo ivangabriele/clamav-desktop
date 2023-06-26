@@ -4,7 +4,7 @@ use filer;
 fn normalize_path_returns_the_expected_result() {
     let path = "//a/path/";
 
-    let result = filer::normalize_path(path);
+    let result = filer::utils::normalize_path(path);
 
     if cfg!(windows) {
         assert_eq!(result, "\\a\\path\\");

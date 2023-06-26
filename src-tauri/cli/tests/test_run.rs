@@ -1,6 +1,6 @@
 use cli::run;
 use dev;
-use jest::expect;
+use jrest::expect;
 
 #[test]
 fn runs_returns_the_expected_output() {
@@ -13,7 +13,7 @@ fn runs_returns_the_expected_output() {
             dev::get_sample_directory_absolute_path_option().unwrap(),
         ];
 
-        let callback_options = Some(|index: usize, line: String| match index {
+        let stdout_callback = |index: usize, line: String| match index {
             0 => {
                 expect!(&line).to_be(&("total 20".to_string()));
             }
@@ -50,8 +50,10 @@ fn runs_returns_the_expected_output() {
             _ => {
                 panic!("Unexpected index.")
             }
-        });
+        };
 
-        run(command, args, callback_options);
+        let stderr_callback = |_index: usize, _line: String| {};
+
+        run(command, args, stdout_callback, stderr_callback);
     }
 }

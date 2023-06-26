@@ -11,4 +11,4 @@ common = { path = "../common" }
 
 [dev-dependencies]
 dev = { path = "../dev" }
-jest = { path = "../jest" }
+jrest = "0.2.3"

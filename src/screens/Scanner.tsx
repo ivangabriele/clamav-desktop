@@ -2,23 +2,28 @@ import { Button } from '@singularity/core'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import numeral from 'numeral'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+// import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
 import { FileExplorer } from '../components/FileExplorer'
 import { ScanningSpinner } from '../elements/ScanningSpinner'
+import { useForceUpdate } from '../hooks/useForceUpdate'
 import { Screen } from '../layouts/Screen'
-// import { toast } from 'react-hot-toast'
-
-import type { Core } from '../types'
+import { Core } from '../types'
 
 type ScannerProps = {}
 // eslint-disable-next-line no-empty-pattern
 export function Scanner({}: ScannerProps) {
+  const { forceUpdate } = useForceUpdate()
+
+  const countdownRef = useRef<number | undefined>()
+  const countdownTimerRef = useRef<NodeJS.Timer | undefined>()
+
   const [state, setState] = useState<Core.ScannerState | undefined>(undefined)
   const [status, setStatus] = useState<Core.ScannerStatus | undefined>(undefined)
 
-  const isLoading = useMemo(() => !state || !state.is_ready, [state])
+  const isLoading = !state || !state.is_ready
 
   const handleFileExplorerCheck = useCallback(async (node: Core.FileExplorerNode) => {
     invoke('toggle_file_explorer_node_check', {
@@ -33,10 +38,7 @@ export function Scanner({}: ScannerProps) {
   }, [])
 
   const startScanner = useCallback(async () => {
-    invoke('start_scanner', {
-      // directoryAbsolutePath: `${process.env.REACT_APP_PROJECT_ROOT_PATH}/e2e/samples/directory`,
-      directoryAbsolutePath: `${process.env.REACT_APP_PROJECT_ROOT_PATH}`,
-    })
+    invoke('start_scanner')
   }, [])
 
   const stopScanner = useCallback(async () => {
@@ -54,6 +56,33 @@ export function Scanner({}: ScannerProps) {
       setStatus(event.payload)
     })
   }, [])
+
+  useEffect(() => {
+    if (status?.step !== Core.ScannerStatusStep.STARTING) {
+      if (countdownRef.current !== undefined) {
+        clearInterval(countdownTimerRef.current)
+
+        countdownRef.current = undefined
+        countdownTimerRef.current = undefined
+      }
+
+      return
+    }
+
+    countdownRef.current = 14
+
+    forceUpdate()
+
+    countdownTimerRef.current = setInterval(() => {
+      if (countdownRef.current === undefined) {
+        return
+      }
+
+      countdownRef.current -= 1
+
+      forceUpdate()
+    }, 1000)
+  }, [forceUpdate, status?.step])
 
   return (
     <Screen isLoading={isLoading}>
@@ -75,7 +104,13 @@ export function Scanner({}: ScannerProps) {
             <ScanningSpinner />
             <Progress>{numeral(status?.progress || 0).format('0.00%')}</Progress>
 
-            <Status>{status && status.current_file_path.length > 0 ? status.current_file_path : 'Starting...'}</Status>
+            <Status>
+              {status && status.current_file_path.length > 0
+                ? status.current_file_path
+                : `${status?.step}${
+                    status?.step === Core.ScannerStatusStep.STARTING ? ` in ${countdownRef.current}s` : ''
+                  }...`}
+            </Status>
           </Box>
 
           <Button disabled onClick={stopScanner}>

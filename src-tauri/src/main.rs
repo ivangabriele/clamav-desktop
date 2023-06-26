@@ -1,18 +1,23 @@
 // We allow `unused_imports` & `unused_variables` here because the `debug_assertions` are unused in production
 // but required for development.
 
+// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 use std::sync::Mutex;
 
 #[allow(unused_imports)]
 use tauri::{LogicalSize, Manager};
 
 mod core;
+mod daemon;
 mod libs;
 mod scanner;
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
     let initial_core_state = core::state::CoreState {
+        daemon: daemon::INITIAL_DAEMON_STATE,
         scanner: scanner::INITIAL_SCANNER_STATE,
     };
 
@@ -39,11 +44,14 @@ fn main() {
         )
         .manage(core::state::CoreStateMutex(Mutex::new(initial_core_state)))
         .invoke_handler(tauri::generate_handler![
+            daemon::get_daemon_state,
+            daemon::start_daemon,
+            daemon::stop_daemon,
             scanner::get_scanner_state,
             scanner::load_scanner_state,
             scanner::start_scanner,
             scanner::toggle_file_explorer_node_check,
-            scanner::toggle_file_explorer_node_expansion
+            scanner::toggle_file_explorer_node_expansion,
         ])
         .run(tauri::generate_context!())
         // TODO Properly handle errors here.

@@ -8,9 +8,11 @@ edition = "2021"
 [dependencies]
 cli = { path = "../cli" }
 common = { path = "../common" }
-glob = "0.3.1"
-serde = { version = "1.0.154", features = ["derive"] }
+# TODO Replace that with the v0.3.2 once it's released.
+# This release will include https://github.com/rust-lang/glob/pull/112 is released.
+glob = { path = "../glob" }
+serde = { version = "1.0.164", features = ["derive"] }
 
 [dev-dependencies]
 dev = { path = "../dev" }
-jest = { path = "../jest" }
+jrest = "0.2.3"

@@ -63,10 +63,17 @@ pub fn is_installed(program_name: String) -> bool {
     exec(command.to_string(), args).is_ok()
 }
 
-pub fn run<C>(command: String, args: Vec<String>, callback_option: Option<C>) -> ()
+pub fn run<C1, C2>(
+    command: String,
+    args: Vec<String>,
+    stdout_callback: C1,
+    stderr_callback: C2,
+) -> ()
 where
-    C: Fn(usize, String) -> (),
-    C: Send + 'static,
+    C1: Fn(usize, String) -> (),
+    C1: Send + 'static,
+    C2: Fn(usize, String) -> (),
+    C2: Send + 'static,
 {
     let child = match Command::new(command)
         .args(args)
@@ -83,6 +90,38 @@ where
         }
     };
 
+    let mut line_index: usize = 0;
+
+    let stderr = match child
+        .stderr
+        .ok_or_else(|| println!("Could not capture standard error."))
+    {
+        Ok(stderr) => stderr,
+        // TODO Properly handle this error.
+        Err(error) => {
+            println!("{:?}", error);
+
+            panic!("Bye");
+        }
+    };
+    let stderr_reader = BufReader::new(stderr);
+    stderr_reader
+        .lines()
+        // TODO Is it the best way to achieve that?
+        .filter_map(|line| line.ok())
+        .for_each({
+            move |line| {
+                #[cfg(debug_assertions)]
+                {
+                    println!("[cli::run()] [ERROR] {}", line);
+                }
+
+                stdout_callback(line_index, line);
+
+                line_index += 1;
+            }
+        });
+
     let stdout = match child
         .stdout
         .ok_or_else(|| println!("Could not capture standard output."))
@@ -95,8 +134,6 @@ where
             panic!("Bye");
         }
     };
-
-    let mut line_index: usize = 0;
     let reader = BufReader::new(stdout);
     reader
         .lines()
@@ -109,26 +146,28 @@ where
                     println!("[cli::run()] {}", line);
                 }
 
-                match &callback_option {
-                    Some(callback) => {
-                        callback(line_index, line);
+                stderr_callback(line_index, line);
 
-                        line_index += 1;
-                    }
-                    None => (),
-                }
+                line_index += 1;
             }
         });
 }
 
 #[cfg(not(tarpaulin_include))]
-pub fn run_in_thread<C>(command: String, args: Vec<String>, callback_option: Option<C>) -> ()
+pub fn run_in_thread<C1, C2>(
+    command: String,
+    args: Vec<String>,
+    stdout_callback: C1,
+    stderr_callback: C2,
+) -> ()
 where
-    C: Fn(usize, String) -> (),
-    C: Send + 'static,
+    C1: Fn(usize, String) -> (),
+    C1: Send + 'static,
+    C2: Fn(usize, String) -> (),
+    C2: Send + 'static,
 {
     let join_handle = thread::spawn(move || {
-        run(command, args, callback_option);
+        run(command, args, stdout_callback, stderr_callback);
     });
 
     join_handle.join().unwrap();

@@ -18,9 +18,11 @@ trim_trailing_whitespace = false
 indent_size = 4
 max_line_length = 80
 
+[*.xml]
+trim_trailing_whitespace = false
+
 [COMMIT_EDITMSG]
 max_line_length = 0
-
 
 [Makefile]
 indent_size = 8
