@@ -24,7 +24,7 @@ custom-protocol = ["tauri/custom-protocol"]
 members = ["cli", "common", "dev", "filer", "jest"]
 
 [build-dependencies]
-tauri-build = { version = "1.2", features = [] }
+tauri-build = { version = "1.4", features = [] }
 
 [dependencies]
 # TODO Replace that with the v0.3.2 once it's released.
@@ -33,7 +33,7 @@ cli = { path = "./cli" }
 glob = { git = "https://github.com/rust-lang/glob", branch = "master" }
 filer = { path = "./filer" }
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.2", features = ["api-all"] }
+tauri = { version = "1.4", features = ["api-all"] }
 
 [dev-dependencies]
 jest = { path = "./jest" }
