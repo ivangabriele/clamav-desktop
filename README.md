@@ -62,7 +62,7 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 - [ ] Cloud: Definitions update
 - [ ] Config: Raw clamd.conf editor 
 - [x] Dashboard: Daemon control & status
-- [ ] Global: Tray icon 
+- [x] Global: Tray icon 
 - [x] Scanner: Drives selection
 - [x] Scanner: Folders selection
 - [ ] Technical: Releases in `.x64.deb`, `.x64.dmg`, and `.x64.msi` formats

@@ -1689,6 +1689,15 @@ dependencies = [
 
 [[package]]
 name = "infer"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f178e61cdbfe084aa75a2f4f7a25a5bb09701a47ae1753608f194b15783c937a"
+dependencies = [
+ "cfb",
+]
+
+[[package]]
+name = "infer"
 version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a898e4b7951673fce96614ce5751d13c40fc5674bc2d759288e46c3ab62598b3"
@@ -1846,10 +1855,44 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
+name = "libappindicator"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "db2d3cb96d092b4824cb306c9e544c856a4cb6210c1081945187f7f1924b47e8"
+dependencies = [
+ "glib",
+ "gtk",
+ "gtk-sys",
+ "libappindicator-sys",
+ "log",
+]
+
+[[package]]
+name = "libappindicator-sys"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1b3b6681973cea8cc3bce7391e6d7d5502720b80a581c9a95c9cbaf592826aa"
+dependencies = [
+ "gtk-sys",
+ "libloading",
+ "once_cell",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.147"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b4668fb0ea861c1df094127ac5f1da3409a82116a4ba74fca2e58ef927159bb3"
+
+[[package]]
+name = "libloading"
+version = "0.7.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b67380fd3b2fbe7527a606e18729d21c6f3951633d0500574c4dc22d2d638b9f"
+dependencies = [
+ "cfg-if",
+ "winapi",
+]
 
 [[package]]
 name = "line-wrap"
@@ -3519,6 +3562,7 @@ dependencies = [
  "core-foundation",
  "core-graphics",
  "crossbeam-channel",
+ "dirs-next",
  "dispatch",
  "gdk",
  "gdk-pixbuf",
@@ -3533,6 +3577,7 @@ dependencies = [
  "instant",
  "jni",
  "lazy_static",
+ "libappindicator",
  "libc",
  "log",
  "ndk",
@@ -3601,6 +3646,7 @@ dependencies = [
  "heck 0.4.1",
  "http",
  "ignore",
+ "infer 0.9.0",
  "notify-rust",
  "objc",
  "once_cell",
@@ -3608,6 +3654,7 @@ dependencies = [
  "os_info",
  "os_pipe",
  "percent-encoding",
+ "png",
  "rand 0.8.5",
  "raw-window-handle",
  "regex",
@@ -3746,7 +3793,7 @@ dependencies = [
  "glob 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "heck 0.4.1",
  "html5ever",
- "infer",
+ "infer 0.12.0",
  "json-patch",
  "kuchiki",
  "memchr",

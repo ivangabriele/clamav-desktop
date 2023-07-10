@@ -54,6 +54,7 @@ export const Logger = memo(UnmemoizedLogger, (prevProps, nextProps) => prevProps
 const Pre = styled.pre`
   background-color: black;
   border-radius: 0.33rem;
+  cursor: text;
   color: white;
   flex-grow: 1;
   margin: 1rem 0 0;
@@ -63,4 +64,6 @@ const Pre = styled.pre`
   overflow-y: scroll;
   padding: 0.5rem 1rem;
   text-overflow: ellipsis;
+  user-select: auto;
+  -webkit-user-select: auto;
 `
