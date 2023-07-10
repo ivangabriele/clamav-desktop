@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN" "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<!-- Should be available in /usr/share/polkit-1/actions -->
+<!-- https://askubuntu.com/a/332847/256539 -->
+<policyconfig>
+  <action id="com.clamav-desktop.policykit.clamscan">
+    <description>Run Clamscan</description>
+    <message>Authentication is required to run Clamscan.</message>
+    <vendor>ClamAV Desktop Project</vendor>
+    <vendor_url>https://clamav-desktop.com</vendor_url>
+    <icon_name>clamav-desktop</icon_name>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/clamscan</annotate>
+    <!-- TODO Is it needed? -->
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+</policyconfig>

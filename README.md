@@ -61,7 +61,7 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 
 - [ ] Cloud: Definitions update
 - [ ] Config: Raw clamd.conf editor 
-- [ ] Dashboard: Daemon control & status
+- [x] Dashboard: Daemon control & status
 - [ ] Global: Tray icon 
 - [x] Scanner: Drives selection
 - [x] Scanner: Folders selection
@@ -70,6 +70,8 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 #### v.0.5.0
 
 - [ ] Scanner: Abort scan
+- [ ] Scanner: Estimated time to completion
+- [ ] Scanner: Quarantined files management
 - [ ] Scanner: Summary
 - [ ] Scanner: Threats handling management
 - [ ] Technical: Store errors in local logs

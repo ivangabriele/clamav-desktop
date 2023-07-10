@@ -1,0 +1,3 @@
+comment:
+  # https://docs.codecov.com/docs/carryforward-flags#carryforward-flags-in-the-pull-request-comment
+  show_carryforward_flags: false

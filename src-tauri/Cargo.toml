@@ -13,28 +13,28 @@ homepage = "https://github.com/ivangabriele/clamav-desktop"
 repository = "https://github.com/ivangabriele/clamav-desktop.git"
 
 [features]
-# By default, Tauri runs in production mode
-# When `tauri dev` runs, it is executed with `cargo run --no-default-features` if `devPath` is an URL
-default = ["custom-protocol"]
-# This feature is used for production builds where `devPath` points to the filesystem
-# DO NOT remove this
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
 
 [workspace]
-members = ["cli", "common", "dev", "filer", "jest"]
+members = ["cli", "common", "dev", "filer", "glob"]
 
 [build-dependencies]
-tauri-build = { version = "1.2", features = [] }
+tauri-build = { version = "1.4", features = [] }
 
 [dependencies]
-# TODO Replace that with the v0.3.2 once it's released.
-# This release will include https://github.com/rust-lang/glob/pull/112 is released.
 cli = { path = "./cli" }
-glob = { git = "https://github.com/rust-lang/glob", branch = "master" }
 filer = { path = "./filer" }
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.2", features = ["api-all"] }
+tauri = { version = "1.4", features = ["api-all"] }
+chrono = "0.4.26"
+regex = "1.9.1"
+tokio = { version = "1.29.1", features = ["full"] }
 
 [dev-dependencies]
-jest = { path = "./jest" }
-mockall = "0.11.3"
+jrest = "0.2.3"
+mockall = "0.11.4"
+
+[package.metadata.deb]
+copyright = "2022-present, Ivan Gabriele <ivan.gabriele@gmail.com>"

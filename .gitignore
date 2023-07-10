@@ -143,8 +143,6 @@ dist
 ########################################
 # Custom
 
-# Create React App build output
-/build/*
 # /clamav/build
 
 # Yarn without Zero-Installs

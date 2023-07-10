@@ -3,8 +3,9 @@
   "build": {
     "beforeBuildCommand": "yarn build:webview",
     "beforeDevCommand": "yarn dev:webview",
-    "devPath": "http://localhost:3000",
-    "distDir": "../build"
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": false
   },
   "package": {
     "productName": "Clamav Desktop",
@@ -19,12 +20,22 @@
       "category": "Utility",
       "copyright": "© 2022-present Ivan Gabriele",
       "deb": {
-        "depends": ["clamav", "clamav-daemon"]
+        "depends": ["clamav", "clamav-daemon", "pkexec", "policykit-1"],
+        "desktopTemplate": "../assets/deb/template.desktop",
+        "files": {
+          "/usr/share/polkit-1/actions/com.clamav-desktop.app.policy": "../assets/deb/com.clamav-desktop.app.policy"
+        }
       },
       "externalBin": [],
-      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+      "icon": [
+        "../assets/icons/32x32.png",
+        "../assets/icons/128x128.png",
+        "../assets/icons/128x128@2x.png",
+        "../assets/icons/icon.icns",
+        "../assets/icons/icon.ico"
+      ],
       "identifier": "com.clamav-desktop.app",
-      "longDescription": "",
+      "longDescription": "ClamAV Desktop is a free and open-source GUI for ClamAV antivirus.\n\nPlease file your bugs (and only your bugs!) at: https://github.com/ivangabriele/clamav-desktop/issues.\n\nFor your questions and suggestions: https://github.com/ivangabriele/clamav-desktop/discussions.\n\nBe aware that ClamAV Desktop is neither endorsed nor part of official Cisco Systems projects.",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -33,7 +44,7 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "ClamAV Antivirus Desktop Application",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,

@@ -20,8 +20,8 @@
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true
   },
-  "exclude": [".yarn/*", "build/*", "clamav/*", "node_modules/*", "src-tauri/*"],
-  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+  "exclude": [".yarn/*", "build/*", "clamav/*", "node_modules/*", "src/**/__tests__/*", "src-tauri/*"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
       "path": "./tsconfig.node.json"

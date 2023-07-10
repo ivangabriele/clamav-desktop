@@ -4,7 +4,7 @@
 - [Getting started](#getting-started)
   - [Requirements](#requirements)
   - [First setup](#first-setup)
-    - [1. Git (with submodule)](#1-git-with-submodule)
+    - [1. Git (with submodules)](#1-git-with-submodules)
     - [2. Core with Tauri \& tauri-driver](#2-core-with-tauri--tauri-driver)
     - [3. Webview with Yarn v3](#3-webview-with-yarn-v3)
     - [4. Final Check](#4-final-check)
@@ -21,6 +21,8 @@
 - [Style Guide \& Conventions](#style-guide--conventions)
   - [Tests](#tests-1)
   - [Commit messages](#commit-messages)
+- [Recommended Editor/IDE Settings](#recommended-editoride-settings)
+  - [Visual Studio Code](#visual-studio-code)
 
 ## Personal Note
 
@@ -58,12 +60,12 @@ installation.
 > ⚠️ **Important**  
 > If you're under **Windows**, you nust run all CLI commands under a Linux shell-like terminal (i.e.: WSL or Git Bash).
 
-#### 1. Git (with submodule)
+#### 1. Git (with submodules)
 
 Then run:
 
 ```sh
-git clone https://github.com/ivangabriele/clamav-desktop.git
+git clone https://github.com/ivangabriele/clamav-desktop.git # or your fork
 cd ./clamav-desktop
 git submodule init
 git submodule update
@@ -78,7 +80,6 @@ as well as [this one](https://tauri.app/v1/guides/testing/webdriver/ci/).
 Once you're ready, you can run:
 
 ```sh
-mkdir ./build
 cd ./src-tauri
 cp ./.cargo/config.toml.example ./.cargo/config.toml # and customize the content to match your local environment
 cargo build
@@ -99,19 +100,24 @@ yarn
 #### 4. Final Check
 
 You should now be able to run `yarn dev` which will launch the application
-(serving first the Webview on port 3000 and then launching the Core desktop app embedding this Webview).
+(serving first the Webview on port 1420 and then launching the Core desktop app embedding this Webview).
 
 #### 5. Optional requirements
 
-- [cargo-watch](https://github.com/watchexec/cargo-watch#install) for `cargo watch` commands (i.e.: `make test-*-watch`)
-- [ggshield](https://github.com/GitGuardian/ggshield#installation) for `yarn test:sec` command
+- [cargo-deb](https://github.com/kornelski/cargo-deb#installation)
+  for debian bundle packaging.
+- [cargo-edit](https://github.com/killercup/cargo-edit).
+  for `cargo upgrade`-related commands (i.e.: `make upgrade`)
+- [cargo-watch](https://github.com/watchexec/cargo-watch#install)
+  for `cargo watch`-related commands (i.e.: `make test-*-watch`).
+- [ggshield](https://github.com/GitGuardian/ggshield#installation)
+  for `yarn test:sec` command.
 
 ### Local run & development
 
 This will watch for file changes and automatically re-hydrate the webapp on the go:
 
 ```sh
-yarn dev:docker
 yarn dev
 ```
 
@@ -166,7 +172,6 @@ yarn test:unit:webview
 
 ## Style Guide & Conventions
 
-
 ### Tests
 
 For Rust unit tests, to avoid overwhelming main files with tests code, we follow 
@@ -201,3 +206,14 @@ Our official scopes are:
 - `config`: Any change impacting the Config screen
 - `dashboard`: Any change impacting the Dashboard screen
 - `scanner`: Any change impacting the Scanner screen
+
+## Recommended Editor/IDE Settings
+
+### Visual Studio Code
+
+```json
+{
+  "rust-analyzer.files.excludeDirs": [".git", ".yarn", "clamav", "target", "node_modules"],
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
+```

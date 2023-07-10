@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
       # https://github.com/Swatinem/rust-cache#example-usage
       - uses: Swatinem/rust-cache@v2
         with:
@@ -20,12 +22,12 @@ jobs:
           key: integration_e2e_debian-latest
           prefix-key: rust-cache
           shared-key: v0
-          workspaces: "./src-tauri -> target"
+          workspaces: './src-tauri -> target'
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           cache: yarn
-          node-version: 18
+          node-version: 20
       - name: Install ClamAV
         run: |
           apt-get update

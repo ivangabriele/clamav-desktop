@@ -5,10 +5,9 @@ import type { ButtonProps as SuiButtonProps } from '@singularity/core'
 
 type ButtonProps = SuiButtonProps & {
   isActive: boolean
-  isSafe: boolean | undefined
   onClick: () => void
 }
-export function Button({ isActive, isSafe = false, onClick, ...props }: ButtonProps) {
+export function Button({ isActive, onClick, ...props }: ButtonProps) {
   const handleOnClick = () => {
     if (isActive) {
       return
@@ -17,12 +16,11 @@ export function Button({ isActive, isSafe = false, onClick, ...props }: ButtonPr
     onClick()
   }
 
-  return <StyledButton isActive={isActive} isSafe={isSafe} onClick={handleOnClick} {...props} />
+  return <StyledButton $isActive={isActive} onClick={handleOnClick} {...props} />
 }
 
-const StyledButton = styled(SuiButton)<{
-  isActive: boolean
-  isSafe: boolean | undefined
+const StyledButton = styled(SuiButton as any)<{
+  $isActive: boolean
 }>`
   background-color: ${p => (p.isActive ? 'rgb(21, 23, 44, 0)' : 'rgb(21, 23, 44)')};
   border: 0;
@@ -35,17 +33,7 @@ const StyledButton = styled(SuiButton)<{
   }
 
   > svg {
-    fill: ${p => {
-      if (p.isSafe === true) {
-        return p.theme.color.success.active
-      }
-
-      if (p.isSafe === false) {
-        return p.theme.color.danger.active
-      }
-
-      return 'white'
-    }};
+    fill: white;
     height: 3rem;
     opacity: ${p => (p.isActive ? 1 : 0.5)};
     width: 3rem;

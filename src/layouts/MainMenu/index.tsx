@@ -6,26 +6,21 @@ import { Page } from '../../constants'
 
 type MainMenuProps = {
   currentPage: Page
-  isClamDeamonRunning: boolean | undefined
   onChange: (newPage: Page) => void
 }
-export function MainMenu({ currentPage, isClamDeamonRunning, onChange }: MainMenuProps) {
+export function MainMenu({ currentPage, onChange }: MainMenuProps) {
   return (
     <Box data-tauri-drag-region>
-      <Button
-        isActive={currentPage === Page.DASHBOARD}
-        isSafe={isClamDeamonRunning}
-        onClick={() => onChange(Page.DASHBOARD)}
-      >
+      <Button isActive={currentPage === Page.DASHBOARD} onClick={() => onChange(Page.DASHBOARD)}>
         <MdOutlineShield />
       </Button>
-      <Button isActive={currentPage === Page.SCANNER} isSafe={undefined} onClick={() => onChange(Page.SCANNER)}>
+      <Button isActive={currentPage === Page.SCANNER} onClick={() => onChange(Page.SCANNER)}>
         <MdLocationSearching />
       </Button>
-      <Button isActive={currentPage === Page.CLOUD} isSafe={undefined} onClick={() => onChange(Page.CLOUD)}>
+      <Button isActive={currentPage === Page.CLOUD} onClick={() => onChange(Page.CLOUD)}>
         <MdOutlineCloudDownload />
       </Button>
-      <Button isActive={currentPage === Page.CONFIG} isSafe={undefined} onClick={() => onChange(Page.CONFIG)}>
+      <Button isActive={currentPage === Page.CONFIG} onClick={() => onChange(Page.CONFIG)}>
         <MdOutlineSettings />
       </Button>
     </Box>

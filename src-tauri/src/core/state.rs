@@ -1,8 +1,9 @@
 use std::sync::Mutex;
 
-use crate::scanner;
+use crate::{daemon, scanner};
 
 pub struct CoreState {
+    pub daemon: daemon::DaemonState,
     pub scanner: scanner::ScannerState,
 }
 

@@ -1,12 +1,27 @@
+use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Manager, State};
 
 use crate::{core, libs};
 // use cli;
-use filer::{self, FileExplorer};
+use filer;
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub enum ScannerStatusStep {
+    /// Counting the files to scan.
+    Counting,
+    /// Default step (= waiting for a new job).
+    Idle,
+    /// Listing the files to scan.
+    Listing,
+    /// Scanning the files.
+    Running,
+    /// Starting (= has called `clamscan` CLI command).
+    Starting,
+}
 
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct ScannerState {
-    file_explorer_tree: filer::FileExplorerTree,
+    file_explorer_tree: filer::file_explorer::FileExplorerTree,
     is_ready: bool,
     pub is_running: bool,
 }
@@ -15,6 +30,7 @@ pub struct ScannerState {
 struct ScannerStatus {
     current_file_path: String,
     progress: f64,
+    step: ScannerStatusStep,
 }
 
 pub const INITIAL_SCANNER_STATE: ScannerState = ScannerState {
@@ -41,8 +57,9 @@ pub fn toggle_file_explorer_node_check(
         // TODO Properly handle errors here.
         .unwrap();
 
-    let mut next_file_explorer =
-        filer::FileExplorer::new(core_state_mutable.scanner.file_explorer_tree.to_owned());
+    let mut next_file_explorer = filer::file_explorer::FileExplorer::new(
+        core_state_mutable.scanner.file_explorer_tree.to_owned(),
+    );
     next_file_explorer.toggle_is_checked(index_path);
 
     core_state_mutable.scanner.file_explorer_tree = next_file_explorer.into_tree().to_owned();
@@ -73,7 +90,7 @@ pub fn toggle_file_explorer_node_expansion(
         // TODO Properly handle errors here.
         .unwrap();
 
-    let mut next_file_explorer = filer::FileExplorer::new(
+    let mut next_file_explorer = filer::file_explorer::FileExplorer::new(
         core_state_mutex_guard_mutable
             .scanner
             .file_explorer_tree
@@ -140,7 +157,7 @@ pub async fn load_scanner_state(
 
     if !&core_state_mutex_guard_mutable.scanner.is_ready {
         let file_explorer_tree =
-            filer::list::<String>(false, None, Some(filer::FileKind::Directory))
+            filer::file_list::list::<String>(false, None, Some(filer::types::FileKind::Directory))
                 .into_file_explorer()
                 .into_tree();
         let updated_scanner_state = ScannerState {
@@ -169,19 +186,7 @@ pub async fn start_scanner(
     app_handle: AppHandle,
     state: State<'_, core::state::CoreStateMutex>,
 ) -> Result<(), String> {
-    println!("Calling command start_scan().",);
-
-    // Reset scanner status
-    app_handle
-        .to_owned()
-        .emit_all(
-            "scanner:status",
-            ScannerStatus {
-                current_file_path: "".to_string(),
-                progress: 0 as f64,
-            },
-        )
-        .unwrap();
+    println!("Calling command start_scanner().");
 
     // Set scanner state as "running"
     let mut core_state_mutex_guard_mutable = state
@@ -195,14 +200,28 @@ pub async fn start_scanner(
         // TODO Properly handle errors here.
         .unwrap();
 
+    // Send scanner status
+    app_handle
+        .to_owned()
+        .emit_all(
+            "scanner:status",
+            ScannerStatus {
+                current_file_path: "".to_string(),
+                progress: 0 as f64,
+                step: ScannerStatusStep::Listing,
+            },
+        )
+        .unwrap();
+
     // List selected paths
-    let paths = FileExplorer::new(
+    let paths = filer::file_explorer::FileExplorer::new(
         core_state_mutex_guard_mutable
             .scanner
             .file_explorer_tree
             .to_owned(),
     )
     .into_checked_paths();
+    println!("Recursively listing files in {:?}.", paths);
     let args: Vec<String> = vec![
         "-rv".to_string(),
         "--follow-dir-symlinks=0".to_string(),
@@ -212,14 +231,42 @@ pub async fn start_scanner(
     .chain(paths.to_owned().into_iter())
     .collect();
 
+    // Send scanner status
+    app_handle
+        .to_owned()
+        .emit_all(
+            "scanner:status",
+            ScannerStatus {
+                current_file_path: "".to_string(),
+                progress: 0 as f64,
+                step: ScannerStatusStep::Counting,
+            },
+        )
+        .unwrap();
+
     // Recursively count all the non-directory files within the selected paths
     let total_files_length = paths
         .to_owned()
         .into_iter()
-        .map(|path| filer::count(true, Some(path), Some(filer::FileKind::File)))
+        .map(|path| filer::file_list::count(true, Some(path), Some(filer::types::FileKind::File)))
         .sum::<usize>();
 
+    println!("Number of files to scan: {}.", total_files_length);
+
     drop(core_state_mutex_guard_mutable);
+
+    // Send scanner status
+    app_handle
+        .to_owned()
+        .emit_all(
+            "scanner:status",
+            ScannerStatus {
+                current_file_path: "".to_string(),
+                progress: 0 as f64,
+                step: ScannerStatusStep::Starting,
+            },
+        )
+        .unwrap();
 
     libs::cli::run(
         app_handle,
@@ -244,12 +291,14 @@ pub async fn start_scanner(
                 return ScannerStatus {
                     current_file_path: "Done".to_string(),
                     progress,
+                    step: ScannerStatusStep::Idle,
                 };
             }
 
             ScannerStatus {
                 current_file_path,
                 progress,
+                step: ScannerStatusStep::Running,
             }
         },
         |log| {

@@ -98,7 +98,7 @@ impl FileList {
 /// ```no_run
 /// use filer;
 ///
-/// assert_eq!(filer::list(false, Some("/"), Some(filer::FileKind::Directory)).into_strings()[0], "/bin");
+/// assert_eq!(filer::file_list::list(false, Some("/"), Some(filer::types::FileKind::Directory)).into_strings()[0], "/bin");
 /// ```
 // We add a `` ```no run `` here because it's too platform-specific to be consistently tested.
 // TODO Use `Path` instead of `String` for <directory_absolute_path>?

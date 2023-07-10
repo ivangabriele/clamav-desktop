@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories={{categories}}
+Comment={{comment}}
+Exec=pkexec {{exec}}
+Icon={{icon}}
+Name=ClamAV Desktop
+# Name={{name}}
+Terminal=false
+Type=Application
