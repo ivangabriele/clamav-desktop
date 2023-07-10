@@ -36,6 +36,8 @@ jobs:
         run: clamscan -V
       - name: Install Node.js dependencies
         run: yarn --frozen-lockfile
+      - name: Build binary
+        run: yarn release:bin
       - name: Run tests
         uses: nick-fields/retry@v2
         with:
