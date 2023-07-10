@@ -23,7 +23,7 @@
     "release:msi": "tauri build -b msi",
     "start": "./src-tauri/target/release/clamav-desktop",
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
-    "test:e2e": "yarn release:bin && xvfb-run wdio run ./configs/wdio.config.ts",
+    "test:e2e": "xvfb-run wdio run ./configs/wdio.config.ts",
     "test:lint": "eslint --ext js,ts,tsx .",
     "test:sec": "ggshield iac scan .",
     "test:type": "tsc --noEmit -p ./tsconfig.ci.json",
