@@ -34,8 +34,6 @@ pub async fn get_daemon_state(
     app_handle: AppHandle,
     state: State<'_, core::state::CoreStateMutex>,
 ) -> Result<(), ()> {
-    println!("Calling command get_daemon_state().");
-
     let mut core_state_mutex_guard_mutable = state
         .0
         .lock()

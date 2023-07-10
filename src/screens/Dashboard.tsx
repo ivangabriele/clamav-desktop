@@ -46,16 +46,20 @@ export function Dashboard({}: DashboardProps) {
 
   return (
     <Screen isLoading={isLoading}>
-      <h1>Dashboard</h1>
-
       {(!state || !state.is_ready || state.status === Core.DaemonStatus.UNKNOWN) && (
-        <Button disabled>Waiting for Daemon status…</Button>
+        <Button data-testid="dashboard__button" disabled>
+          Waiting for Daemon status…
+        </Button>
       )}
       {!!state && state.is_ready && state.status === Core.DaemonStatus.STARTED && (
-        <Button onClick={stopDaemon}>Stop Daemon</Button>
+        <Button data-testid="dashboard__button" onClick={stopDaemon}>
+          Stop Daemon
+        </Button>
       )}
       {!!state && state.is_ready && state.status === Core.DaemonStatus.STOPPED && (
-        <Button onClick={startDaemon}>Start Daemon</Button>
+        <Button data-testid="dashboard__button" onClick={startDaemon}>
+          Start Daemon
+        </Button>
       )}
 
       <Logger hasForcedScroll>{logsAsString}</Logger>

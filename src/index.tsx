@@ -23,7 +23,9 @@ const GlobalStyleCustom = createGlobalStyle`
   }
 
   * {
+    cursor: default;
     user-select: none;
+    -webkit-user-select: none;
   }
 `
 

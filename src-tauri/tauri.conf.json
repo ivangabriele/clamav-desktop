@@ -55,6 +55,10 @@
     "security": {
       "csp": null
     },
+    "systemTray": {
+      "iconPath": "../assets/icons/icon.png",
+      "iconAsTemplate": true
+    },
     "updater": {
       "active": false
     },
@@ -63,7 +67,7 @@
         "decorations": false,
         "fileDropEnabled": false,
         "height": 600,
-        "label": "ClamAV",
+        "label": "main",
         "resizable": false,
         "title": "ClamAV Desktop",
         "width": 800

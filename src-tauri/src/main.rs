@@ -1,5 +1,5 @@
-// We allow `unused_imports` & `unused_variables` here because the `debug_assertions` are unused in production
-// but required for development.
+// We allow `unused_imports` & `unused_variables` here
+// because the `debug_assertions` are unused in production but required for development.
 
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
@@ -7,11 +7,13 @@
 use std::sync::Mutex;
 
 #[allow(unused_imports)]
-use tauri::{LogicalSize, Manager};
+use tauri::LogicalSize;
+use tauri::{Manager, SystemTrayEvent};
 
 mod core;
 mod daemon;
 mod libs;
+mod modules;
 mod scanner;
 
 #[cfg(not(tarpaulin_include))]
@@ -21,13 +23,15 @@ fn main() {
         scanner: scanner::INITIAL_SCANNER_STATE,
     };
 
+    let system_tray = modules::tray::new();
+
     tauri::Builder::default()
         .setup(
             #[allow(unused_variables)]
             |app| {
                 #[cfg(debug_assertions)]
                 {
-                    let window = app.get_window("ClamAV").unwrap();
+                    let window = app.get_window("main").unwrap();
                     window
                         .set_size(LogicalSize::<u32> {
                             height: 768,
@@ -53,20 +57,43 @@ fn main() {
             scanner::toggle_file_explorer_node_check,
             scanner::toggle_file_explorer_node_expansion,
         ])
-        .run(tauri::generate_context!())
+        .system_tray(system_tray)
+        .on_system_tray_event(|app_handle, event| match event {
+            SystemTrayEvent::LeftClick {
+                position: _,
+                size: _,
+                ..
+            } => modules::window::toggle(app_handle),
+            SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+                "toggle" => modules::window::toggle(app_handle),
+                "quit" => {
+                    std::process::exit(0);
+                }
+                _ => {}
+            },
+            _ => {}
+        })
+        .on_window_event(|event| match event.event() {
+            tauri::WindowEvent::CloseRequested { api, .. } => {
+                api.prevent_close();
+
+                let app_handle = event.window().app_handle();
+                modules::window::toggle(&app_handle);
+            }
+            _ => {}
+        })
+        .build(tauri::generate_context!())
         // TODO Properly handle errors here.
-        .expect("An error happened during ClamAV Desktop boot.");
+        .expect("An error happened while building ClamAV Desktop.")
+        .run(|app_handle, event| match event {
+            tauri::RunEvent::ExitRequested { api, .. } => {
+                println!("Exit requested!!!");
+
+                api.prevent_exit();
+
+                let item_handle = app_handle.tray_handle().get_item("toggle");
+                item_handle.set_title("Show").unwrap();
+            }
+            _ => {}
+        });
 }
-
-// fn run() {
-//     let _os = OS;
-//     let output = Command::new("clamscanz")
-//         .arg("--version")
-//         .output()
-//         .expect("Failed to get clamscan version.");
-
-//     let println!("status: {}", output.status);
-//     print_type_of(&output.status);
-//     println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-//     println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
-// }
