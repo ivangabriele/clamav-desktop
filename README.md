@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="ClamAV Desktop Logo" height="128" src="src-tauri/icons/icon.svg" />
+  <img alt="ClamAV Desktop Logo" height="128" src="assets/icons/icon.svg" />
   <h1 align="center">ClamAV Desktop</h1>
 </p>
 
