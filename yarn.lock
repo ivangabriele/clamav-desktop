@@ -5077,7 +5077,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:4.6.0"
     eslint-plugin-sort-destructure-keys: "npm:1.5.0"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
-    eslint-plugin-typescript-sort-keys: "npm:2.3.0"
+    eslint-plugin-typescript-sort-keys: "npm:3.1.0"
     esm-path: "npm:1.0.1"
     husky: "npm:8.0.3"
     jest: "npm:29.6.1"
@@ -6554,18 +6554,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-typescript-sort-keys@npm:2.3.0":
-  version: 2.3.0
-  resolution: "eslint-plugin-typescript-sort-keys@npm:2.3.0"
+"eslint-plugin-typescript-sort-keys@npm:3.1.0":
+  version: 3.1.0
+  resolution: "eslint-plugin-typescript-sort-keys@npm:3.1.0"
   dependencies:
     "@typescript-eslint/experimental-utils": "npm:^5.0.0"
     json-schema: "npm:^0.4.0"
     natural-compare-lite: "npm:^1.4.0"
   peerDependencies:
-    "@typescript-eslint/parser": ^1 || ^2 || ^3 || ^4 || ^5
-    eslint: ^5 || ^6 || ^7 || ^8
+    "@typescript-eslint/parser": ^6
+    eslint: ^7 || ^8
     typescript: ^3 || ^4 || ^5
-  checksum: d61483d8de0acd58dda6bc660c76f6a1d9994b09bf7c6008f9e2fdce69145de18dc11eee5ee98e2a41ac2930ba956bebf029703d1f77191c84c77986d4cf5972
+  checksum: 7ebb5accfc0cfabdd17257ec91a86a3083018f039a9c9e899be1db62615ebb1446455062571818d646685e25277aec88f80a5a95570e71c2b0f0b38d8b945f92
   languageName: node
   linkType: hard
 
