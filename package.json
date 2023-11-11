@@ -102,7 +102,7 @@
     "prettier": "2.8.8",
     "shelljs": "0.8.5",
     "ts-node": "10.9.1",
-    "type-fest": "3.13.0",
+    "type-fest": "4.7.1",
     "use-debounce": "9.0.4",
     "vite": "4.4.2"
   },

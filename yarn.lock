@@ -5098,7 +5098,7 @@ __metadata:
     shelljs: "npm:0.8.5"
     styled-components: "npm:6.0.3"
     ts-node: "npm:10.9.1"
-    type-fest: "npm:3.13.0"
+    type-fest: "npm:4.7.1"
     typescript: "npm:5.1.6"
     use-debounce: "npm:9.0.4"
     vite: "npm:4.4.2"
@@ -12831,10 +12831,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:3.13.0":
-  version: 3.13.0
-  resolution: "type-fest@npm:3.13.0"
-  checksum: 2ad0406fb32c536fb0ea485898e74e7e51234d46929e33d4051b01257c6ca012bb7b5a833d4da3ed0f1d942e40e3f364ffa6071177ed91930b4db3c98ffb2ce8
+"type-fest@npm:4.7.1":
+  version: 4.7.1
+  resolution: "type-fest@npm:4.7.1"
+  checksum: ef21f317738080d71d8603a65bd7136e1e0246980b407e9fe6b4c35cc239b712dd737b06c391e7cde8213d8a733449930b6cc5a3417324b90dddeb84fa167629
   languageName: node
   linkType: hard
 
