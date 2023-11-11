@@ -99,7 +99,7 @@
     "jest-environment-jsdom": "29.6.1",
     "lint-staged": "13.2.3",
     "make-dir-cli": "3.1.0",
-    "prettier": "2.8.8",
+    "prettier": "3.0.3",
     "shelljs": "0.8.5",
     "ts-node": "10.9.1",
     "type-fest": "3.13.0",
