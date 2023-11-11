@@ -1,3 +1,15 @@
+# https://docs.codecov.com/docs/carryforward-flags#carryforward-flags-in-the-pull-request-comment
 comment:
-  # https://docs.codecov.com/docs/carryforward-flags#carryforward-flags-in-the-pull-request-comment
-  show_carryforward_flags: false
+  # branches:
+  #   - main
+  # behavior: default
+  # layout: 'diff, flags, files'
+  show_carryforward_flags: true
+  # require_base: false
+  # require_changes: true
+  # require_head: true
+# flags:
+#   core:
+#     carryforward: true
+#   webview:
+#     carryforward: true

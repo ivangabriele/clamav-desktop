@@ -58,12 +58,13 @@ const Pre = styled.pre`
   color: white;
   flex-grow: 1;
   margin: 1rem 0 0;
+  max-width: 891px;
   min-width: 0;
   opacity: 0.65;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: scroll;
   padding: 0.5rem 1rem;
-  text-overflow: ellipsis;
+  /* text-overflow: ellipsis; */
   user-select: auto;
   -webkit-user-select: auto;
 `

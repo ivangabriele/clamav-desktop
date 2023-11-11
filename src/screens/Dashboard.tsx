@@ -51,7 +51,7 @@ export function Dashboard({}: DashboardProps) {
           Waiting for Daemon status…
         </Button>
       )}
-      {!!state && state.is_ready && state.status === Core.DaemonStatus.STARTED && (
+      {!!state && state.is_ready && state.status === Core.DaemonStatus.RUNNING && (
         <Button data-testid="dashboard__button" onClick={stopDaemon}>
           Stop Daemon
         </Button>

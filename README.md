@@ -65,11 +65,11 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 - [x] Global: Tray icon 
 - [x] Scanner: Drives selection
 - [x] Scanner: Folders selection
+- [x] Scanner: Scan interruption
 - [ ] Technical: Releases in `.x64.deb`, `.x64.dmg`, and `.x64.msi` formats
 
 #### v.0.5.0
 
-- [ ] Scanner: Abort scan
 - [ ] Scanner: Estimated time to completion
 - [ ] Scanner: Quarantined files management
 - [ ] Scanner: Summary

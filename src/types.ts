@@ -1,6 +1,23 @@
 import type { FileKind } from './constants'
 
+export type Undefinable<T> = { [P in keyof T]: T[P] | undefined }
+
 export namespace Core {
+  // ---------------------------------------------------------------------------
+  // Cloud
+
+  export type CloudState = {
+    is_ready: boolean
+    logs: string[]
+    status: CloudStatus
+  }
+
+  export enum CloudStatus {
+    RUNNING = 'Running',
+    STOPPED = 'Stopped',
+    UNKNOWN = 'Unknown',
+  }
+
   // ---------------------------------------------------------------------------
   // Daemon
 
@@ -11,7 +28,7 @@ export namespace Core {
   }
 
   export enum DaemonStatus {
-    STARTED = 'Started',
+    RUNNING = 'Running',
     STOPPED = 'Stopped',
     UNKNOWN = 'Unknown',
   }
@@ -56,5 +73,18 @@ export namespace Core {
     RUNNING = 'Running',
     /** Starting (= has called `clamscan` CLI command). */
     STARTING = 'Starting',
+  }
+}
+
+export namespace Webview {
+  export enum CacheKey {
+    CLOUD_STATE = 'CLOUD_STATE',
+    CLOUD_STATUS = 'CLOUD_STATUS',
+    CONFIG_STATE = 'CONFIG_STATE',
+    DAEMON_STATE = 'DAEMON_STATE',
+    DAEMON_STATUS = 'DAEMON_STATUS',
+    DASHBOARD_STATE = 'DAEMON_STATE',
+    SCANNER_STATE = 'SCANNER_STATE',
+    SCANNER_STATUS = 'SCANNER_STATUS',
   }
 }

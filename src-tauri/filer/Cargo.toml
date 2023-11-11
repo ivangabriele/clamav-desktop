@@ -8,9 +8,7 @@ edition = "2021"
 [dependencies]
 cli = { path = "../cli" }
 common = { path = "../common" }
-# TODO Replace that with the v0.3.2 once it's released.
-# This release will include https://github.com/rust-lang/glob/pull/112 is released.
-glob = { path = "../glob" }
+glob = { git = "https://github.com/rust-lang/glob", branch = "master" }
 serde = { version = "1.0.164", features = ["derive"] }
 
 [dev-dependencies]
