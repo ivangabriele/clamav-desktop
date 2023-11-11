@@ -1,70 +1,53 @@
 import { Button } from '@singularity/core'
 import { invoke } from '@tauri-apps/api'
+import { listen } from '@tauri-apps/api/event'
 import { useCallback, useEffect, useState } from 'react'
-// import { toast } from 'react-hot-toast'
-import styled from 'styled-components'
 
 import { Logger } from '../elements/Logger'
-
-const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  height: 100%;
-  padding: 1rem;
-`
+import { Screen } from '../layouts/Screen'
+import { Core } from '../types'
 
 export function Cloud() {
-  const [isFreshClamRunning, setIsFreshClamRunning] = useState(false)
-  const [isInitializing, setIsInitializing] = useState(true)
-  const [logs, setLogs] = useState<string[]>([])
+  const [state, setState] = useState<Core.CloudState | undefined>(undefined)
 
-  const check = useCallback(async () => {
-    await invoke('scan', {
-      path: '~',
-    })
-    // const [isFreshClamRunning, err] = await window.electronApi.isFreshClamRunning()
-    // if (err !== null) {
-    //   toast.error(err.message)
+  const isLoading = !state || !state.is_ready
+  const logsAsString = (state?.logs || []).join('\n')
 
-    //   return
-    // }
+  const start = useCallback(() => {
+    invoke('start_update')
+  }, [])
 
-    // setIsFreshClamRunning(isFreshClamRunning as boolean)
-    if (isInitializing) {
-      setIsInitializing(false)
-    }
-  }, [isInitializing])
-
-  const run = useCallback(async () => {
-    setIsFreshClamRunning(true)
-
-    await invoke('sync')
-
-    // const [output, err] = await window.electronApi.runFreshClam()
-    // if (err !== null) {
-    //   // toast.error(err.message)
-    //   setLogs([err.message, ...logs])
-    //   setIsFreshClamRunning(false)
-
-    //   return
-    // }
-
-    // setLogs([output as string, ...logs])
-    setLogs([])
-    setIsFreshClamRunning(false)
+  const stop = useCallback(() => {
+    invoke('stop_update')
   }, [])
 
   useEffect(() => {
-    check()
-  }, [check])
+    listen<Core.CloudState>('cloud:state', event => {
+      setState(event.payload)
+    })
+
+    invoke('get_cloud_state')
+  }, [])
 
   return (
-    <Box>
-      <Button disabled={isInitializing || isFreshClamRunning} onClick={run}>
-        {isFreshClamRunning ? 'Synchronizing virus definitions…' : 'Synchronize virus definitions'}
-      </Button>
-      <Logger>{logs.join('\n')}</Logger>
-    </Box>
+    <Screen isLoading={isLoading}>
+      {(!state || !state.is_ready || state.status === Core.CloudStatus.UNKNOWN) && (
+        <Button data-testid="cloud__button" disabled>
+          Waiting for Cloud status…
+        </Button>
+      )}
+      {!!state && state.is_ready && state.status === Core.CloudStatus.RUNNING && (
+        <Button data-testid="cloud__button" onClick={stop}>
+          Stop Update
+        </Button>
+      )}
+      {!!state && state.is_ready && state.status === Core.CloudStatus.STOPPED && (
+        <Button data-testid="cloud__button" onClick={start}>
+          Start Update
+        </Button>
+      )}
+
+      <Logger hasForcedScroll>{logsAsString}</Logger>
+    </Screen>
   )
 }

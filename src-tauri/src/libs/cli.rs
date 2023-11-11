@@ -1,11 +1,9 @@
 use serde::Serialize;
 use std::{
     io::{BufRead, BufReader},
-    process::{Command, Stdio},
+    process::{Child, Command, Stdio},
 };
-use tauri::{AppHandle, Manager, State};
-
-use crate::core;
+use tauri::{AppHandle, Manager};
 
 #[derive(Clone, serde::Serialize)]
 struct LogPayload {
@@ -16,117 +14,66 @@ struct LogPayload {
 #[cfg(not(tarpaulin_include))]
 pub fn run<B, F, P>(
     app_handle: AppHandle,
-    state: State<'_, core::state::CoreStateMutex>,
     binary_path: String,
     args: Vec<String>,
     event_name: String,
     event_payload_builder: B,
     filter_log: F,
-) -> ()
+) -> Child
 where
-    B: Fn(String, usize) -> P,
-    F: Fn(String) -> bool,
-    P: Serialize + Clone,
+    B: Fn(String, usize) -> P + 'static + std::marker::Send,
+    F: Fn(String) -> bool + 'static + std::marker::Send,
+    P: Serialize + Clone + 'static + std::marker::Send,
 {
-    let app_handle_owner = app_handle.to_owned();
+    // let app_handle_owned = app_handle.to_owned();
 
-    let child = match Command::new(binary_path)
+    let mut child = Command::new(binary_path)
         .args(args)
         .stderr(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
-    {
-        Ok(child) => child,
-        // TODO Properly handle this error.
-        Err(error) => {
-            println!("{:?}", error);
+        .expect("Failed to spawn child process.");
 
-            panic!("Bye");
-        }
-    };
-
-    let stdout = match child
+    let stdout = child
         .stdout
-        .ok_or_else(|| println!("Could not capture standard output."))
-    {
-        Ok(stdout) => stdout,
-        // TODO Properly handle this error.
-        Err(error) => {
-            println!("{:?}", error);
+        .take()
+        .expect("Failed to attach standard output.");
 
-            panic!("Bye");
-        }
-    };
+    std::thread::spawn(move || {
+        let mut log_index = 0;
+        let reader = BufReader::new(stdout);
+        reader
+            .lines()
+            // TODO Is it the best way to achieve that?
+            .filter_map(|line| line.ok())
+            .for_each({
+                move |line| {
+                    #[cfg(debug_assertions)]
+                    {
+                        println!("[libs::cli::run()] {}", line);
+                    }
 
-    let mut log_index = 0;
-    let reader = BufReader::new(stdout);
-    reader
-        .lines()
-        // TODO Is it the best way to achieve that?
-        .filter_map(|line| line.ok())
-        .for_each({
-            move |line| {
-                #[cfg(debug_assertions)]
-                {
-                    println!("[libs::cli::run()] {}", line);
+                    if filter_log(line.to_owned()) {
+                        app_handle
+                            .to_owned()
+                            .emit_all(
+                                &*event_name,
+                                event_payload_builder(line.to_owned(), log_index),
+                            )
+                            .unwrap();
+
+                        log_index += 1;
+                    }
                 }
+            });
 
-                if filter_log(line.to_owned()) {
-                    app_handle
-                        .to_owned()
-                        .emit_all(
-                            &*event_name,
-                            event_payload_builder(line.to_owned(), log_index),
-                        )
-                        .unwrap();
+        // let mut core_state_mutex_guard = app_handle_owned
+        //     .state::<core::state::SharedCoreState>()
+        //     .inner()
+        //     .0
+        //     .lock()
+        //     .unwrap();
+    });
 
-                    log_index += 1;
-                }
-            }
-        });
-
-    let mut core_state_mutex_guard_mutable = state
-        .0
-        .lock()
-        // TODO Properly handle errors here.
-        .unwrap();
-    core_state_mutex_guard_mutable.scanner.is_running = false;
-    app_handle_owner
-        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
-        // TODO Properly handle errors here.
-        .unwrap();
-
-    drop(core_state_mutex_guard_mutable)
+    child
 }
-
-// #[allow(dead_code)]
-// pub fn run_in_thread<B, F, P>(
-//     app_handle: AppHandle,
-//     state: State<'_, core::state::CoreStateMutex>,
-//     binary_path: String,
-//     args: Vec<String>,
-//     event_name: String,
-//     event_payload_builder: B,
-//     filter_log: F,
-// ) -> ()
-// where
-//     B: Fn(String, usize) -> P,
-//     B: Send + 'static,
-//     F: Fn(String) -> bool,
-//     F: Send + 'static,
-//     P: Serialize + Clone,
-// {
-//     let join_handle = thread::spawn(move || {
-//         run(
-//             app_handle,
-//             state,
-//             binary_path,
-//             args,
-//             event_name,
-//             event_payload_builder,
-//             filter_log,
-//         );
-//     });
-
-//     join_handle.join().unwrap();
-// }

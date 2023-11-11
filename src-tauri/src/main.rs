@@ -4,12 +4,11 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::sync::Mutex;
-
 #[allow(unused_imports)]
 use tauri::LogicalSize;
 use tauri::{Manager, SystemTrayEvent};
 
+mod cloud;
 mod core;
 mod daemon;
 mod libs;
@@ -18,11 +17,6 @@ mod scanner;
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
-    let initial_core_state = core::state::CoreState {
-        daemon: daemon::INITIAL_DAEMON_STATE,
-        scanner: scanner::INITIAL_SCANNER_STATE,
-    };
-
     let system_tray = modules::tray::new();
 
     tauri::Builder::default()
@@ -46,14 +40,19 @@ fn main() {
                 Ok(())
             },
         )
-        .manage(core::state::CoreStateMutex(Mutex::new(initial_core_state)))
+        // https://github.com/tauri-apps/tauri/blob/dev/examples/state/main.rs
+        .manage(core::state::SharedCoreState(Default::default()))
         .invoke_handler(tauri::generate_handler![
+            // cloud::start_update,
+            // cloud::stop_update,
+            cloud::get_cloud_state,
             daemon::get_daemon_state,
             daemon::start_daemon,
             daemon::stop_daemon,
             scanner::get_scanner_state,
             scanner::load_scanner_state,
             scanner::start_scanner,
+            scanner::stop_scanner,
             scanner::toggle_file_explorer_node_check,
             scanner::toggle_file_explorer_node_expansion,
         ])

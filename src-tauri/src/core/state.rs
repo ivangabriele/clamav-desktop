@@ -1,10 +1,17 @@
-use std::sync::Mutex;
+use std::{
+    process::Child,
+    sync::{Arc, Mutex},
+};
 
-use crate::{daemon, scanner};
+use crate::{cloud, daemon, scanner};
 
+#[derive(Default)]
 pub struct CoreState {
+    pub cloud: cloud::CloudState,
     pub daemon: daemon::DaemonState,
     pub scanner: scanner::ScannerState,
+    pub scanner_thread: Option<Child>,
 }
 
-pub struct CoreStateMutex(pub Mutex<CoreState>);
+#[derive(Default)]
+pub struct SharedCoreState(pub Arc<Mutex<CoreState>>);

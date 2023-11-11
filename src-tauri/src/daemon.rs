@@ -1,40 +1,35 @@
 use std::process::{Command as StdCommand, Stdio};
 use std::str;
-use tokio::process::Command as TokioCommand;
 
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Manager, State};
+use tokio::process::Command as TokioCommand;
 
 use crate::core;
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum DaemonStatus {
-    Started,
+    Running,
     Stopped,
+    #[default]
     Unknown,
 }
 
-#[derive(Debug, Clone, serde::Serialize)]
+#[derive(Clone, Debug, Default, Serialize)]
 pub struct DaemonState {
     is_ready: bool,
     logs: Vec<String>,
     status: DaemonStatus,
 }
 
-pub const INITIAL_DAEMON_STATE: DaemonState = DaemonState {
-    is_ready: false,
-    logs: Vec::new(),
-    status: DaemonStatus::Unknown,
-};
-
 #[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub async fn get_daemon_state(
     app_handle: AppHandle,
-    state: State<'_, core::state::CoreStateMutex>,
+    state: State<'_, core::state::SharedCoreState>,
 ) -> Result<(), ()> {
-    let mut core_state_mutex_guard_mutable = state
+    let mut core_state_mutex_guard = state
         .0
         .lock()
         // TODO Properly handle errors here.
@@ -46,14 +41,12 @@ pub async fn get_daemon_state(
         logs,
         status,
     };
-    core_state_mutex_guard_mutable.daemon = updated_daemon_state;
+    core_state_mutex_guard.daemon = updated_daemon_state;
 
     app_handle
-        .emit_all("daemon:state", &core_state_mutex_guard_mutable.daemon)
+        .emit_all("daemon:state", &core_state_mutex_guard.daemon)
         // TODO Properly handle errors here.
         .unwrap();
-
-    drop(core_state_mutex_guard_mutable);
 
     Ok(())
 }
@@ -104,7 +97,7 @@ fn get_service_status() -> (DaemonStatus, Vec<String>) {
     for line in output_str.lines() {
         if let Some(cap) = status_regex.captures(line) {
             status = match &cap[1] {
-                "active" => DaemonStatus::Started,
+                "active" => DaemonStatus::Running,
                 "inactive" => DaemonStatus::Stopped,
                 _ => DaemonStatus::Unknown,
             };

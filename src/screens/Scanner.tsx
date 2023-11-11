@@ -2,15 +2,16 @@ import { Button } from '@singularity/core'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import numeral from 'numeral'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 // import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
 import { FileExplorer } from '../components/FileExplorer'
 import { ScanningSpinner } from '../elements/ScanningSpinner'
+import { useCachedState } from '../hooks/useCachedState'
 import { useForceUpdate } from '../hooks/useForceUpdate'
 import { Screen } from '../layouts/Screen'
-import { Core } from '../types'
+import { Core, Webview } from '../types'
 
 type ScannerProps = {}
 // eslint-disable-next-line no-empty-pattern
@@ -20,8 +21,8 @@ export function Scanner({}: ScannerProps) {
   const countdownRef = useRef<number | undefined>()
   const countdownTimerRef = useRef<NodeJS.Timer | undefined>()
 
-  const [state, setState] = useState<Core.ScannerState | undefined>(undefined)
-  const [status, setStatus] = useState<Core.ScannerStatus | undefined>(undefined)
+  const [state, setState] = useCachedState<Core.ScannerState | undefined>(Webview.CacheKey.SCANNER_STATE, undefined)
+  const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(Webview.CacheKey.SCANNER_STATUS, undefined)
 
   const isLoading = !state || !state.is_ready
 
@@ -37,12 +38,12 @@ export function Scanner({}: ScannerProps) {
     })
   }, [])
 
-  const startScanner = useCallback(async () => {
+  const startScanner = useCallback(() => {
     invoke('start_scanner')
   }, [])
 
-  const stopScanner = useCallback(async () => {
-    // TODO Implement that.
+  const stopScanner = useCallback(() => {
+    invoke('stop_scanner')
   }, [])
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export function Scanner({}: ScannerProps) {
     listen<Core.ScannerStatus>('scanner:status', event => {
       setStatus(event.payload)
     })
-  }, [])
+  }, [setState, setStatus])
 
   useEffect(() => {
     if (status?.step !== Core.ScannerStatusStep.STARTING) {
@@ -113,9 +114,7 @@ export function Scanner({}: ScannerProps) {
             </Status>
           </Box>
 
-          <Button disabled onClick={stopScanner}>
-            Stop Scan
-          </Button>
+          <Button onClick={stopScanner}>Stop Scan</Button>
         </>
       )}
     </Screen>

@@ -2,14 +2,14 @@ use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Manager, State};
 
 use crate::{core, libs};
-// use cli;
 use filer;
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum ScannerStatusStep {
     /// Counting the files to scan.
     Counting,
     /// Default step (= waiting for a new job).
+    #[default]
     Idle,
     /// Listing the files to scan.
     Listing,
@@ -19,7 +19,7 @@ pub enum ScannerStatusStep {
     Starting,
 }
 
-#[derive(Debug, Clone, serde::Serialize)]
+#[derive(Clone, Debug, Default, Serialize)]
 pub struct ScannerState {
     file_explorer_tree: filer::file_explorer::FileExplorerTree,
     is_ready: bool,
@@ -33,40 +33,29 @@ struct ScannerStatus {
     step: ScannerStatusStep,
 }
 
-pub const INITIAL_SCANNER_STATE: ScannerState = ScannerState {
-    file_explorer_tree: Vec::new(),
-    is_ready: false,
-    is_running: false,
-};
-
 #[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub fn toggle_file_explorer_node_check(
     app_handle: AppHandle,
     index_path: Vec<usize>,
-    state: State<core::state::CoreStateMutex>,
+    state: State<core::state::SharedCoreState>,
 ) -> Result<(), ()> {
     println!(
         "Calling command toggle_file_explorer_node_check() with index_path = {:?}.",
         index_path
     );
 
-    let mut core_state_mutable = state
-        .0
-        .lock()
-        // TODO Properly handle errors here.
-        .unwrap();
+    let mut core_state_mutex_guard = state.0.lock().unwrap();
 
     let mut next_file_explorer = filer::file_explorer::FileExplorer::new(
-        core_state_mutable.scanner.file_explorer_tree.to_owned(),
+        core_state_mutex_guard.scanner.file_explorer_tree.to_owned(),
     );
     next_file_explorer.toggle_is_checked(index_path);
 
-    core_state_mutable.scanner.file_explorer_tree = next_file_explorer.into_tree().to_owned();
+    core_state_mutex_guard.scanner.file_explorer_tree = next_file_explorer.into_tree().to_owned();
 
     app_handle
-        .emit_all("scanner:state", &core_state_mutable.scanner)
-        // TODO Properly handle errors here.
+        .emit_all("scanner:state", &core_state_mutex_guard.scanner)
         .unwrap();
 
     Ok(())
@@ -76,37 +65,26 @@ pub fn toggle_file_explorer_node_check(
 #[tauri::command]
 pub fn toggle_file_explorer_node_expansion(
     app_handle: AppHandle,
+    state: State<'_, core::state::SharedCoreState>,
     index_path: Vec<usize>,
-    state: State<core::state::CoreStateMutex>,
 ) -> Result<(), ()> {
     println!(
         "Calling command toggle_file_explorer_node_expansion() with index_path = {:?}.",
         index_path
     );
 
-    let mut core_state_mutex_guard_mutable = state
-        .0
-        .lock()
-        // TODO Properly handle errors here.
-        .unwrap();
+    let mut core_state_mutex_guard = state.0.lock().unwrap();
 
     let mut next_file_explorer = filer::file_explorer::FileExplorer::new(
-        core_state_mutex_guard_mutable
-            .scanner
-            .file_explorer_tree
-            .to_owned(),
+        core_state_mutex_guard.scanner.file_explorer_tree.to_owned(),
     );
     next_file_explorer.toggle_is_expanded(index_path);
 
-    core_state_mutex_guard_mutable.scanner.file_explorer_tree =
-        next_file_explorer.into_tree().to_owned();
+    core_state_mutex_guard.scanner.file_explorer_tree = next_file_explorer.into_tree().to_owned();
 
     app_handle
-        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
-        // TODO Properly handle errors here.
+        .emit_all("scanner:state", &core_state_mutex_guard.scanner)
         .unwrap();
-
-    drop(core_state_mutex_guard_mutable);
 
     Ok(())
 }
@@ -116,27 +94,15 @@ pub fn toggle_file_explorer_node_expansion(
 #[tauri::command]
 pub async fn get_scanner_state(
     app_handle: AppHandle,
-    state: State<'_, core::state::CoreStateMutex>,
+    state: State<'_, core::state::SharedCoreState>,
 ) -> Result<(), ()> {
     println!("Calling command get_scanner_state().");
 
-    let core_state_mutex_guard_mutable = state
-        .0
-        .lock()
-        // TODO Properly handle errors here.
-        .unwrap();
-
-    println!(
-        "core_state_mutex_guard_mutable.scanner: {:?}",
-        &core_state_mutex_guard_mutable.scanner
-    );
+    let core_state_mutex_guard = state.0.lock().unwrap();
 
     app_handle
-        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
-        // TODO Properly handle errors here.
+        .emit_all("scanner:state", &core_state_mutex_guard.scanner)
         .unwrap();
-
-    drop(core_state_mutex_guard_mutable);
 
     Ok(())
 }
@@ -145,17 +111,13 @@ pub async fn get_scanner_state(
 #[tauri::command]
 pub async fn load_scanner_state(
     app_handle: AppHandle,
-    state: State<'_, core::state::CoreStateMutex>,
+    state: State<'_, core::state::SharedCoreState>,
 ) -> Result<(), ()> {
     println!("Calling command load_scanner_state().");
 
-    let mut core_state_mutex_guard_mutable = state
-        .0
-        .lock()
-        // TODO Properly handle errors here.
-        .unwrap();
+    let mut core_state_mutex_guard = state.0.lock().unwrap();
 
-    if !&core_state_mutex_guard_mutable.scanner.is_ready {
+    if !&core_state_mutex_guard.scanner.is_ready {
         let file_explorer_tree =
             filer::file_list::list::<String>(false, None, Some(filer::types::FileKind::Directory))
                 .into_file_explorer()
@@ -163,18 +125,15 @@ pub async fn load_scanner_state(
         let updated_scanner_state = ScannerState {
             file_explorer_tree: file_explorer_tree.to_owned(),
             is_ready: true,
-            ..core_state_mutex_guard_mutable.scanner
+            ..core_state_mutex_guard.scanner
         };
 
-        core_state_mutex_guard_mutable.scanner = updated_scanner_state;
+        core_state_mutex_guard.scanner = updated_scanner_state;
     }
 
     app_handle
-        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
-        // TODO Properly handle errors here.
+        .emit_all("scanner:state", &core_state_mutex_guard.scanner)
         .unwrap();
-
-    drop(core_state_mutex_guard_mutable);
 
     Ok(())
 }
@@ -184,23 +143,21 @@ pub async fn load_scanner_state(
 #[tauri::command]
 pub async fn start_scanner(
     app_handle: AppHandle,
-    state: State<'_, core::state::CoreStateMutex>,
-) -> Result<(), String> {
+    state: State<'_, core::state::SharedCoreState>,
+) -> Result<(), ()> {
     println!("Calling command start_scanner().");
 
-    // Set scanner state as "running"
-    let mut core_state_mutex_guard_mutable = state
-        .0
-        .lock()
-        // TODO Properly handle errors here.
-        .unwrap();
-    core_state_mutex_guard_mutable.scanner.is_running = true;
+    let mut core_state_mutex_guard = state.0.lock().unwrap();
+
+    let file_explorer_tree = core_state_mutex_guard.scanner.file_explorer_tree.clone();
+
+    // Update scanner state
+    core_state_mutex_guard.scanner.is_running = true;
     app_handle
-        .emit_all("scanner:state", &core_state_mutex_guard_mutable.scanner)
-        // TODO Properly handle errors here.
+        .emit_all("scanner:state", &core_state_mutex_guard.scanner)
         .unwrap();
 
-    // Send scanner status
+    // Update scanner status
     app_handle
         .to_owned()
         .emit_all(
@@ -214,13 +171,7 @@ pub async fn start_scanner(
         .unwrap();
 
     // List selected paths
-    let paths = filer::file_explorer::FileExplorer::new(
-        core_state_mutex_guard_mutable
-            .scanner
-            .file_explorer_tree
-            .to_owned(),
-    )
-    .into_checked_paths();
+    let paths = filer::file_explorer::FileExplorer::new(file_explorer_tree).into_checked_paths();
     println!("Recursively listing files in {:?}.", paths);
     let args: Vec<String> = vec![
         "-rv".to_string(),
@@ -231,7 +182,7 @@ pub async fn start_scanner(
     .chain(paths.to_owned().into_iter())
     .collect();
 
-    // Send scanner status
+    // Update scanner status
     app_handle
         .to_owned()
         .emit_all(
@@ -250,12 +201,9 @@ pub async fn start_scanner(
         .into_iter()
         .map(|path| filer::file_list::count(true, Some(path), Some(filer::types::FileKind::File)))
         .sum::<usize>();
-
     println!("Number of files to scan: {}.", total_files_length);
 
-    drop(core_state_mutex_guard_mutable);
-
-    // Send scanner status
+    // Update scanner status
     app_handle
         .to_owned()
         .emit_all(
@@ -268,13 +216,12 @@ pub async fn start_scanner(
         )
         .unwrap();
 
-    libs::cli::run(
+    let child = libs::cli::run(
         app_handle,
-        state.to_owned(),
         String::from("clamscan"),
         args,
         String::from("scanner:status"),
-        |log, index| {
+        move |log, index| {
             let progress = (index as f64 + f64::from(1)) / total_files_length as f64;
             let current_file_path: String;
             if log.starts_with("Scanning ") {
@@ -307,6 +254,48 @@ pub async fn start_scanner(
                 || log.ends_with(": Access denied")
         },
     );
+
+    core_state_mutex_guard.scanner_thread = Some(child);
+
+    Ok(())
+}
+
+#[tauri::command]
+pub fn stop_scanner(
+    app_handle: AppHandle,
+    state: State<'_, core::state::SharedCoreState>,
+) -> Result<(), ()> {
+    println!("Calling command stop_scanner().");
+
+    let mut core_state_mutex_guard = state.0.lock().unwrap();
+    if core_state_mutex_guard.scanner_thread.is_none() {
+        return Ok(());
+    }
+
+    let child_mutant = core_state_mutex_guard.scanner_thread.as_mut().unwrap();
+    child_mutant
+        .kill()
+        // .map_err(|_| "Failed to kill scanner process.")
+        .unwrap();
+
+    // Update scanner state
+    core_state_mutex_guard.scanner.is_running = false;
+    app_handle
+        .emit_all("scanner:state", &core_state_mutex_guard.scanner)
+        .unwrap();
+
+    // Update scanner status
+    app_handle
+        .to_owned()
+        .emit_all(
+            "scanner:status",
+            ScannerStatus {
+                current_file_path: "".to_string(),
+                progress: 0 as f64,
+                step: ScannerStatusStep::Idle,
+            },
+        )
+        .unwrap();
 
     Ok(())
 }
