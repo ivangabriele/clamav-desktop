@@ -1,3 +1,11 @@
 {
-  "extends": ["github>ivangabriele/renovate-config"]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>ivangabriele/renovate-config"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^@wdio/"],
+      "groupName": "WebdriverIO Dependencies",
+      "enabled": false
+    }
+  ]
 }
