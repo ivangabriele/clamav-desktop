@@ -47,8 +47,8 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.6.6",
-    "@commitlint/config-conventional": "17.6.6",
+    "@commitlint/cli": "18.4.1",
+    "@commitlint/config-conventional": "18.4.0",
     "@ivangabriele/commitlint-config": "1.1.0",
     "@ivangabriele/eslint-config-typescript-react": "7.1.1",
     "@ivangabriele/prettier-config": "3.1.0",
