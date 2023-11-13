@@ -29,11 +29,7 @@ pub async fn get_daemon_state(
     app_handle: AppHandle,
     state: State<'_, core::state::SharedCoreState>,
 ) -> Result<(), ()> {
-    let mut core_state_mutex_guard = state
-        .0
-        .lock()
-        // TODO Properly handle errors here.
-        .unwrap();
+    let mut core_state_mutex_guard = state.0.lock().unwrap();
 
     let (status, logs) = get_service_status();
     let updated_daemon_state = DaemonState {
@@ -45,7 +41,6 @@ pub async fn get_daemon_state(
 
     app_handle
         .emit_all("daemon:state", &core_state_mutex_guard.daemon)
-        // TODO Properly handle errors here.
         .unwrap();
 
     Ok(())

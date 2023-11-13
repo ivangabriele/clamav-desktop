@@ -1,26 +1,20 @@
-import { Button } from '@singularity/core'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import numeral from 'numeral'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect } from 'react'
 // import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
 import { FileExplorer } from '../components/FileExplorer'
+import { Button } from '../elements/Button'
 import { ScanningSpinner } from '../elements/ScanningSpinner'
 import { useCachedState } from '../hooks/useCachedState'
-import { useForceUpdate } from '../hooks/useForceUpdate'
 import { Screen } from '../layouts/Screen'
 import { Core, Webview } from '../types'
 
 type ScannerProps = {}
 // eslint-disable-next-line no-empty-pattern
 export function Scanner({}: ScannerProps) {
-  const { forceUpdate } = useForceUpdate()
-
-  const countdownRef = useRef<number | undefined>()
-  const countdownTimerRef = useRef<NodeJS.Timer | undefined>()
-
   const [state, setState] = useCachedState<Core.ScannerState | undefined>(Webview.CacheKey.SCANNER_STATE, undefined)
   const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(Webview.CacheKey.SCANNER_STATUS, undefined)
 
@@ -58,32 +52,7 @@ export function Scanner({}: ScannerProps) {
     })
   }, [setState, setStatus])
 
-  useEffect(() => {
-    if (status?.step !== Core.ScannerStatusStep.STARTING) {
-      if (countdownRef.current !== undefined) {
-        clearInterval(countdownTimerRef.current)
-
-        countdownRef.current = undefined
-        countdownTimerRef.current = undefined
-      }
-
-      return
-    }
-
-    countdownRef.current = 14
-
-    forceUpdate()
-
-    countdownTimerRef.current = setInterval(() => {
-      if (countdownRef.current === undefined) {
-        return
-      }
-
-      countdownRef.current -= 1
-
-      forceUpdate()
-    }, 1000)
-  }, [forceUpdate, status?.step])
+  const currentFilePath = status?.current_file_path
 
   return (
     <Screen isLoading={isLoading}>
@@ -106,11 +75,9 @@ export function Scanner({}: ScannerProps) {
             <Progress>{numeral(status?.progress || 0).format('0.00%')}</Progress>
 
             <Status>
-              {status && status.current_file_path.length > 0
-                ? status.current_file_path
-                : `${status?.step}${
-                    status?.step === Core.ScannerStatusStep.STARTING ? ` in ${countdownRef.current}s` : ''
-                  }...`}
+              {status && currentFilePath && currentFilePath.length > 0
+                ? `${currentFilePath.substring(0, 25)}...${currentFilePath.substring(currentFilePath.length - 25)}`
+                : `${status?.step}...`}
             </Status>
           </Box>
 

@@ -1,9 +1,9 @@
-import { Button } from '@singularity/core'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import { useCallback, useEffect, useRef, useState } from 'react'
 // import { toast } from 'react-hot-toast'
 
+import { Button } from '../elements/Button'
 import { Logger } from '../elements/Logger'
 import { Screen } from '../layouts/Screen'
 import { Core } from '../types'
@@ -11,7 +11,7 @@ import { Core } from '../types'
 type DashboardProps = {}
 // eslint-disable-next-line no-empty-pattern
 export function Dashboard({}: DashboardProps) {
-  const timerRef = useRef<NodeJS.Timer | undefined>(undefined)
+  const timerRef = useRef<number | undefined>(undefined)
 
   const [state, setState] = useState<Core.DaemonState | undefined>(undefined)
 
@@ -33,13 +33,13 @@ export function Dashboard({}: DashboardProps) {
       setState(event.payload)
     })
 
-    timerRef.current = setInterval(() => {
+    timerRef.current = window.setInterval(() => {
       invoke('get_daemon_state')
     }, 500)
 
     return () => {
       if (timerRef.current) {
-        clearInterval(timerRef.current)
+        window.clearInterval(timerRef.current)
       }
     }
   }, [])

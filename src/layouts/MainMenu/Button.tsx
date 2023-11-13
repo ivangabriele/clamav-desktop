@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
-import type { ButtonProps as SuiButtonProps } from '@singularity/core'
+import type { ButtonHTMLAttributes } from 'react'
 
-type ButtonProps = SuiButtonProps & {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isActive: boolean
   onClick: () => void
 }
-export function Button({ isActive, onClick, ...props }: ButtonProps) {
+export function Button({ isActive, onClick, ...nativeProps }: ButtonProps) {
   const handleOnClick = () => {
     if (isActive) {
       return
@@ -15,7 +15,7 @@ export function Button({ isActive, onClick, ...props }: ButtonProps) {
     onClick()
   }
 
-  return <StyledButton $isActive={isActive} onClick={handleOnClick} {...props} />
+  return <StyledButton $isActive={isActive} onClick={handleOnClick} {...nativeProps} />
 }
 
 const StyledButton = styled.button<{

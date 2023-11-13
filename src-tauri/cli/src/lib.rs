@@ -1,3 +1,4 @@
+use colored::Colorize;
 use std::{
     env,
     io::{BufRead, BufReader},
@@ -10,9 +11,16 @@ use error::CliError;
 
 mod error;
 
-pub fn exec(command: String, args: Vec<String>) -> Result<String, CliError> {
-    match Command::new(command.to_owned())
-        .args(args.to_owned())
+pub fn exec<C, A>(command: C, args: Vec<A>) -> Result<String, CliError>
+where
+    C: AsRef<str>,
+    A: AsRef<str>,
+{
+    let command_as_string = command.as_ref().to_string();
+    let args_as_strings: Vec<String> = args.iter().map(|arg| arg.as_ref().to_string()).collect();
+
+    match Command::new(command_as_string.to_owned())
+        .args(args_as_strings.to_owned())
         .output()
     {
         Ok(output) => {
@@ -23,7 +31,8 @@ pub fn exec(command: String, args: Vec<String>) -> Result<String, CliError> {
                 return Err(CliError::new(
                     format!(
                         "`Command.output()` failed with command {} and args {:?}.",
-                        command, args
+                        command_as_string.to_owned(),
+                        args_as_strings.to_owned()
                     ),
                     Box::new(common::CommonError::new(stderr_as_string)),
                 ));
@@ -34,7 +43,8 @@ pub fn exec(command: String, args: Vec<String>) -> Result<String, CliError> {
         Err(error) => Err(CliError::new(
             format!(
                 "`Command.output()` failed with command {} and args {:?}.",
-                command, args
+                command_as_string.to_owned(),
+                args_as_strings.to_owned()
             ),
             Box::new(error),
         )),
@@ -63,26 +73,30 @@ pub fn is_installed(program_name: String) -> bool {
     exec(command.to_string(), args).is_ok()
 }
 
-pub fn run<C1, C2>(
-    command: String,
-    args: Vec<String>,
-    stdout_callback: C1,
-    stderr_callback: C2,
+pub fn run<C, A, CB1, CB2>(
+    command: C,
+    args: Vec<A>,
+    stdout_callback: CB1,
+    stderr_callback: CB2,
 ) -> ()
 where
-    C1: Fn(usize, String) -> (),
-    C1: Send + 'static,
-    C2: Fn(usize, String) -> (),
-    C2: Send + 'static,
+    C: AsRef<str>,
+    A: AsRef<str>,
+    CB1: Fn(usize, String) -> (),
+    CB1: Send + 'static,
+    CB2: Fn(usize, String) -> (),
+    CB2: Send + 'static,
 {
-    let child = match Command::new(command)
-        .args(args)
+    let command_as_string = command.as_ref();
+    let args_as_strings: Vec<&str> = args.iter().map(AsRef::as_ref).collect();
+
+    let child = match Command::new(command_as_string)
+        .args(args_as_strings)
         .stderr(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
     {
         Ok(child) => child,
-        // TODO Properly handle this error.
         Err(error) => {
             println!("{:?}", error);
 
@@ -97,7 +111,6 @@ where
         .ok_or_else(|| println!("Could not capture standard error."))
     {
         Ok(stderr) => stderr,
-        // TODO Properly handle this error.
         Err(error) => {
             println!("{:?}", error);
 
@@ -113,7 +126,12 @@ where
             move |line| {
                 #[cfg(debug_assertions)]
                 {
-                    println!("[cli::run()] [ERROR] {}", line);
+                    println!(
+                        "{} {} {}",
+                        "[DEBUG]".cyan(),
+                        "[cli::run()]".cyan(),
+                        line.underline()
+                    );
                 }
 
                 stdout_callback(line_index, line);
@@ -127,15 +145,14 @@ where
         .ok_or_else(|| println!("Could not capture standard output."))
     {
         Ok(stdout) => stdout,
-        // TODO Properly handle this error.
         Err(error) => {
             println!("{:?}", error);
 
             panic!("Bye");
         }
     };
-    let reader = BufReader::new(stdout);
-    reader
+    let stdout_reader = BufReader::new(stdout);
+    stdout_reader
         .lines()
         // TODO Is it the best way to achieve that?
         .filter_map(|line| line.ok())
@@ -143,7 +160,7 @@ where
             move |line| {
                 #[cfg(debug_assertions)]
                 {
-                    println!("[cli::run()] {}", line);
+                    println!("{} {} {}", "[DEBUG]".cyan(), "[cli::run()]".cyan(), line);
                 }
 
                 stderr_callback(line_index, line);
@@ -154,17 +171,19 @@ where
 }
 
 #[cfg(not(tarpaulin_include))]
-pub fn run_in_thread<C1, C2>(
-    command: String,
-    args: Vec<String>,
-    stdout_callback: C1,
-    stderr_callback: C2,
+pub fn run_in_thread<C, A, CB1, CB2>(
+    command: C,
+    args: Vec<A>,
+    stdout_callback: CB1,
+    stderr_callback: CB2,
 ) -> ()
 where
-    C1: Fn(usize, String) -> (),
-    C1: Send + 'static,
-    C2: Fn(usize, String) -> (),
-    C2: Send + 'static,
+    C: AsRef<str> + 'static + std::marker::Send,
+    A: AsRef<str> + 'static + std::marker::Send,
+    CB1: Fn(usize, String) -> (),
+    CB1: Send + 'static,
+    CB2: Fn(usize, String) -> (),
+    CB2: Send + 'static,
 {
     let join_handle = thread::spawn(move || {
         run(command, args, stdout_callback, stderr_callback);

@@ -10,7 +10,7 @@ pub struct CoreState {
     pub cloud: cloud::CloudState,
     pub daemon: daemon::DaemonState,
     pub scanner: scanner::ScannerState,
-    pub scanner_thread: Option<Child>,
+    pub scanner_thread: Option<Arc<Mutex<Option<Child>>>>,
 }
 
 #[derive(Default)]

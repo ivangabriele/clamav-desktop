@@ -59,7 +59,7 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 
 #### v.0.4.0
 
-- [ ] Cloud: Definitions update
+- [x] Cloud: Definitions update
 - [ ] Config: Raw clamd.conf editor 
 - [x] Dashboard: Daemon control & status
 - [x] Global: Tray icon 

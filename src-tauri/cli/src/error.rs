@@ -10,8 +10,18 @@ pub struct CliError {
 
 impl CliError {
     pub fn new(message: String, error: Box<dyn Error>) -> CliError {
-        println!("{} {:?}", "Message:".red(), error);
-        println!("{} {:?}", "Error:".bold().purple(), error);
+        println!(
+            "{} {} {:?}",
+            "[ERROR]".bold().red(),
+            "[MESSAGE]".red(),
+            message
+        );
+        println!(
+            "{} {} {:?}",
+            "[ERROR]".bold().red(),
+            "[BOX]".purple(),
+            error
+        );
 
         CliError { message }
     }
