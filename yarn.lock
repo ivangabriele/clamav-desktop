@@ -12,10 +12,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@adobe/css-tools@npm:^4.0.1":
-  version: 4.2.0
-  resolution: "@adobe/css-tools@npm:4.2.0"
-  checksum: d6d2b48963bef725a0043b7d39c5fb12d6e42b52b8bebd746e80e1732f5160529f00fb184c0d3eb9446765727ccc8997ea8f121c54c7d33d1eb577d0feb54b6c
+"@adobe/css-tools@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "@adobe/css-tools@npm:4.3.1"
+  checksum: 039a42ffdd41ecf3abcaf09c9fef0ffd634ccbe81c04002fc989e74564eba99bb19169a8f48dadf6442aa2c5c9f0925a7b27ec5c36a1ed1a3515fe77d6930996
   languageName: node
   linkType: hard
 
@@ -3187,20 +3187,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:5.16.5":
-  version: 5.16.5
-  resolution: "@testing-library/jest-dom@npm:5.16.5"
+"@testing-library/jest-dom@npm:6.1.4":
+  version: 6.1.4
+  resolution: "@testing-library/jest-dom@npm:6.1.4"
   dependencies:
-    "@adobe/css-tools": "npm:^4.0.1"
+    "@adobe/css-tools": "npm:^4.3.1"
     "@babel/runtime": "npm:^7.9.2"
-    "@types/testing-library__jest-dom": "npm:^5.9.1"
     aria-query: "npm:^5.0.0"
     chalk: "npm:^3.0.0"
     css.escape: "npm:^1.5.1"
     dom-accessibility-api: "npm:^0.5.6"
     lodash: "npm:^4.17.15"
     redent: "npm:^3.0.0"
-  checksum: 472a14b6295a18af28b5133ecaf4d22a7bb9c50bf05e1f04a076b2e2d7c596e76cdd56a95387ad6d2a4dda0c46bc93d95cbca5b314fabe0fd13362f29118749e
+  peerDependencies:
+    "@jest/globals": ">= 28"
+    "@types/jest": ">= 28"
+    jest: ">= 28"
+    vitest: ">= 0.32"
+  peerDependenciesMeta:
+    "@jest/globals":
+      optional: true
+    "@types/jest":
+      optional: true
+    jest:
+      optional: true
+    vitest:
+      optional: true
+  checksum: e5a0cdb96eec509c0c85f2b7a0d08fc1c9f6c10aa49bba0d738bf4bb114c3472b92ace5067aedfaaf848ae13b38ba9296047c219aa24b66c87aa16de33341fdb
   languageName: node
   linkType: hard
 
@@ -3381,16 +3394,6 @@ __metadata:
   dependencies:
     "@types/istanbul-lib-report": "npm:*"
   checksum: f1ad54bc68f37f60b30c7915886b92f86b847033e597f9b34f2415acdbe5ed742fa559a0a40050d74cdba3b6a63c342cac1f3a64dba5b68b66a6941f4abd7903
-  languageName: node
-  linkType: hard
-
-"@types/jest@npm:*":
-  version: 29.5.2
-  resolution: "@types/jest@npm:29.5.2"
-  dependencies:
-    expect: "npm:^29.0.0"
-    pretty-format: "npm:^29.0.0"
-  checksum: c45d1f2825b31c87b479d6ea0e22d0353c11c547f02c85e504623550527460e4fc572cd566374c4c00fcff2c8a022ef71c4b52545ccb03118b603b3c1e4e884f
   languageName: node
   linkType: hard
 
@@ -3621,15 +3624,6 @@ __metadata:
   version: 4.2.0
   resolution: "@types/stylis@npm:4.2.0"
   checksum: 02a47584acd2fcb664f7d8270a69686c83752bdfb855f804015d33116a2b09c0b2ac535213a4a7b6d3a78b2915b22b4024cce067ae979beee0e4f8f5fdbc26a9
-  languageName: node
-  linkType: hard
-
-"@types/testing-library__jest-dom@npm:^5.9.1":
-  version: 5.14.6
-  resolution: "@types/testing-library__jest-dom@npm:5.14.6"
-  dependencies:
-    "@types/jest": "npm:*"
-  checksum: 25fcb8bd0c2906e44efe325f7140460cc701f9d0eb559a1c58a780b4632aaac564cb65c643fe048d56774937290b76e7594e8c800e2842e05b2a70d287d47df8
   languageName: node
   linkType: hard
 
@@ -5231,7 +5225,7 @@ __metadata:
     "@swc/jest": "npm:0.2.29"
     "@tauri-apps/api": "npm:1.4.0"
     "@tauri-apps/cli": "npm:1.5.6"
-    "@testing-library/jest-dom": "npm:5.16.5"
+    "@testing-library/jest-dom": "npm:6.1.4"
     "@testing-library/react": "npm:14.1.0"
     "@testing-library/user-event": "npm:14.5.1"
     "@types/jest": "npm:29.5.8"
