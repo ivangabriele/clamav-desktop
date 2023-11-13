@@ -21,8 +21,8 @@
 - [Style Guide \& Conventions](#style-guide--conventions)
   - [Tests](#tests-1)
   - [Commit messages](#commit-messages)
-- [Recommended Editor/IDE Settings](#recommended-editoride-settings)
-  - [Visual Studio Code](#visual-studio-code)
+    - [Conventional Commit Types](#conventional-commit-types)
+    - [Conventional Commit Scopes](#conventional-commit-scopes)
 
 ## Personal Note
 
@@ -182,6 +182,8 @@ The idea comes from this [Karol Kuczmarski's blog post](http://xion.io/post/code
 
 ### Commit messages
 
+#### Conventional Commit Types
+
 Commit messages must follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) with this types:
 
 - `build`: Anything related to application run or build (build configs, dev configs, scripts, dependencies, etc)
@@ -189,31 +191,26 @@ Commit messages must follow [Conventional Commits](https://www.conventionalcommi
 - `docs`: Anything related to documentation (readme, contributing, website)
 - `feat`: Any feature addition, edition or removal
 - `fix`: Anything related to documentation (readme, contributing, website)
-- `style` Any application UI-releated change (components, styles, assets, etc)
-- `refactor`: Any change in the structure/codebase that doesn't add or change a feature
 - `perf`: Any application performance-related change
+- `refactor`: Any change in the structure/codebase that doesn't add or change a feature
+- `style` Any application UI-releated change (components, styles, assets, etc)
 - `test`: Any unit or integration tests change
 
-`fix` only concerns fixes related to the application istself. For everything else (a CI fix, a test fix, etc), use the
-"normal" type.
+`feat`, `fix`, `perf`, `refactor`, `style` & `test` types only concerns fixes related to the application istself,
+as defined by the scopes below.
 
-You have to keep in mind that `feat`, `fix` and `style` will end up in the end-users changelog while other will not.
+For everything else (i.e.: a CI fix, a performance improvement for a script, etc), use either `build`, `ci` or `docs`,
+depending on the context.
+
+You have to keep in mind that `feat`, `fix`, `perf` and `style` will end up in the end-users changelog
+while other will not.
 It's there to help them understand what changed since the last version when a new release is published.
 
-Our official scopes are:
+#### Conventional Commit Scopes
+
+Our official `feat`, `fix`, `perf`, `refactor`, `style` & `test` scopes are:
 
 - `cloud`: Any change impacting the Cloud screen
 - `config`: Any change impacting the Config screen
 - `dashboard`: Any change impacting the Dashboard screen
 - `scanner`: Any change impacting the Scanner screen
-
-## Recommended Editor/IDE Settings
-
-### Visual Studio Code
-
-```json
-{
-  "rust-analyzer.files.excludeDirs": [".git", ".yarn", "clamav", "target", "node_modules"],
-  "typescript.tsdk": "node_modules/typescript/lib"
-}
-```
