@@ -1,12 +1,11 @@
-import { theme } from '@singularity/core'
 import { toast, ToastBar, Toaster as RhtToaster } from 'react-hot-toast'
 import { MdOutlineClose } from 'react-icons/md'
 import styled from 'styled-components'
 
 const Box = styled.div`
   .Toast {
-    color: ${p => p.theme.color.body.white};
-    border-radius: ${p => p.theme.appearance.borderRadius.medium};
+    color: white;
+    border-radius: 4px;
     font-weight: 400;
     padding: 0;
 
@@ -30,18 +29,18 @@ const Button = styled.button`
   align-self: flex-start;
   background-color: transparent;
   border: 0;
-  color: ${p => p.theme.color.body.light};
+  color: lightgray;
   cursor: pointer;
   display: flex;
   height: 50%;
   padding: 1.25rem 0.5rem;
 
   :hover {
-    color: ${p => p.theme.color.body.white};
+    color: white;
   }
 
   > svg {
-    fill: ${p => p.theme.color.body.white};
+    fill: white;
     height: 1.5rem;
     width: 1.5rem;
   }
@@ -54,15 +53,15 @@ const TOAST_OPTIONS = {
   error: {
     duration: Infinity,
     style: {
-      background: theme.color.danger.active,
+      background: 'red',
     },
   },
   style: {
-    background: theme.color.info.active,
+    background: 'blue',
   },
   success: {
     style: {
-      background: theme.color.success.active,
+      background: 'green',
     },
   },
 }

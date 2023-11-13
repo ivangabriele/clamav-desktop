@@ -1,4 +1,7 @@
 use serde::{Deserialize, Serialize};
+use std::io::{BufRead, BufReader};
+use std::sync::{Arc, Mutex};
+use std::thread;
 use tauri::{AppHandle, Manager, State};
 
 use crate::{core, libs};
@@ -6,14 +9,14 @@ use filer;
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum ScannerStatusStep {
-    /// Counting the files to scan.
+    /// Counting files to scan.
     Counting,
     /// Default step (= waiting for a new job).
     #[default]
     Idle,
-    /// Listing the files to scan.
+    /// Listing files to scan.
     Listing,
-    /// Scanning the files.
+    /// Scanning files.
     Running,
     /// Starting (= has called `clamscan` CLI command).
     Starting,
@@ -145,10 +148,12 @@ pub async fn start_scanner(
     app_handle: AppHandle,
     state: State<'_, core::state::SharedCoreState>,
 ) -> Result<(), ()> {
+    use std::env;
+
     println!("Calling command start_scanner().");
 
+    let is_dev_mode = env::var("TAURI_DEV").is_ok();
     let mut core_state_mutex_guard = state.0.lock().unwrap();
-
     let file_explorer_tree = core_state_mutex_guard.scanner.file_explorer_tree.clone();
 
     // Update scanner state
@@ -174,6 +179,7 @@ pub async fn start_scanner(
     let paths = filer::file_explorer::FileExplorer::new(file_explorer_tree).into_checked_paths();
     println!("Recursively listing files in {:?}.", paths);
     let args: Vec<String> = vec![
+        // "clamscan".to_string(),
         "-rv".to_string(),
         "--follow-dir-symlinks=0".to_string(),
         "--follow-file-symlinks=0".to_string(),
@@ -216,46 +222,78 @@ pub async fn start_scanner(
         )
         .unwrap();
 
-    let child = libs::cli::run(
-        app_handle,
-        String::from("clamscan"),
-        args,
-        String::from("scanner:status"),
-        move |log, index| {
-            let progress = (index as f64 + f64::from(1)) / total_files_length as f64;
-            let current_file_path: String;
-            if log.starts_with("Scanning ") {
-                current_file_path = log.replace("Scanning ", "");
-            } else if log.ends_with(": Empty file") {
-                current_file_path = log.replace(": Empty file", "");
-            } else if log.ends_with(": Access denied") {
-                current_file_path = log.replace(": Access denied", "");
-            } else {
-                current_file_path = "unknown".to_string();
-            }
+    let mut args_with_clamscan = vec!["clamscan".to_string()];
+    args_with_clamscan.extend(args.iter().cloned());
+    let child = if is_dev_mode {
+        libs::cli::run(String::from("pkexec"), args_with_clamscan)
+    } else {
+        libs::cli::run(String::from("clamscan"), args)
+    };
 
-            if progress == 1 as f64 {
-                return ScannerStatus {
-                    current_file_path: "Done".to_string(),
-                    progress,
-                    step: ScannerStatusStep::Idle,
-                };
-            }
+    let shared_child = Arc::new(Mutex::new(Some(child)));
+    let shared_child_clone = shared_child.clone();
 
-            ScannerStatus {
-                current_file_path,
-                progress,
-                step: ScannerStatusStep::Running,
-            }
-        },
-        |log| {
-            log.starts_with("Scanning ")
-                || log.ends_with(": Empty file")
-                || log.ends_with(": Access denied")
-        },
-    );
+    let app_handle_clone_for_log = app_handle.clone();
+    let app_handle_clone_for_exit = app_handle.clone();
+    thread::spawn(move || {
+        let mut child = shared_child_clone
+            .lock()
+            .unwrap()
+            .take()
+            .expect("Child process handle was taken");
 
-    core_state_mutex_guard.scanner_thread = Some(child);
+        let stdout = child
+            .stdout
+            .take()
+            .expect("Failed to attach standard output.");
+
+        let mut log_index = 0;
+        let reader = BufReader::new(stdout);
+        reader
+            .lines()
+            // TODO Is it the best way to achieve that?
+            .filter_map(|line| line.ok())
+            .for_each({
+                move |line| {
+                    #[cfg(debug_assertions)]
+                    {
+                        println!("[libs::cli::run()] {}", line);
+                    }
+
+                    if filter_log(line.to_owned()) {
+                        let next_status =
+                            get_status_from_log(line.to_owned(), log_index, total_files_length);
+                        app_handle_clone_for_log
+                            .emit_all("scanner:status", next_status)
+                            .unwrap();
+                    }
+
+                    log_index += 1;
+                }
+            });
+
+        let _ = child.wait().expect("Failed to wait for child exit.");
+
+        // Update scanner state
+        let mut core_state_mutex_guard = app_handle_clone_for_exit
+            .state::<core::state::SharedCoreState>()
+            .inner()
+            .0
+            .lock()
+            .unwrap();
+        core_state_mutex_guard.scanner.is_running = false;
+        app_handle_clone_for_exit
+            .emit_all("scanner:state", &core_state_mutex_guard.scanner)
+            .unwrap();
+    });
+
+    let mut core_state_mutex_guard = app_handle
+        .state::<core::state::SharedCoreState>()
+        .inner()
+        .0
+        .lock()
+        .unwrap();
+    core_state_mutex_guard.scanner_thread = Some(shared_child);
 
     Ok(())
 }
@@ -267,35 +305,78 @@ pub fn stop_scanner(
 ) -> Result<(), ()> {
     println!("Calling command stop_scanner().");
 
-    let mut core_state_mutex_guard = state.0.lock().unwrap();
-    if core_state_mutex_guard.scanner_thread.is_none() {
-        return Ok(());
+    let core_state_mutex_guard = state.0.lock().unwrap();
+    // if core_state_mutex_guard.scanner_thread.is_none() {
+    //     return Ok(());
+    // }
+
+    if let Some(child_arc) = core_state_mutex_guard.scanner_thread.as_ref() {
+        let mut child_option = child_arc.lock().unwrap();
+
+        if let Some(child) = child_option.as_mut() {
+            child.kill().expect("Failed to kill scanner process.");
+            *child_option = None;
+        }
+
+        // Update scanner state
+        let mut core_state_mutex_guard = app_handle
+            .state::<core::state::SharedCoreState>()
+            .inner()
+            .0
+            .lock()
+            .unwrap();
+        core_state_mutex_guard.scanner.is_running = false;
+        app_handle
+            .emit_all("scanner:state", &core_state_mutex_guard.scanner)
+            .unwrap();
+
+        // Update scanner status
+        app_handle
+            .to_owned()
+            .emit_all(
+                "scanner:status",
+                ScannerStatus {
+                    current_file_path: "".to_string(),
+                    progress: 0 as f64,
+                    step: ScannerStatusStep::Idle,
+                },
+            )
+            .unwrap();
     }
 
-    let child_mutant = core_state_mutex_guard.scanner_thread.as_mut().unwrap();
-    child_mutant
-        .kill()
-        // .map_err(|_| "Failed to kill scanner process.")
-        .unwrap();
-
-    // Update scanner state
-    core_state_mutex_guard.scanner.is_running = false;
-    app_handle
-        .emit_all("scanner:state", &core_state_mutex_guard.scanner)
-        .unwrap();
-
-    // Update scanner status
-    app_handle
-        .to_owned()
-        .emit_all(
-            "scanner:status",
-            ScannerStatus {
-                current_file_path: "".to_string(),
-                progress: 0 as f64,
-                step: ScannerStatusStep::Idle,
-            },
-        )
-        .unwrap();
-
     Ok(())
+}
+
+fn filter_log(log: String) -> bool {
+    log.starts_with("Scanning ")
+        || log.ends_with(": Empty file")
+        || log.ends_with(": Access denied")
+}
+
+fn get_status_from_log(log: String, log_index: usize, total_files_length: usize) -> ScannerStatus {
+    let progress = (log_index as f64 + f64::from(1)) / total_files_length as f64;
+    let current_file_path: String;
+    if log.starts_with("Scanning ") {
+        current_file_path = log.replace("Scanning ", "");
+    } else if log.ends_with(": Empty file") {
+        current_file_path = log.replace(": Empty file", "");
+    } else if log.ends_with(": Access denied") {
+        current_file_path = log.replace(": Access denied", "");
+    } else {
+        current_file_path = "unknown".to_string();
+    }
+
+    if progress == 1 as f64 {
+        return ScannerStatus {
+            current_file_path: "Done".to_string(),
+            progress,
+            step: ScannerStatusStep::Idle,
+        };
+    }
+
+    ScannerStatus {
+        current_file_path,
+        progress,
+        step: ScannerStatusStep::Running,
+    }
 }

@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 // eslint-disable-next-line import/no-default-export
-export default defineConfig(async () => ({
+export default defineConfig({
   build: {
     // don't minify for debug builds
     minify: !process.env.TAURI_DEBUG ? 'esbuild' : false,
@@ -31,4 +31,4 @@ export default defineConfig(async () => ({
     port: 1420,
     strictPort: true,
   },
-}))
+})

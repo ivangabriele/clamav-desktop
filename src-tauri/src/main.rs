@@ -43,9 +43,10 @@ fn main() {
         // https://github.com/tauri-apps/tauri/blob/dev/examples/state/main.rs
         .manage(core::state::SharedCoreState(Default::default()))
         .invoke_handler(tauri::generate_handler![
-            // cloud::start_update,
-            // cloud::stop_update,
             cloud::get_cloud_state,
+            cloud::start_cloud_daemon,
+            cloud::start_cloud_update,
+            cloud::stop_cloud_daemon,
             daemon::get_daemon_state,
             daemon::start_daemon,
             daemon::stop_daemon,
