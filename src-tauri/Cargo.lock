@@ -491,6 +491,7 @@ version = "0.3.24"
 dependencies = [
  "chrono",
  "cli",
+ "dev",
  "filer",
  "jrest",
  "lazy_static",
@@ -502,6 +503,7 @@ dependencies = [
  "tauri-build",
  "tokio",
  "tokio-util",
+ "walkdir",
 ]
 
 [[package]]

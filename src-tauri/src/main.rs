@@ -9,16 +9,16 @@ use tauri::LogicalSize;
 use tauri::{api, Manager, SystemTrayEvent};
 
 mod cloud;
-mod daemon;
+mod dashboard;
 mod globals;
 mod libs;
 mod modules;
 mod scanner;
+mod settings;
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
     let context = tauri::generate_context!();
-
     let system_tray = modules::tray::new();
 
     tauri::Builder::default()
@@ -55,23 +55,27 @@ fn main() {
             },
         )
         // https://github.com/tauri-apps/tauri/blob/dev/examples/state/main.rs
-        .manage(cloud::CloudStateArcMutex(Default::default()))
-        .manage(daemon::DaemonStateArcMutex(Default::default()))
+        .manage(cloud::state::CloudSharedState(Default::default()))
+        .manage(dashboard::state::DashboardSharedState(Default::default()))
         .manage(scanner::state::SharedScannerState(Default::default()))
+        .manage(settings::state::SharedSettingsState(Default::default()))
         .invoke_handler(tauri::generate_handler![
-            cloud::get_cloud_state,
-            cloud::start_cloud_daemon,
-            cloud::start_cloud_update,
-            cloud::stop_cloud_daemon,
-            daemon::get_daemon_state,
-            daemon::start_daemon,
-            daemon::stop_daemon,
+            cloud::commands::get_cloud_state,
+            cloud::commands::start_cloud_daemon,
+            cloud::commands::start_cloud_update,
+            cloud::commands::stop_cloud_daemon,
+            dashboard::commands::get_dashboard_state,
+            dashboard::commands::start_daemon,
+            dashboard::commands::stop_daemon,
             scanner::commands::get_scanner_state,
             scanner::commands::load_scanner_state,
             scanner::commands::start_scanner,
             scanner::commands::stop_scanner,
             scanner::commands::toggle_file_explorer_node_check,
             scanner::commands::toggle_file_explorer_node_expansion,
+            settings::commands::get_settings_state,
+            settings::commands::load_settings_state,
+            settings::commands::update_clamd_conf_file_source,
         ])
         .system_tray(system_tray)
         .on_system_tray_event(|app_handle, event| match event {

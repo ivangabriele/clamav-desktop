@@ -60,12 +60,12 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 #### v.0.4.0
 
 - [x] Cloud: Definitions update
-- [ ] Config: Raw clamd.conf editor 
 - [x] Dashboard: Daemon control & status
 - [x] Global: Tray icon 
 - [x] Scanner: Drives selection
 - [x] Scanner: Folders selection
 - [x] Scanner: Scan interruption
+- [x] Settings: Raw clamd.conf editor 
 - [ ] Technical: Releases in `.x64.deb`, `.x64.dmg`, and `.x64.msi` formats
 
 #### v.0.5.0
@@ -79,10 +79,10 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 
 #### v.0.?.0
 
-- [ ] Config: Form-like `clamd.conf` editor
 - [ ] Global: Automated updates (if/where possible)
 - [ ] Publication: OpenSuse Build availibility (to challenge)
 - [ ] Publication: PPA availibility
+- [ ] Settings: Form-like `clamd.conf` editor
 - [ ] Technical: macOS & Windows Code signing
 - [ ] Technical: Binaries embedding (check with official ClamAV team)
 - [ ] Technical: Releases `.x64.rpm` and `.arm64.rpm` formats  

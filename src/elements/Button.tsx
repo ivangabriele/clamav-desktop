@@ -10,7 +10,7 @@ export function Button({ ...nativeProps }: ButtonProps) {
 const StyledButton = styled.button`
   background-color: #3f80ea;
   border: solid 1px #3f80ea;
-  border-radius: 0.33rem;
+  border-radius: 5px;
   color: white;
   cursor: pointer;
   font-family: inherit;

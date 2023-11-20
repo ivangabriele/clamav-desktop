@@ -63,7 +63,7 @@ const GlobalStyleCustom = createGlobalStyle`
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
-  }
+ }
 `
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

@@ -5,12 +5,12 @@ use filer;
 #[test]
 fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tree() {
     let is_recursive = false;
-    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
+    let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = Some(filer::types::FileKind::Directory);
 
     let mut file_explorer = filer::file_list::list(
         is_recursive,
-        directory_absolute_path_option,
+        Some(directory_absolute_path_option),
         file_kind_option,
     )
     .into_file_explorer();
@@ -152,12 +152,12 @@ fn file_explorer_toggle_is_checked_into_tree_returns_the_expected_file_paths_tre
 #[test]
 fn file_explorer_toggle_is_expanded_into_tree_returns_the_expected_file_paths_tree() {
     let is_recursive = false;
-    let directory_absolute_path_option = dev::get_sample_directory_absolute_path_option();
+    let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = Some(filer::types::FileKind::Directory);
 
     let mut file_explorer = filer::file_list::list(
         is_recursive,
-        directory_absolute_path_option,
+        Some(directory_absolute_path_option),
         file_kind_option,
     )
     .into_file_explorer();

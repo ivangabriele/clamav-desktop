@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const Box = styled.div`
   .Toast {
     color: white;
-    border-radius: 4px;
+    border-radius: 5px;
     font-weight: 400;
     padding: 0;
 
