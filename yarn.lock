@@ -1162,12 +1162,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ivangabriele/prettier-config@npm:3.1.0":
-  version: 3.1.0
-  resolution: "@ivangabriele/prettier-config@npm:3.1.0"
+"@ivangabriele/prettier-config@npm:4.0.1":
+  version: 4.0.1
+  resolution: "@ivangabriele/prettier-config@npm:4.0.1"
   peerDependencies:
-    prettier: ^2.0.0
-  checksum: 3f0212f0a8f5506ca0a25ba94da359779521e3f012cabd8132ee807896a5355aa4280ee00296fad153270e5973c8dd17a75fd7f6301b6582e1b170280cbb6688
+    prettier: ^3.0.0
+  checksum: 4a8757336c618ebd2326b5b0ab5a8efdcd2731fdea6afdab9f035134a410c8a47be8fa78bc484d23d488271ded1be574509e5dba6616bc3c1de9f57b59036769
   languageName: node
   linkType: hard
 
@@ -3920,7 +3920,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:18.4.2"
     "@ivangabriele/commitlint-config": "npm:1.1.0"
     "@ivangabriele/eslint-config-typescript-react": "npm:7.1.1"
-    "@ivangabriele/prettier-config": "npm:3.1.0"
+    "@ivangabriele/prettier-config": "npm:4.0.1"
     "@ivangabriele/tsconfig-react": "npm:1.2.2"
     "@swc/core": "npm:1.3.96"
     "@swc/jest": "npm:0.2.29"
