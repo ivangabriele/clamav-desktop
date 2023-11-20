@@ -68,20 +68,23 @@ export function Scanner({}: ScannerProps) {
         </>
       )}
 
-      {!!state && state.is_running && (
+      {!!state && state.is_running && status && (
         <>
           <Box>
             <ScanningSpinner />
-            <Progress>{numeral(status?.progress || 0).format('0.00%')}</Progress>
+            <Progress>{numeral(status.progress || 0).format('0.00%')}</Progress>
 
-            <Status>
-              {status && currentFilePath && currentFilePath.length > 0
-                ? `${currentFilePath.substring(0, 25)}...${currentFilePath.substring(currentFilePath.length - 25)}`
-                : `${status?.step}...`}
+            <Status $isSmall={!!currentFilePath && currentFilePath.length > 0}>
+              {!!currentFilePath && currentFilePath.length > 0 ? currentFilePath : `${status?.step}...`}
             </Status>
           </Box>
 
-          <Button onClick={stopScanner}>Stop Scan</Button>
+          <Button
+            disabled={[Core.ScannerStatusStep.COUNTING, Core.ScannerStatusStep.STOPPING].includes(status.step)}
+            onClick={stopScanner}
+          >
+            {status.step === Core.ScannerStatusStep.STOPPING ? 'Stopping (gracefully)...' : 'Stop Scan'}
+          </Button>
         </>
       )}
     </Screen>
@@ -96,8 +99,11 @@ const Box = styled.div`
   justify-content: center;
 `
 
-const Status = styled.p`
+const Status = styled.p<{
+  $isSmall: boolean
+}>`
   color: white;
+  font-size: ${({ $isSmall }) => ($isSmall ? '75%' : '100%')};
   overflow: hidden;
   padding-top: 16px;
   text-overflow: ellipsis;

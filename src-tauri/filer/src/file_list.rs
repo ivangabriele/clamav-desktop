@@ -105,13 +105,13 @@ impl FileList {
 // TODO Check for <directory_absolute_path> existence and type.
 pub fn list<S>(
     is_recursive: bool,
-    directory_absolute_path_option: Option<S>,
-    file_kind_option: Option<types::FileKind>,
+    maybe_directory_path: Option<S>,
+    maybe_file_kind: Option<types::FileKind>,
 ) -> FileList
 where
     S: AsRef<str> + Display,
 {
-    let pathbufs: Vec<PathBuf> = match directory_absolute_path_option {
+    let pathbufs: Vec<PathBuf> = match maybe_directory_path {
         None => drive::list()
             .into_iter()
             .map(|drive| Path::new(&*drive).to_owned())
@@ -157,7 +157,7 @@ where
         .to_owned()
         .into_iter()
         // Filter by file kind, exluding symbolic links
-        .filter(|pathbuf| match file_kind_option {
+        .filter(|pathbuf| match maybe_file_kind {
             Some(types::FileKind::Directory) => pathbuf.is_dir() && !pathbuf.is_symlink(),
             Some(types::FileKind::File) => pathbuf.is_file() && !pathbuf.is_symlink(),
             None => !pathbuf.is_symlink(),
@@ -188,18 +188,13 @@ where
 
 pub fn count<S>(
     is_recursive: bool,
-    directory_absolute_path_option: Option<S>,
-    file_kind_option: Option<types::FileKind>,
+    maybe_directory_path: Option<S>,
+    maybe_file_kind: Option<types::FileKind>,
 ) -> usize
 where
     S: AsRef<str> + Display,
 {
-    let file_paths = list(
-        is_recursive,
-        directory_absolute_path_option,
-        file_kind_option,
-    )
-    .into_strings();
+    let file_paths = list(is_recursive, maybe_directory_path, maybe_file_kind).into_strings();
 
     file_paths.len()
 }

@@ -74,6 +74,8 @@ export namespace Core {
     RUNNING = 'Running',
     /** Starting (= has called `clamscan` CLI command). */
     STARTING = 'Starting',
+    /** Stopping (= has called `clamscan` CLI command). */
+    STOPPING = 'Stopping',
   }
 }
 
