@@ -1,20 +1,16 @@
-use std::process::{Command as StdCommand, Stdio};
-use std::str;
-
 use regex::Regex;
 use serde::{Deserialize, Serialize};
+use std::process::{Command as StdCommand, Stdio};
+use std::str;
+use std::sync::Arc;
 use tauri::{AppHandle, Manager, State};
 use tokio::process::Command as TokioCommand;
+use tokio::sync::Mutex;
 
-use crate::core;
+use crate::debug;
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
-pub enum DaemonStatus {
-    Running,
-    Stopped,
-    #[default]
-    Unknown,
-}
+#[derive(Default)]
+pub struct DaemonStateArcMutex(pub Arc<Mutex<DaemonState>>);
 
 #[derive(Clone, Debug, Default, Serialize)]
 pub struct DaemonState {
@@ -23,24 +19,33 @@ pub struct DaemonState {
     status: DaemonStatus,
 }
 
+#[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq, Serialize)]
+pub enum DaemonStatus {
+    Running,
+    Stopped,
+    #[default]
+    Unknown,
+}
+
 #[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub async fn get_daemon_state(
     app_handle: AppHandle,
-    state: State<'_, core::state::SharedCoreState>,
+    state: State<'_, DaemonStateArcMutex>,
 ) -> Result<(), ()> {
-    let mut core_state_mutex_guard = state.0.lock().unwrap();
+    debug!("get_daemon_state()", "Command call.");
+
+    let mut daemon_state_mutex_guard = state.0.lock().await;
 
     let (status, logs) = get_service_status();
-    let updated_daemon_state = DaemonState {
+    let next_daemon_state = DaemonState {
         is_ready: true,
         logs,
         status,
     };
-    core_state_mutex_guard.daemon = updated_daemon_state;
-
+    *daemon_state_mutex_guard = next_daemon_state.clone();
     app_handle
-        .emit_all("daemon:state", &core_state_mutex_guard.daemon)
+        .emit_all("daemon:state", &next_daemon_state)
         .unwrap();
 
     Ok(())
@@ -49,7 +54,7 @@ pub async fn get_daemon_state(
 #[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub async fn start_daemon() -> Result<(), ()> {
-    println!("Calling command start_daemon().");
+    debug!("start_daemon()", "Command call.");
 
     TokioCommand::new("systemctl")
         .args(["--no-pager", "start", "clamav-daemon"])
@@ -63,7 +68,7 @@ pub async fn start_daemon() -> Result<(), ()> {
 #[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub async fn stop_daemon() -> Result<(), ()> {
-    println!("Calling command stop_daemon().");
+    debug!("stop_daemon()", "Command call.");
 
     TokioCommand::new("systemctl")
         .args(["--no-pager", "stop", "clamav-daemon"])

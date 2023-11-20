@@ -493,6 +493,7 @@ dependencies = [
  "cli",
  "filer",
  "jrest",
+ "lazy_static",
  "mockall",
  "regex",
  "serde",
@@ -500,6 +501,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tokio",
+ "tokio-util",
 ]
 
 [[package]]

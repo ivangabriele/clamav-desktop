@@ -21,12 +21,18 @@
   </a>
 </p>
 
-**Note: this README is for _users_ rather than _contributors_.**  
-If you wish to _contribute_ to ClamAV Desktop, you should read [CONTRIBUTING.md](CONTRIBUTING.md) instead.
+> [!WARNING]  
+> Clamav Desktop is a work in progress. I do not recommend using older releases (`<v0.4.0`)
+> as they were based on Electron, which can be slow for this type of application.  
+> **Please wait for the release of `v0.4.0`** . This version will be released soon
+> and is expected to offer tremendous improvements over the previous ones.
+
+> [!NOTE]  
+> This README is for _users_ rather than _contributors_.**  
+> If you wish to _contribute_ to ClamAV Desktop, you should read [CONTRIBUTING.md](CONTRIBUTING.md) instead.
 
 ---
 
-- [Introduction](#introduction)
 - [Screenshots](#screenshots)
   - [Dashboard Preview](#dashboard-preview)
   - [Scanner Preview](#scanner-preview)
@@ -36,12 +42,6 @@ If you wish to _contribute_ to ClamAV Desktop, you should read [CONTRIBUTING.md]
     - [v.0.?.0](#v00)
 
 ---
-
-## Introduction
-
-Clamav Desktop is a work in progress. I don't advise you to use the old version which were based on Electron and were
-laggy as hell. Once released, the v0.4.0 will include full installation intructions and should work on most 64bits
-common platforms.
 
 ## Screenshots
 
