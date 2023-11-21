@@ -20,15 +20,15 @@ export namespace Core {
   }
 
   // ---------------------------------------------------------------------------
-  // Daemon
+  // Dashboard
 
-  export type DaemonState = {
+  export type DashboardState = {
     is_ready: boolean
     logs: string[]
-    status: DaemonStatus
+    status: DashboardStatus
   }
 
-  export enum DaemonStatus {
+  export enum DashboardStatus {
     RUNNING = 'Running',
     STOPPED = 'Stopped',
     UNKNOWN = 'Unknown',
@@ -77,17 +77,24 @@ export namespace Core {
     /** Stopping (= has called `clamscan` CLI command). */
     STOPPING = 'Stopping',
   }
+
+  // ---------------------------------------------------------------------------
+  // Settings
+
+  export type SettingsState = {
+    clamd_conf_file_path: string | null
+    clamd_conf_file_source: string | null
+    is_ready: boolean
+    is_writing: boolean
+  }
 }
 
 export namespace Webview {
   export enum CacheKey {
     CLOUD_STATE = 'CLOUD_STATE',
-    CLOUD_STATUS = 'CLOUD_STATUS',
-    CONFIG_STATE = 'CONFIG_STATE',
-    DAEMON_STATE = 'DAEMON_STATE',
-    DAEMON_STATUS = 'DAEMON_STATUS',
     DASHBOARD_STATE = 'DAEMON_STATE',
     SCANNER_STATE = 'SCANNER_STATE',
     SCANNER_STATUS = 'SCANNER_STATUS',
+    SETTINGS_STATE = 'SETTINGS_STATE',
   }
 }

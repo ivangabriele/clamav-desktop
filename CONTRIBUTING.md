@@ -9,7 +9,7 @@
     - [3. Webview with Yarn v3](#3-webview-with-yarn-v3)
     - [4. Final Check](#4-final-check)
     - [5. Optional requirements](#5-optional-requirements)
-  - [Local run \& development](#local-run--development)
+  - [Local development](#local-development)
 - [Build a release](#build-a-release)
   - [Binary (standalone)](#binary-standalone)
   - [Debian-based OS (deb)](#debian-based-os-deb)
@@ -113,7 +113,7 @@ You should now be able to run `yarn dev` which will launch the application
 - [ggshield](https://github.com/GitGuardian/ggshield#installation)
   for `yarn test:sec` command.
 
-### Local run & development
+### Local development
 
 This will watch for file changes and automatically re-hydrate the webapp on the go:
 
@@ -123,8 +123,9 @@ yarn dev
 
 ## Build a release
 
-Keep in mind that building a release on your OS generally restrict the release generation to your OS (you can't natively
-release a macOS `.dmg` under Ubuntu for example) but you can circumvent that by using VirtualBox (Docker is a hassle to embed macOS & Windows environments).
+Keep in mind that building a release on your OS generally restrict the release generation to your OS
+(you can't natively release a macOS `.dmg` under Ubuntu for example)
+but you can circumvent that by using VirtualBox (Docker is a hassle to embed macOS & Windows environments).
 
 ### Binary (standalone)
 
@@ -186,15 +187,15 @@ The idea comes from this [Karol Kuczmarski's blog post](http://xion.io/post/code
 
 Commit messages must follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) with this types:
 
-- `build`: Anything related to application run or build (build configs, dev configs, scripts, dependencies, etc)
-- `ci`: Anything related to continuous integration, including locally (Github Actions, husky, Git, etc)
-- `docs`: Anything related to documentation (readme, contributing, website)
-- `feat`: Any feature addition, edition or removal
-- `fix`: Anything related to documentation (readme, contributing, website)
-- `perf`: Any application performance-related change
-- `refactor`: Any change in the structure/codebase that doesn't add or change a feature
-- `style` Any application UI-releated change (components, styles, assets, etc)
-- `test`: Any unit or integration tests change
+- `build`: Anything related to application run or build (build configs, dev configs, scripts, dependencies, etc).
+- `ci`: Anything related to continuous integration, including locally (Github Actions, husky, Git, etc).
+- `docs`: Anything related to documentation (readme, contributing, website).
+- `feat`: Any feature addition, edition or removal.
+- `fix`: Anything related to documentation (readme, contributing, website).
+- `perf`: Any application performance-related change.
+- `refactor`: Any change in the structure/codebase that doesn't add or change a feature.
+- `style` Any application UI-releated change (components, styles, assets, etc).
+- `test`: Any unit or integration tests change.
 
 `feat`, `fix`, `perf`, `refactor`, `style` & `test` types only concerns fixes related to the application istself,
 as defined by the scopes below.
@@ -210,7 +211,7 @@ It's there to help them understand what changed since the last version when a ne
 
 Our official `feat`, `fix`, `perf`, `refactor`, `style` & `test` scopes are:
 
-- `cloud`: Any change impacting the Cloud screen
-- `config`: Any change impacting the Config screen
-- `dashboard`: Any change impacting the Dashboard screen
-- `scanner`: Any change impacting the Scanner screen
+- `cloud`: Any change impacting the Cloud screen.
+- `dashboard`: Any change impacting the Dashboard screen.
+- `scanner`: Any change impacting the Scanner screen.
+- `settings`: Any change impacting the Settings screen.

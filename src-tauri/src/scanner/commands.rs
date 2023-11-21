@@ -12,11 +12,11 @@ use super::*;
 #[tauri::command]
 pub async fn get_scanner_state(
     app_handle: AppHandle,
-    state: State<'_, state::SharedScannerState>,
+    shared_state: State<'_, state::SharedScannerState>,
 ) -> Result<(), ()> {
     debug!("get_scanner_state()", "Command call.");
 
-    let public_state_mutex_guard = state.0.public.lock().await;
+    let public_state_mutex_guard = shared_state.0.public.lock().await;
     app_handle
         .emit_all("scanner:state", &public_state_mutex_guard.clone())
         .unwrap();
@@ -44,12 +44,12 @@ pub async fn load_scanner_state(app_handle: AppHandle) -> Result<(), ()> {
 #[tauri::command]
 pub async fn start_scanner(
     app_handle: AppHandle,
-    state: State<'_, state::SharedScannerState>,
+    shared_state: State<'_, state::SharedScannerState>,
 ) -> Result<(), ()> {
     debug!("start_scanner()", "Command call.");
 
     let file_explorer_tree = {
-        state
+        shared_state
             .inner()
             .0
             .public

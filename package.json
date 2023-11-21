@@ -32,7 +32,11 @@
     "postversion": "git push origin HEAD --tags"
   },
   "dependencies": {
+    "@lezer/highlight": "1.2.0",
     "@tauri-apps/api": "1.5.1",
+    "@uiw/codemirror-extensions-langs": "4.21.20",
+    "@uiw/codemirror-themes": "4.21.20",
+    "@uiw/react-codemirror": "4.21.20",
     "ky-universal": "0.12.0",
     "lodash.debounce": "4.0.8",
     "lodash.throttle": "4.1.1",

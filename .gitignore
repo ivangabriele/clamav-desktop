@@ -141,10 +141,6 @@ dist
 .svelte-kit
 
 ########################################
-# Custom
-
-# /clamav/build
-
 # Yarn without Zero-Installs
 # https://yarnpkg.com/getting-started/qa/#which-files-should-be-gitignored
 .pnp.*
@@ -154,3 +150,11 @@ dist
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+########################################
+# Custom
+
+/.debug/*
+!/.debug/.gitkeep
+
+# /clamav/build

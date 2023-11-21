@@ -44,6 +44,7 @@ fn get_status_from_log(
     }
 }
 
+#[cfg(not(tarpaulin_include))]
 pub async fn handle_scanner_output(app_handle: AppHandle, total_files_length: usize) -> () {
     let mut child_mutex_guard = app_handle
         .state::<state::SharedScannerState>()
@@ -88,12 +89,14 @@ pub async fn handle_scanner_output(app_handle: AppHandle, total_files_length: us
     update_public_state(&app_handle, None, Some(false)).await;
 }
 
+#[cfg(not(tarpaulin_include))]
 pub fn reset_status(app_handle: &AppHandle) -> () {
     app_handle
         .emit_all("scanner:status", state::ScannerStatus::default())
         .expect("Failed to emit `scanner:status` event.");
 }
 
+#[cfg(not(tarpaulin_include))]
 pub async fn update_public_state(
     app_handle: &AppHandle,
     file_explorer_tree: Option<filer::file_explorer::FileExplorerTree>,
@@ -120,6 +123,7 @@ pub async fn update_public_state(
         .expect("Failed to emit `scanner:state` event.");
 }
 
+#[cfg(not(tarpaulin_include))]
 pub async fn update_status(
     app_handle: &AppHandle,
     current_file_path: Option<String>,

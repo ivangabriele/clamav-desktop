@@ -53,18 +53,31 @@ export const Logger = memo(UnmemoizedLogger, (prevProps, nextProps) => prevProps
 
 const Pre = styled.pre`
   background-color: black;
-  border-radius: 0.33rem;
+  border-radius: 5px;
   cursor: text;
   color: white;
   flex-grow: 1;
-  margin: 1rem 0 0;
+  margin: 16px 0 0;
   max-width: 891px;
   min-width: 0;
   opacity: 0.65;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: scroll;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   /* text-overflow: ellipsis; */
   user-select: auto;
   -webkit-user-select: auto;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #333333;
+    outline: 0;
+  }
 `

@@ -5,13 +5,9 @@ use jrest::expect;
 #[test]
 fn runs_returns_the_expected_output() {
     // TODO Add Windows test.
-    // TODO Add macOS test.
-    if cfg!(linux) {
+    if cfg!(unix) {
         let command = "ls".to_string();
-        let args = vec![
-            "-al".to_string(),
-            dev::get_sample_directory_absolute_path_option().unwrap(),
-        ];
+        let args = vec!["-al".to_string(), dev::get_sample_directory_path()];
 
         let stdout_callback = |index: usize, line: String| match index {
             0 => {

@@ -92,7 +92,7 @@ jobs:
       - name: Create fake /dist directory
         run: mkdir ./dist
       - name: Run unit tests (with coverage)
-        run: cargo tarpaulin --exclude glob --frozen --no-fail-fast --out Xml --workspace -- --nocapture
+        run: cargo tarpaulin --frozen --no-fail-fast --out Xml --workspace -- --nocapture
         working-directory: ./src-tauri
       - name: Upload tests coverage
         uses: codecov/codecov-action@v3
@@ -112,6 +112,7 @@ jobs:
       PROJECT_ROOT_PATH:
         ${{ matrix.os == 'macos-latest' && '/Users/runner/work/clamav-desktop/clamav-desktop' ||
         'D:\a\clamav-desktop\clamav-desktop' }}
+      RUST_BACKTRACE: 1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -140,7 +141,7 @@ jobs:
         run: cargo build
         working-directory: ./src-tauri
       - name: Run tests
-        run: cargo test --exclude glob --no-fail-fast --workspace -- --nocapture
+        run: cargo test --no-fail-fast --workspace -- --nocapture
         working-directory: ./src-tauri
 
   # webview_build:

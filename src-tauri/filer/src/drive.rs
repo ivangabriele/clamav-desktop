@@ -6,10 +6,6 @@ use common;
 const EMPTY_STRING_VECTOR: Vec<String> = Vec::new();
 
 pub fn list() -> Vec<String> {
-    if cfg!(macos) {
-        return vec!["/".to_string()];
-    }
-
     if cfg!(unix) {
         return vec!["/".to_string()];
     }

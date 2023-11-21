@@ -1,7 +1,7 @@
 test:
-	cd ./src-tauri && cargo test --exclude glob --no-fail-fast --workspace -- --nocapture
+	cd ./src-tauri && cargo test --no-fail-fast --workspace -- --nocapture
 test-cover:
-	cd ./src-tauri && cargo tarpaulin --exclude glob --frozen --no-fail-fast --out Xml --workspace -- --nocapture
+	cd ./src-tauri && cargo tarpaulin --frozen --no-fail-fast --out Xml --workspace -- --nocapture
 test-trace:
 	export RUST_BACKTRACE=1 && cd ./src-tauri && cargo test --no-fail-fast --workspace -- --nocapture
 test-quiet:
@@ -30,4 +30,4 @@ test-jest-watch:
 	cd ./src-tauri/jest && cargo watch -x "test -- --nocapture"
 
 upgrade:
-	cd ./src-tauri && cargo upgrade --exclude glob
+	cd ./src-tauri && cargo upgrade

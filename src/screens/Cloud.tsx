@@ -1,16 +1,17 @@
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { Button } from '../elements/Button'
 import { Logger } from '../elements/Logger'
+import { useCachedState } from '../hooks/useCachedState'
 import { Screen } from '../layouts/Screen'
-import { Core } from '../types'
+import { Core, Webview } from '../types'
 
 export function Cloud() {
   const timerRef = useRef<number | undefined>(undefined)
 
-  const [state, setState] = useState<Core.CloudState | undefined>(undefined)
+  const [state, setState] = useCachedState<Core.CloudState | undefined>(Webview.CacheKey.CLOUD_STATE, undefined)
 
   const isLoading = !state
   const logsAsString = (state?.logs || []).join('\n')
@@ -43,7 +44,7 @@ export function Cloud() {
         window.clearInterval(timerRef.current)
       }
     }
-  }, [])
+  }, [setState])
 
   return (
     <Screen isLoading={isLoading}>
