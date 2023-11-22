@@ -8,8 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ivangabriele/tauri:debian-bullseye-18
-    env:
-      DISABLE_ESLINT_PLUGIN: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
