@@ -106,7 +106,7 @@
     "ts-node": "10.9.1",
     "type-fest": "4.8.1",
     "use-debounce": "10.0.0",
-    "vite": "5.0.0"
+    "vite": "5.0.5"
   },
   "author": {
     "name": "Ivan Gabriele",
