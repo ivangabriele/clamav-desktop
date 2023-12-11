@@ -9,6 +9,7 @@
     - [3. Webview with Yarn v3](#3-webview-with-yarn-v3)
     - [4. Final Check](#4-final-check)
     - [5. Optional requirements](#5-optional-requirements)
+      - [Debian-based OS](#debian-based-os)
   - [Local development](#local-development)
 - [Build a release](#build-a-release)
   - [Binary (standalone)](#binary-standalone)
@@ -67,8 +68,7 @@ Then run:
 ```sh
 git clone https://github.com/ivangabriele/clamav-desktop.git # or your fork
 cd ./clamav-desktop
-git submodule init
-git submodule update
+yarn setup # to init, install and update Husky hooks / Git submodules
 ```
 
 #### 2. Core with Tauri & tauri-driver
@@ -112,6 +112,13 @@ You should now be able to run `yarn dev` which will launch the application
   for `cargo watch`-related commands (i.e.: `make test-*-watch`).
 - [ggshield](https://github.com/GitGuardian/ggshield#installation)
   for `yarn test:sec` command.
+
+##### Debian-based OS
+
+- [nsis](https://nsis.sourceforge.io/Main_Page):
+  ```sh
+  sudo apt-get install nsis
+  ```
 
 ### Local development
 
@@ -213,5 +220,6 @@ Our official `feat`, `fix`, `perf`, `refactor`, `style` & `test` scopes are:
 
 - `cloud`: Any change impacting the Cloud screen.
 - `dashboard`: Any change impacting the Dashboard screen.
+- `daemon`: Any change impacting the Dashboard screen.
 - `scanner`: Any change impacting the Scanner screen.
 - `settings`: Any change impacting the Settings screen.

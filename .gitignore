@@ -152,6 +152,12 @@ dist
 !.yarn/versions
 
 ########################################
+# Visual Studio Code
+
+.vscode/*
+!.vscode/extensions.json
+
+########################################
 # Custom
 
 /.debug/*

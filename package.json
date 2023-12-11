@@ -21,6 +21,7 @@
     "release:deb:install": "yarn release:deb && sudo dpkg -i ./src-tauri/target/release/bundle/deb/clamav-desktop_0.3.24_amd64.deb",
     "release:dmg": "tauri build -b dmg",
     "release:msi": "tauri build -b msi",
+    "setup": "git fetch -p && git submodule update --init",
     "start": "./src-tauri/target/release/clamav-desktop",
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
     "test:e2e": "xvfb-run wdio run ./configs/wdio.config.ts",
