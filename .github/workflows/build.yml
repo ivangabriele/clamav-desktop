@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: yarn release:deb
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ci-release-deb
           path: src-tauri/target/release/bundle/deb/*.deb
@@ -47,7 +47,7 @@ jobs:
       - name: Build
         run: yarn release:dmg
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ci-release-dmg
           path: src-tauri/target/release/bundle/dmg/*.dmg
@@ -71,7 +71,7 @@ jobs:
       - name: Build
         run: yarn release:msi
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ci-release-msi
           path: src-tauri/target/release/bundle/msi/*.msi
