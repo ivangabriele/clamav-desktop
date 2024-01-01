@@ -1593,29 +1593,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ivangabriele/eslint-config-typescript-react@npm:7.1.1":
-  version: 7.1.1
-  resolution: "@ivangabriele/eslint-config-typescript-react@npm:7.1.1"
+"@ivangabriele/eslint-config-typescript-react@npm:8.0.1":
+  version: 8.0.1
+  resolution: "@ivangabriele/eslint-config-typescript-react@npm:8.0.1"
   peerDependencies:
-    "@ivangabriele/prettier-config": ^3.0.0
-    "@typescript-eslint/eslint-plugin": ^5.0.0
-    "@typescript-eslint/parser": ^5.0.0
+    "@ivangabriele/prettier-config": ^4.0.0
+    "@typescript-eslint/eslint-plugin": ^6.0.0
+    "@typescript-eslint/parser": ^6.0.0
     eslint: ^8.0.0
     eslint-config-airbnb: ^19.0.0
     eslint-config-airbnb-typescript: ^17.0.0
-    eslint-config-prettier: ^8.0.0
+    eslint-config-prettier: ^9.0.0
     eslint-plugin-import: ^2.0.0
     eslint-plugin-jest: ^27.0.0
     eslint-plugin-jsx-a11y: ^6.0.0
     eslint-plugin-no-null: ^1.0.0
-    eslint-plugin-prettier: ^4.0.0
+    eslint-plugin-prettier: ^5.0.0
     eslint-plugin-react: ^7.0.0
     eslint-plugin-react-hooks: ^4.0.0
     eslint-plugin-sort-destructure-keys: ^1.0.0
     eslint-plugin-sort-keys-fix: ^1.0.0
-    eslint-plugin-typescript-sort-keys: ^2.0.0
+    eslint-plugin-typescript-sort-keys: ^3.0.0
     typescript: ^5.0.0
-  checksum: 4964371dea5dfc72f37178be3ff60320b4471ed4d21cb6d78b46ee67513e874353ebfc26f9a92fb52ad451ed1259e65ee48c75962a937a35723adf78ca75935e
+  checksum: cdf159a81834a52779fa114213498beab6e23557ea357864bde26724adfa20e3379510d4006f65a6fd6749e7a41fc2f6388b31064a6a5873cb5cd9606a195d89
   languageName: node
   linkType: hard
 
@@ -4802,7 +4802,7 @@ __metadata:
     "@commitlint/cli": "npm:18.4.3"
     "@commitlint/config-conventional": "npm:18.4.3"
     "@ivangabriele/commitlint-config": "npm:1.1.0"
-    "@ivangabriele/eslint-config-typescript-react": "npm:7.1.1"
+    "@ivangabriele/eslint-config-typescript-react": "npm:8.0.1"
     "@ivangabriele/prettier-config": "npm:4.0.1"
     "@ivangabriele/tsconfig-react": "npm:1.2.2"
     "@lezer/highlight": "npm:1.2.0"

@@ -54,7 +54,7 @@
     "@commitlint/cli": "18.4.3",
     "@commitlint/config-conventional": "18.4.3",
     "@ivangabriele/commitlint-config": "1.1.0",
-    "@ivangabriele/eslint-config-typescript-react": "7.1.1",
+    "@ivangabriele/eslint-config-typescript-react": "8.0.1",
     "@ivangabriele/prettier-config": "4.0.1",
     "@ivangabriele/tsconfig-react": "1.2.2",
     "@swc/core": "1.3.100",
