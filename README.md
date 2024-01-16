@@ -29,10 +29,9 @@
 
 > [!NOTE]  
 > This README is for _users_ rather than _contributors_.**  
-> If you wish to _contribute_ to ClamAV Desktop, you should read [CONTRIBUTING.md](CONTRIBUTING.md) instead.
-
+> If you wish to _contribute_ or _install_ to ClamAV Desktop, you should read [CONTRIBUTING.md](CONTRIBUTING.md) instead.
 ---
-
+- [Excepted File Paths](#excepted-file-paths)
 - [Screenshots](#screenshots)
   - [Dashboard Preview](#dashboard-preview)
   - [Scanner Preview](#scanner-preview)
@@ -42,7 +41,17 @@
     - [v.0.?.0](#v00)
 
 ---
-
+## Excepted File Paths
+> [!NOTE]
+>- You can find clamd.conf file in the configs directory in this project and don't forget to do clamd.exe --install-service also net start clamd (please wait) # customize the content to match your local environment
+>- If you want to look at the code of the excluded file paths, then look utils_test.rs
+### Windows
+C:\ClamAV\clamd.conf
+### MacOS
+/usr/local/etc/clamav/clamd.conf
+### Linux
+/etc/clamav/clamd.conf
+  
 ## Screenshots
 
 ### Dashboard Preview
