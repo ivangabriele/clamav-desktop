@@ -43,8 +43,8 @@
 ---
 ## Excepted File Paths
 > [!NOTE]
-> You need to define clamd.conf file
-> If you want to look at the code of the excluded file paths, then look utils_test.rs
+>- You need to define clamd.conf file
+>- If you want to look at the code of the excluded file paths, then look utils_test.rs
 ### Windows
 - C:\ClamAV\clamd.conf
 ### MacOS
