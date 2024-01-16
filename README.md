@@ -43,7 +43,7 @@
 ---
 ## Excepted File Paths
 > [!NOTE]
->- You need to define clamd.conf file
+>- You can find clamd.conf file in the configs directory in this project
 >- If you want to look at the code of the excluded file paths, then look utils_test.rs
 ### Windows
 C:\ClamAV\clamd.conf
