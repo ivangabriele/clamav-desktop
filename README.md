@@ -43,7 +43,7 @@
 ---
 ## Excepted File Paths
 > [!NOTE]
->- You can find clamd.conf file in the configs directory in this project and don't forget to do clamd.exe --install-service # customize the content to match your local environment
+>- You can find clamd.conf file in the configs directory in this project and don't forget to do clamd.exe --install-service also net start clamd (please wait) # customize the content to match your local environment
 >- If you want to look at the code of the excluded file paths, then look utils_test.rs
 ### Windows
 C:\ClamAV\clamd.conf
