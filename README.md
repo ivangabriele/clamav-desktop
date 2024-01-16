@@ -46,11 +46,11 @@
 >- You need to define clamd.conf file
 >- If you want to look at the code of the excluded file paths, then look utils_test.rs
 ### Windows
-- C:\ClamAV\clamd.conf
+C:\ClamAV\clamd.conf
 ### MacOS
-- /usr/local/etc/clamav/clamd.conf
+/usr/local/etc/clamav/clamd.conf
 ### Linux
-- /etc/clamav/clamd.conf
+/etc/clamav/clamd.conf
   
 ## Screenshots
 
