@@ -51,7 +51,7 @@ jobs:
       - name: Run
         run: yarn test:unit:webview --coverage
       - name: Upload Coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: true
           flags: webview
@@ -95,7 +95,7 @@ jobs:
         run: cargo tarpaulin --frozen --no-fail-fast --out Xml --workspace -- --nocapture
         working-directory: ./src-tauri
       - name: Upload tests coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           directory: ./src-tauri
           fail_ci_if_error: true
