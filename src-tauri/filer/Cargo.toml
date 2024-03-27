@@ -7,7 +7,7 @@ edition = "2021"
 cli = { path = "../cli" }
 common = { path = "../common" }
 glob = { git = "https://github.com/rust-lang/glob", branch = "master" }
-serde = { version = "1.0.190", features = ["derive"] }
+serde = { version = "1.0.193", features = ["derive"] }
 
 [dev-dependencies]
 dev = { path = "../dev" }
