@@ -84,7 +84,7 @@ jobs:
           apt-get install -y clamav
       - name: Print versions
         run: |
-          lsb_release -a
+          cat /etc/os-release
           rustc -V
           cargo -V
           clamscan -V
