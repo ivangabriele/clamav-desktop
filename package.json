@@ -121,6 +121,6 @@
       "last 1 chrome version"
     ]
   },
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@4.2.2",
   "prettier": "@ivangabriele/prettier-config"
 }
