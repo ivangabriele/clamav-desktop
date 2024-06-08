@@ -26,7 +26,7 @@
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
     "test:e2e": "xvfb-run wdio run ./configs/wdio.config.ts",
     "test:lint": "eslint --ext cjs,cts,js,json,jsonc,mjs,mts,ts,tson,tsx .",
-    "test:sec": "ggshield iac scan .",
+    "test:sec": "ggshield iac scan all",
     "test:type": "tsc --noEmit -p ./tsconfig.ci.json",
     "test:unit:core": "make test",
     "test:unit:webview": "jest --config=./configs/jest.config.js --detectOpenHandles",
