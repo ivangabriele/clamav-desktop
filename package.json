@@ -25,7 +25,7 @@
     "start": "./src-tauri/target/release/clamav-desktop",
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
     "test:e2e": "xvfb-run wdio run ./configs/wdio.config.ts",
-    "test:lint": "eslint --ext cjs,cts,js,json,jsonc,mjs,mts,ts,tson,tsx .",
+    "test:lint": "eslint --cache --ext cjs,cts,js,jsx,mjs,mts,ts,tsx .",
     "test:sec": "ggshield iac scan all",
     "test:type": "tsc --noEmit -p ./tsconfig.ci.json",
     "test:unit:core": "make test",
@@ -112,9 +112,9 @@
     "which": "4.0.0"
   },
   "lint-staged": {
-    "*.{md,yaml,yml}": "prettier --write",
+    "*.{json,md,yaml,yml}": "prettier --write",
     "*.{ts,tsx}": [
-      "yarn eslint --ext cjs,cts,js,json,jsonc,mjs,mts,ts,tson,tsx",
+      "yarn eslint --ext cjs,cts,js,jsx,mjs,mts,ts,tsx",
       "bash -c 'npm run test:type'"
     ]
   },
