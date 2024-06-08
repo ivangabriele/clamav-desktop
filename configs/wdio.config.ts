@@ -26,10 +26,15 @@ export const config: Options.Testrunner = {
 
   capabilities: [
     {
-      maxInstances: 1,
       // @ts-ignore
+      browserName: 'chrome',
+      // @ts-ignore
+      'wdio:maxInstances': 1,
+      // eslint-disable-next-line sort-keys-fix/sort-keys-fix
       'tauri:options': {
+        // @ts-ignore
         application: './src-tauri/target/release/clamav-desktop',
+        path: './src-tauri/target/release/clamav-desktop',
       },
     },
   ],
