@@ -24,6 +24,8 @@
   - [Commit messages](#commit-messages)
     - [Conventional Commit Types](#conventional-commit-types)
     - [Conventional Commit Scopes](#conventional-commit-scopes)
+- [IDEs Configuration](#ides-configuration)
+  - [VSCode](#vscode)
 
 ## Personal Note
 
@@ -218,3 +220,15 @@ Our official `feat`, `fix`, `perf`, `refactor`, `style` & `test` scopes are:
 - `dashboard`: Any change impacting the Dashboard screen.
 - `scanner`: Any change impacting the Scanner screen.
 - `settings`: Any change impacting the Settings screen.
+
+## IDEs Configuration
+
+### VSCode
+
+`.vscode/settings.json`
+
+```json
+{
+  "rust-analyzer.files.excludeDirs": ["./clamav"]
+}
+```
