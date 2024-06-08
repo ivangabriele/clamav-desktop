@@ -8,7 +8,7 @@
     "ecmaVersion": 2022,
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["/.yarn/", "/build/", "/clamav/", "/node_modules/", "/src-tauri/"],
+  "ignorePatterns": ["/.yarn/", "/build/", "/clamav/", "/dist/", "/node_modules/", "/src-tauri/"],
   "rules": {
     "@typescript-eslint/no-use-before-define": "off",
 
