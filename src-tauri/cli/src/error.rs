@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::fmt::{Display, Formatter, Result};
 
+#[allow(unused_imports)] // It's not unused, it's a trait augmenting `&str` and `String`.
 use colored::Colorize;
 
 #[derive(Debug, Clone)]
