@@ -92,9 +92,9 @@ yarn
 
 To check the requirements related to Tauri, WebKitWebDriver (Linux) amd tauri-driver installations, please check:
 
-- https://tauri.app/v1/guides/getting-started/prerequisites/#installing
-- https://tauri.app/v1/guides/testing/webdriver/introduction/#system-dependencies
-- https://tauri.app/v1/guides/testing/webdriver/ci/
+- [Tauri Installation Guide](https://tauri.app/v1/guides/getting-started/prerequisites/#installing)
+- [Tauri WebDriver System Dependencies](https://tauri.app/v1/guides/testing/webdriver/introduction/#system-dependencies)
+- [Tauri WebDriver CI Guide](https://tauri.app/v1/guides/testing/webdriver/ci/)
 
 Once you're ready, you can run:
 
