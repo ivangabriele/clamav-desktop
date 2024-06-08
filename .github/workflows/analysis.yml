@@ -6,7 +6,8 @@ on:
   pull_request:
     branches: ['main']
   schedule:
-    - cron: '30 2 * * 4'
+    # Every day at 12:00 UTC
+    - cron: '0 12 * * *'
 
 jobs:
   codeql:
