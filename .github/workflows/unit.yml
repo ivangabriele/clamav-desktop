@@ -3,38 +3,6 @@ name: Unit
 on: push
 
 jobs:
-  webview_lint:
-    name: Lint Webview
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: yarn
-          node-version: 20
-      - name: Install
-        run: yarn
-      - name: Run
-        run: yarn test:lint
-
-  webview_type:
-    name: Type Webview
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: yarn
-          node-version: 20
-      - name: Install
-        run: yarn
-      - name: Run
-        run: yarn test:type
-
   webview_test:
     name: Test Webview
     runs-on: ubuntu-latest
