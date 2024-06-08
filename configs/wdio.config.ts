@@ -26,19 +26,19 @@ export const config: Options.Testrunner = {
 
   capabilities: [
     {
-      // @ts-ignore
       browserName: 'chrome',
       'goog:chromeOptions': {
-        // @ts-ignore
-        args: ['disable-gpu', 'headless'],
+        args: ['disable-dev-shm-usage', 'disable-gpu', 'headless', 'no-sandbox'],
       },
-      // @ts-ignore
+      // hostname: '0.0.0.0',
+      // port: 38027,
       'wdio:maxInstances': 1,
-      // eslint-disable-next-line sort-keys-fix/sort-keys-fix
-      'tauri:options': {
-        // @ts-ignore
-        application: './src-tauri/target/release/clamav-desktop',
-        path: './src-tauri/target/release/clamav-desktop',
+
+      // Only way to pass type-checking since it's a custom config
+      ...{
+        'tauri:options': {
+          application: './src-tauri/target/release/clamav-desktop',
+        } as any,
       },
     },
   ],
