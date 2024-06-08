@@ -1,5 +1,25 @@
 {
   "$schema": "https://json.schemastore.org/commitlintrc",
   "extends": "@ivangabriele/commitlint-config",
-  "helpUrl": "https://github.com/ivangabriele/clamav-desktop/blob/main/CONTRIBUTING.md#commit-messages"
+  "helpUrl": "https://github.com/ivangabriele/clamav-desktop/blob/main/CONTRIBUTING.md#commit-messages",
+  "rules": {
+    "type-enum": [
+      2,
+      "always",
+      [
+        "build",
+        "ci",
+        "chore",
+        "docs",
+        "feat",
+        "fix",
+        "lint",
+        "perf",
+        "refactor",
+        "revert",
+        "style",
+        "test"
+      ]
+    ]
+  }
 }
