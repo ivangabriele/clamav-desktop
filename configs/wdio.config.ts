@@ -27,7 +27,7 @@ export const config: Options.Testrunner = {
   capabilities: [
     {
       // @ts-ignore
-      browserName: 'chrome',
+      browserName: 'chromium',
       // @ts-ignore
       'wdio:maxInstances': 1,
       // eslint-disable-next-line sort-keys-fix/sort-keys-fix
