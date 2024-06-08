@@ -56,7 +56,7 @@
     "@ivangabriele/commitlint-config": "1.1.0",
     "@ivangabriele/eslint-config-typescript-react": "7.1.1",
     "@ivangabriele/prettier-config": "5.0.1",
-    "@ivangabriele/tsconfig-react": "1.2.2",
+    "@ivangabriele/tsconfig-react": "2.0.0",
     "@swc/core": "1.5.25",
     "@swc/jest": "0.2.36",
     "@tauri-apps/cli": "1.5.14",
