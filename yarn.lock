@@ -1400,10 +1400,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ivangabriele/tsconfig-react@npm:1.2.2":
-  version: 1.2.2
-  resolution: "@ivangabriele/tsconfig-react@npm:1.2.2"
-  checksum: 10/7cdff671fbd549b5b6c2511ba2cb2677372934c305903cd892da2504c0e9800a6663cdb92b4788d746977fb5f4fc0b3d868233b665e0e2501db45a3937168bd9
+"@ivangabriele/tsconfig-react@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@ivangabriele/tsconfig-react@npm:2.0.0"
+  peerDependencies:
+    typescript: ^5
+  checksum: 10/29fe9a258037b2b2ca20e1f862480a7ad2a386df62cef275ed3e2d835c4740bb70323722e37e8605f2e7c3eea1d3a1db802f97fbc6602f8693ac0b81e9c6f241
   languageName: node
   linkType: hard
 
@@ -4481,7 +4483,7 @@ __metadata:
     "@ivangabriele/commitlint-config": "npm:1.1.0"
     "@ivangabriele/eslint-config-typescript-react": "npm:7.1.1"
     "@ivangabriele/prettier-config": "npm:5.0.1"
-    "@ivangabriele/tsconfig-react": "npm:1.2.2"
+    "@ivangabriele/tsconfig-react": "npm:2.0.0"
     "@lezer/highlight": "npm:1.2.0"
     "@swc/core": "npm:1.5.25"
     "@swc/jest": "npm:0.2.36"
