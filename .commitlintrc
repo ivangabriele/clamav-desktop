@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json.schemastore.org/commitlintrc",
+  "extends": "@ivangabriele/commitlint-config",
+  "helpUrl": "https://github.com/ivangabriele/clamav-desktop/blob/main/CONTRIBUTING.md#commit-messages"
+}

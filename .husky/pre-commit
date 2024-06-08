@@ -1,0 +1,12 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+[ -n "$CI" ] && exit 0
+
+if command -v ggshield >/dev/null; then
+  yarn test:sec
+else
+  echo "\033[33mWARNING: ggshield is not installed, please install it: https://github.com/GitGuardian/ggshield#installation.\033[0m"
+fi
+
+yarn lint-staged
