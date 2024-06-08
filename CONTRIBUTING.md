@@ -5,8 +5,8 @@
   - [Requirements](#requirements)
   - [First setup](#first-setup)
     - [1. Git (with submodules)](#1-git-with-submodules)
-    - [2. Core with Tauri \& tauri-driver](#2-core-with-tauri--tauri-driver)
-    - [3. Webview with Yarn v3](#3-webview-with-yarn-v3)
+    - [2. Webview with Yarn v3](#2-webview-with-yarn-v3)
+    - [3. Core with Tauri \& tauri-driver](#3-core-with-tauri--tauri-driver)
     - [4. Final Check](#4-final-check)
     - [5. Optional requirements](#5-optional-requirements)
   - [Local development](#local-development)
@@ -18,6 +18,7 @@
 - [Tests](#tests)
   - [Core unit tests](#core-unit-tests)
   - [Webview unit tests](#webview-unit-tests)
+  - [E2E tests](#e2e-tests)
 - [Style Guide \& Conventions](#style-guide--conventions)
   - [Tests](#tests-1)
   - [Commit messages](#commit-messages)
@@ -51,13 +52,15 @@ installation.
 ### Requirements
 
 - [Node.js](https://nodejs.org) or [nvm](https://github.com/nvm-sh/nvm#installing-and-updating): v18
-- [Rust](https://www.rust-lang.org/tools/install): v1
 - [Yarn](https://yarnpkg.com/getting-started/install): v1  
-  _(we actually use Yarn v3 but it's bundled in all the latest Yarn v1 releases)_
+  _(we actually use Yarn v4 but it's bundled in all the latest Yarn v1 releases)_
+- [Rust](https://www.rust-lang.org/tools/install): v1
+- [clamav](https://github.com/Cisco-Talos/clamav): binaries must be available as global commands (PATH)
+- make: v4
 
 ### First setup
 
-> ⚠️ **Important**  
+> [!IMPORTANT]  
 > If you're under **Windows**, you nust run all CLI commands under a Linux shell-like terminal (i.e.: WSL or Git Bash).
 
 #### 1. Git (with submodules)
@@ -71,21 +74,7 @@ git submodule init
 git submodule update
 ```
 
-#### 2. Core with Tauri & tauri-driver
-
-To check the requirements related to Tauri and tauri-driver installations, please check
-[this page](https://tauri.app/v1/guides/getting-started/prerequisites/#installing)
-as well as [this one](https://tauri.app/v1/guides/testing/webdriver/ci/).
-
-Once you're ready, you can run:
-
-```sh
-cd ./src-tauri
-cp ./.cargo/config.toml.example ./.cargo/config.toml # and customize the content to match your local environment
-cargo build
-```
-
-#### 3. Webview with Yarn v3
+#### 2. Webview with Yarn v3
 
 You may need to intall SDKs for your IDE/editor to handle Yarn v3: https://yarnpkg.com/getting-started/editor-sdks
 (i.e.: `yarn dlx @yarnpkg/sdks vscode` if you're using VSCode).
@@ -97,21 +86,35 @@ cd .. # if you are still in `./src-tauri` directory
 yarn
 ```
 
+#### 3. Core with Tauri & tauri-driver
+
+To check the requirements related to Tauri, WebKitWebDriver (Linux) amd tauri-driver installations, please check:
+
+- https://tauri.app/v1/guides/getting-started/prerequisites/#installing
+- https://tauri.app/v1/guides/testing/webdriver/introduction/#system-dependencies
+- https://tauri.app/v1/guides/testing/webdriver/ci/
+
+Once you're ready, you can run:
+
+```sh
+cargo install tauri-driver
+cd ./src-tauri
+cp ./.cargo/config.toml.example ./.cargo/config.toml # and customize the content to match your local environment
+cargo build
+```
+
 #### 4. Final Check
 
-You should now be able to run `yarn dev` which will launch the application
-(serving first the Webview on port 1420 and then launching the Core desktop app embedding this Webview).
+You should now be able to run `yarn dev` which will launch the application (serving first the Webview on port 1420 and
+then launching the Core desktop app embedding this Webview).
 
 #### 5. Optional requirements
 
-- [cargo-deb](https://github.com/kornelski/cargo-deb#installation)
-  for debian bundle packaging.
-- [cargo-edit](https://github.com/killercup/cargo-edit).
-  for `cargo upgrade`-related commands (i.e.: `make upgrade`)
-- [cargo-watch](https://github.com/watchexec/cargo-watch#install)
-  for `cargo watch`-related commands (i.e.: `make test-*-watch`).
-- [ggshield](https://github.com/GitGuardian/ggshield#installation)
-  for `yarn test:sec` command.
+- [cargo-deb](https://github.com/kornelski/cargo-deb#installation) for debian bundle packaging.
+- [cargo-edit](https://github.com/killercup/cargo-edit). for `cargo upgrade`-related commands (i.e.: `make upgrade`)
+- [cargo-watch](https://github.com/watchexec/cargo-watch#install) for `cargo watch`-related commands (i.e.:
+  `make test-*-watch`).
+- [ggshield](https://github.com/GitGuardian/ggshield#installation) for `yarn test:sec` command.
 
 ### Local development
 
@@ -123,9 +126,9 @@ yarn dev
 
 ## Build a release
 
-Keep in mind that building a release on your OS generally restrict the release generation to your OS
-(you can't natively release a macOS `.dmg` under Ubuntu for example)
-but you can circumvent that by using VirtualBox (Docker is a hassle to embed macOS & Windows environments).
+Keep in mind that building a release on your OS generally restrict the release generation to your OS (you can't natively
+release a macOS `.dmg` under Ubuntu for example) but you can circumvent that by using VirtualBox (Docker is a hassle to
+embed macOS & Windows environments).
 
 ### Binary (standalone)
 
@@ -159,23 +162,24 @@ yarn release:msi
 yarn test:unit:core
 ```
 
-or
-
-```sh
-make test
-```
-
 ### Webview unit tests
 
 ```sh
 yarn test:unit:webview
 ```
 
+### E2E tests
+
+```sh
+yarn release:bin
+yarn test:e2e
+```
+
 ## Style Guide & Conventions
 
 ### Tests
 
-For Rust unit tests, to avoid overwhelming main files with tests code, we follow 
+For Rust unit tests, to avoid overwhelming main files with tests code, we follow
 [Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html#File_Names) and split unit test files into
 a separate `filename_test.rs`.
 
@@ -197,15 +201,14 @@ Commit messages must follow [Conventional Commits](https://www.conventionalcommi
 - `style` Any application UI-releated change (components, styles, assets, etc).
 - `test`: Any unit or integration tests change.
 
-`feat`, `fix`, `perf`, `refactor`, `style` & `test` types only concerns fixes related to the application istself,
-as defined by the scopes below.
+`feat`, `fix`, `perf`, `refactor`, `style` & `test` types only concerns fixes related to the application istself, as
+defined by the scopes below.
 
 For everything else (i.e.: a CI fix, a performance improvement for a script, etc), use either `build`, `ci` or `docs`,
 depending on the context.
 
-You have to keep in mind that `feat`, `fix`, `perf` and `style` will end up in the end-users changelog
-while other will not.
-It's there to help them understand what changed since the last version when a new release is published.
+You have to keep in mind that `feat`, `fix`, `perf` and `style` will end up in the end-users changelog while other will
+not. It's there to help them understand what changed since the last version when a new release is published.
 
 #### Conventional Commit Scopes
 
