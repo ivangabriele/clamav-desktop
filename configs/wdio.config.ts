@@ -27,7 +27,11 @@ export const config: Options.Testrunner = {
   capabilities: [
     {
       // @ts-ignore
-      browserName: 'chromium',
+      browserName: 'chrome',
+      'goog:chromeOptions': {
+        // @ts-ignore
+        args: ['disable-gpu', 'headless'],
+      },
       // @ts-ignore
       'wdio:maxInstances': 1,
       // eslint-disable-next-line sort-keys-fix/sort-keys-fix
