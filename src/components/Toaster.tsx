@@ -70,7 +70,7 @@ export function Toaster() {
   return (
     <Box>
       <RhtToaster position="top-right" toastOptions={TOAST_OPTIONS}>
-        {(thisToast) => (
+        {thisToast => (
           <ToastBar toast={thisToast}>
             {({ icon, message }) => (
               <>

@@ -28,7 +28,7 @@ export function Dashboard() {
   useEffect(() => {
     invoke('get_dashboard_state')
 
-    listen<Core.DashboardState>('dashboard:state', (event) => {
+    listen<Core.DashboardState>('dashboard:state', event => {
       setState(event.payload)
     })
 
@@ -45,23 +45,23 @@ export function Dashboard() {
 
   return (
     <Screen isLoading={isLoading}>
+      <Logger hasForcedScroll>{logsAsString}</Logger>
+
       {(!state?.is_ready || state.status === Core.DashboardStatus.UNKNOWN) && (
-        <Button data-testid="dashboard__button" disabled={true}>
+        <Button data-testid="dashboard__button" disabled style={{ marginTop: 16 }}>
           Waiting for Daemon status…
         </Button>
       )}
       {!!state && state.is_ready && state.status === Core.DashboardStatus.RUNNING && (
-        <Button data-testid="dashboard__button" onClick={stopDaemon}>
+        <Button data-testid="dashboard__button" onClick={stopDaemon} style={{ marginTop: 16 }}>
           Stop Daemon
         </Button>
       )}
       {!!state && state.is_ready && state.status === Core.DashboardStatus.STOPPED && (
-        <Button data-testid="dashboard__button" onClick={startDaemon}>
+        <Button data-testid="dashboard__button" onClick={startDaemon} style={{ marginTop: 16 }}>
           Start Daemon
         </Button>
       )}
-
-      <Logger hasForcedScroll={true}>{logsAsString}</Logger>
     </Screen>
   )
 }

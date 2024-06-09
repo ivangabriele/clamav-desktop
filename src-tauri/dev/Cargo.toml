@@ -7,3 +7,6 @@ edition = "2021"
 
 [dev-dependencies]
 jrest = "0.2.3"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

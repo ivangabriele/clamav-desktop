@@ -2,49 +2,48 @@ import React from 'react'
 import reactDom from 'react-dom/client'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 
+import '@fontsource/poppins/300.css'
+import '@fontsource/poppins/400.css'
+import '@fontsource/poppins/500.css'
+import '@fontsource/reddit-mono/400.css'
+import '@fontsource/reddit-mono/600.css'
+
 import { App } from './App'
 
 // TODO Clean that.
 const GlobalStyleCustom = createGlobalStyle`
-  html, body {
-    height: 100%;
-  }
-
-  body {
-    font-family: 'Poppins', sans-serif;
-    font-size: 100%;
-    font-weight: 300;
-    line-height: 1.5;
-    margin: 0;
-    color: #495057;
-  }
-
   * {
     box-sizing: border-box;
-  }
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
 
-  :focus-visible {
-    outline: none;
-  }
+    &:focus-visible {
+      outline: none;
+    }
 
-  ::placeholder {
-    color: #6c757d;
-  }
+    &::placeholder {
+      color: #6c757d;
+    }
 
-  h1, h2, h3, h4, h5, h6, p {
-    margin: 0;
-  }
+    &::-webkit-scrollbar {
+      width: 12px;
+    }
 
-  * > p:not(:first-child) {
-    margin-top: 8px;
-  }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
 
-  * > .Tag:not(:first-child) {
-    margin-left: 8px;
-  }
+    &::-webkit-scrollbar-thumb {
+      background-color: #333333;
+      border-radius: 5px;
+      outline: 0;
+    }
+}
 
-  html, body, #root {
-    height: 100%;
+  html {
+    display: flex;
+    max-height: 528px;
     overflow: hidden;
     width: 100%;
   }
@@ -52,18 +51,29 @@ const GlobalStyleCustom = createGlobalStyle`
   body {
     background-color: #1b1f38;
     border-radius: 16px;
+    color: #495057;
+    display: flex;
+    flex-grow: 1;
+    font-family: 'Poppins', sans-serif;
+    font-size: 100%;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 0;
+    overflow: hidden;
   }
 
-  body,
+  h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+  }
+
   #root {
     display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+    width: 100%;
   }
-
-  * {
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
- }
 `
 
 const root = reactDom.createRoot(document.getElementById('root') as HTMLElement)

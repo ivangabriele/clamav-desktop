@@ -43,3 +43,6 @@ mockall = "0.13.0"
 
 [package.metadata.deb]
 copyright = "2022-present, Ivan Gabriele <ivan.gabriele@gmail.com>"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

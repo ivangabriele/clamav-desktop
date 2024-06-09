@@ -10,7 +10,7 @@ type MainMenuProps = {
 }
 export function MainMenu({ currentPage, onChange }: MainMenuProps) {
   return (
-    <Box data-tauri-drag-region={true}>
+    <Box>
       <Button isActive={currentPage === Page.Dashboard} onClick={() => onChange(Page.Dashboard)}>
         <MdOutlineShield />
       </Button>
@@ -30,5 +30,7 @@ export function MainMenu({ currentPage, onChange }: MainMenuProps) {
 const Box = styled.div`
   display: flex;
   flex-direction: column;
-  width: 6rem;
+  height: 100%;
+  max-width: 120px;
+  min-width: 120px;
 `

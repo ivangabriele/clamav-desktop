@@ -41,11 +41,11 @@ export function Scanner() {
   useEffect(() => {
     invoke('load_scanner_state')
 
-    listen<Core.ScannerState>('scanner:state', (event) => {
+    listen<Core.ScannerState>('scanner:state', event => {
       setState(event.payload)
     })
 
-    listen<Core.ScannerStatus>('scanner:status', (event) => {
+    listen<Core.ScannerStatus>('scanner:status', event => {
       setStatus(event.payload)
     })
   }, [setState, setStatus])
@@ -55,41 +55,50 @@ export function Scanner() {
   return (
     <Screen isLoading={isLoading}>
       {!!state && !state.is_running && (
-        <>
+        <Box>
           <FileExplorer
             onCheck={handleFileExplorerCheck}
             onExpand={handleFileExplorerExpansion}
             tree={state.file_explorer_tree}
           />
 
-          <Button onClick={startScanner}>Start Scan</Button>
-        </>
+          <Button onClick={startScanner} style={{ marginTop: 16 }}>
+            Start Scan
+          </Button>
+        </Box>
       )}
 
       {!!state && state.is_running && status && (
-        <>
-          <Box>
+        <Box>
+          <InnerBox>
             <ScanningSpinner />
             <Progress>{numeral(status.progress || 0).format('0.00%')}</Progress>
 
             <Status $isSmall={!!currentFilePath && currentFilePath.length > 0}>
               {!!currentFilePath && currentFilePath.length > 0 ? currentFilePath : `${status?.step}...`}
             </Status>
-          </Box>
+          </InnerBox>
 
           <Button
             disabled={[Core.ScannerStatusStep.COUNTING, Core.ScannerStatusStep.STOPPING].includes(status.step)}
             onClick={stopScanner}
+            style={{ marginTop: 16 }}
           >
             {status.step === Core.ScannerStatusStep.STOPPING ? 'Stopping (gracefully)...' : 'Stop Scan'}
           </Button>
-        </>
+        </Box>
       )}
     </Screen>
   )
 }
 
 const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+`
+
+const InnerBox = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;

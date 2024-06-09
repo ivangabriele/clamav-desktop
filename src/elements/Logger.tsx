@@ -48,13 +48,16 @@ export const Logger = memo(UnmemoizedLogger, (prevProps, nextProps) => prevProps
 
 const Pre = styled.pre`
   background-color: black;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: text;
   color: white;
   flex-grow: 1;
-  margin: 16px 0 0;
-  max-width: 891px;
-  min-width: 0;
+  font-family: 'Reddit Mono', monospace;
+  font-size: 90%;
+  font-weight: 400;
+  margin: 0;
+  height: 384px;
+  width: 872px;
   opacity: 0.65;
   overflow-x: hidden;
   overflow-y: scroll;
