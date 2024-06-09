@@ -21,6 +21,9 @@ export function FileExplorer({ onCheck, onExpand, tree }: FileExplorerProps) {
 }
 
 const Box = styled.div`
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
+  height: 384px;
   overflow-y: auto;
 `

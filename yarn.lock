@@ -1295,6 +1295,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/poppins@npm:5.0.14":
+  version: 5.0.14
+  resolution: "@fontsource/poppins@npm:5.0.14"
+  checksum: 10/72683d2428d8198a25d35e47a3933dc9f7979dc954a9050e1516f01f582af44836c8c4a4d621d0f94d71f0f380c61dc028abbb2c4a2d866a5d425447d4de044a
+  languageName: node
+  linkType: hard
+
+"@fontsource/reddit-mono@npm:5.0.3":
+  version: 5.0.3
+  resolution: "@fontsource/reddit-mono@npm:5.0.3"
+  checksum: 10/3a35291fa9536c8ecc48768fb9ff13a21ccbc4ee0dac92f7ca76f4095bbc8ac0ae14768a05787829c0b0c8cd6c5cb071ed2fd2dfb5188f9877c4159109825977
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.14":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
@@ -4464,6 +4478,8 @@ __metadata:
   dependencies:
     "@commitlint/cli": "npm:19.3.0"
     "@commitlint/config-conventional": "npm:19.2.2"
+    "@fontsource/poppins": "npm:5.0.14"
+    "@fontsource/reddit-mono": "npm:5.0.3"
     "@ivangabriele/commitlint-config": "npm:2.0.3"
     "@ivangabriele/eslint-config-typescript-react": "npm:10.0.0"
     "@ivangabriele/prettier-config": "npm:5.0.1"
