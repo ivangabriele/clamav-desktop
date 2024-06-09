@@ -20,16 +20,15 @@ export function Screen({ children, isLoading }: ScreenProps) {
   return <Box>{children}</Box>
 }
 
-const Box = styled.div<{
+const Box = styled.div.attrs({ className: 'Screen' })<{
   $isLoading?: boolean
 }>`
   display: flex;
-  flex-direction: ${(p) => (p.$isLoading ? 'row' : 'column')};
+  flex-direction: ${p => (p.$isLoading ? 'row' : 'column')};
   flex-grow: 1;
-  height: 100%;
-  padding: 1rem;
+  padding: 16px;
 
-  ${(p) =>
+  ${p =>
     p.$isLoading &&
     css`
       align-items: center;

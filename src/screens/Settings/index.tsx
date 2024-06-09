@@ -40,7 +40,7 @@ export function Settings() {
       nextSource: clamdConfFileSourceRef.current,
     })
 
-    updateState((prevState) => ({
+    updateState(prevState => ({
       ...prevState,
       // biome-ignore lint/style/useNamingConvention: Core event data.
       is_writing: true,
@@ -65,7 +65,7 @@ export function Settings() {
   useEffect(() => {
     invoke('load_settings_state')
 
-    listen<Core.SettingsState>('settings:state', (event) => {
+    listen<Core.SettingsState>('settings:state', event => {
       setState(event.payload)
 
       clamdConfFileSourceRef.current = event.payload.clamd_conf_file_source
@@ -73,35 +73,29 @@ export function Settings() {
   }, [setState])
 
   return (
-    <Screen isLoading={isLoading}>
+    <StyledScreen isLoading={isLoading}>
       {!!state.clamd_conf_file_source && (
         <Box>
           <CodeMirror
             basicSetup={CODE_MIRROR_OPTIONS}
             editable={!state.is_writing}
             extensions={[langs.shell()]}
-            height="383px"
+            height="384px"
             onChange={handleChange}
             theme={CODE_MIRROR_THEME}
             value={state.clamd_conf_file_source}
           />
-          <Button disabled={state.is_writing} onClick={updateClamdConfFileSource}>
+
+          <Button disabled={state.is_writing} onClick={updateClamdConfFileSource} style={{ marginTop: 16 }}>
             {state.is_writing ? 'Updating Configuration...' : 'Update Configuration'}
           </Button>
         </Box>
       )}
-    </Screen>
+    </StyledScreen>
   )
 }
 
-const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  .cm-editor {
-    margin-bottom: 16px;
-  }
-
+const StyledScreen = styled(Screen)`
   .cm-scroller {
     &::-webkit-scrollbar {
       width: 12px;
@@ -119,5 +113,33 @@ const Box = styled.div`
 
   .cm-line {
     cursor: text;
+  }
+`
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  > .cm-theme {
+    font-weight: 400;
+
+    > .cm-editor {
+      border-radius: 6px;
+
+      > .cm-scroller {
+        > .cm-gutters {
+          padding: 0 8px 0 8px;
+        }
+
+        > .cm-content {
+          padding: 0;
+
+          > .cm-line {
+            cursor: text;
+          }
+        }
+      }
+    }
   }
 `

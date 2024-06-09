@@ -13,7 +13,7 @@ type FileExplorerProps = {
 export function FileExplorer({ onCheck, onExpand, tree }: FileExplorerProps) {
   return (
     <Box>
-      {tree.map((node) => (
+      {tree.map(node => (
         <Node key={node.path} node={node} onCheck={onCheck} onExpand={onExpand} parentIsChecked={false} />
       ))}
     </Box>
@@ -21,6 +21,9 @@ export function FileExplorer({ onCheck, onExpand, tree }: FileExplorerProps) {
 }
 
 const Box = styled.div`
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
+  height: 384px;
   overflow-y: auto;
 `

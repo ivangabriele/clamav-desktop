@@ -21,7 +21,7 @@ export function Button({ isActive, onClick, ...nativeProps }: ButtonProps) {
 const StyledButton = styled.button<{
   $isActive: boolean
 }>`
-  background-color: ${(p) => (p.$isActive ? 'rgba(21, 23, 44, 0)' : 'rgb(21, 23, 44)')};
+  background-color: ${p => (p.$isActive ? 'rgba(21, 23, 44, 0)' : 'rgb(21, 23, 44)')};
   border: 0;
   border-radius: 0;
   cursor: pointer;
@@ -33,13 +33,13 @@ const StyledButton = styled.button<{
   }
 
   > svg {
-    fill: ${(p) => (p.$isActive ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.5)')};
+    fill: ${p => (p.$isActive ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.5)')};
     height: 3rem;
     width: 3rem;
   }
   &:hover {
     > svg {
-      fill: ${(p) => (p.$isActive ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.75)')};
+      fill: ${p => (p.$isActive ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.75)')};
     }
   }
 `

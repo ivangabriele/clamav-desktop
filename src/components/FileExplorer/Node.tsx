@@ -1,3 +1,4 @@
+import { MdArrowDropDown, MdArrowRight } from 'react-icons/md'
 import styled from 'styled-components'
 
 import type { Promisable } from 'type-fest'
@@ -14,16 +15,15 @@ export function Node({ node, onCheck, onExpand, parentIsChecked }: NodeProps) {
     <Box $depth={node.depth}>
       <Row>
         <Checkbox checked={node.is_checked || parentIsChecked} onChange={() => onCheck(node)} type="checkbox" />
-        <ExpansionButton $isExpanded={node.is_expanded} onClick={() => onExpand(node)} type="button">
-          {node.is_expanded ? '🞃' : '🞂'}
-        </ExpansionButton>
-        {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-        <span onClick={() => onExpand(node)} style={{ cursor: 'pointer' }}>
-          {node.name}
-        </span>
+        <Clickable onClick={() => onExpand(node)}>
+          <ExpandButton $isExpanded={node.is_expanded} type="button">
+            {node.is_expanded ? <MdArrowDropDown /> : <MdArrowRight />}
+          </ExpandButton>
+          <span>{node.name}</span>
+        </Clickable>
       </Row>
 
-      {node.children.map((nodeChild) => (
+      {node.children.map(nodeChild => (
         <Node
           key={nodeChild.path}
           node={nodeChild}
@@ -42,46 +42,41 @@ const Box = styled.div<{
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  overflow-y: auto;
-  padding-left: ${(p) => p.$depth}rem;
+  padding-left: ${p => p.$depth}rem;
+
+  > div:not(:first-child) {
+    margin-top: 8px;
+  }
 `
 
 const Row = styled.div`
   align-items: center;
   display: flex;
-  height: 32px;
-
-  > span {
-    color: white;
-    font-size: 125%;
-    line-height: 1;
-    margin-left: 4px;
-  }
+  height: 24px;
 `
 
 const Checkbox = styled.input`
   appearance: none;
   background-color: #fff;
-  border-radius: 0.15rem;
-  border: 0.15rem solid currentColor;
+  border-radius: 4px;
+  border: 0;
   color: currentColor;
   display: grid;
-  font: inherit;
-  height: 1.15rem;
+  height: 20px;
   margin: 0;
   place-content: center;
   transform: translateY(-0.075rem);
-  width: 1.15rem;
+  width: 20px;
 
   &::before {
     box-shadow: inset 1em 1em rebeccapurple;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
     content: '';
-    height: 0.65rem;
+    height: 16px;
     transform-origin: bottom left;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
-    width: 0.65rem;
+    width: 16px;
 
     /* Windows High Contrast Mode */
     background-color: CanvasText;
@@ -103,20 +98,30 @@ const Checkbox = styled.input`
   }
 
   &:focus {
-    outline: max(2px, 0.15rem) solid currentColor;
-    outline-offset: max(2px, 0.15rem);
+    outline: 0;
   }
 `
 
-const ExpansionButton = styled.button<{
+const Clickable = styled.span`
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  display: flex;
+
+  * {
+    cursor: pointer;
+  }
+`
+
+const ExpandButton = styled.button<{
   $isExpanded: boolean
 }>`
   background-color: transparent;
   border: 0;
   color: gray;
-  cursor: pointer;
-  font-size: 120%;
-  margin: ${(p) => (p.$isExpanded ? '6px' : '4px')} 4px 0 16px;
+  font-size: 150%;
+  line-height: 1;
+  margin: ${p => (p.$isExpanded ? '6px' : '4px')} 4px 0 16px;
   padding: 0;
 
   :hover {

@@ -31,7 +31,7 @@ export function Cloud() {
   useEffect(() => {
     invoke('get_cloud_state')
 
-    listen<Core.CloudState>('cloud:state', (event) => {
+    listen<Core.CloudState>('cloud:state', event => {
       setState(event.payload)
     })
 
@@ -48,26 +48,27 @@ export function Cloud() {
 
   return (
     <Screen isLoading={isLoading}>
+      <Logger hasForcedScroll>{logsAsString}</Logger>
+
       {!!state && state.daemon_status === Core.CloudDaemonStatus.RUNNING && (
         <>
-          <Button data-testid="cloud__button" onClick={stopCloudDaemon}>
+          <Button data-testid="cloud__button" onClick={stopCloudDaemon} style={{ marginTop: 16 }}>
             Stop Cloud Daemon
           </Button>
         </>
       )}
       {!!state && state.daemon_status === Core.CloudDaemonStatus.STOPPED && (
-        <Button data-testid="cloud__button" onClick={startCloudDaemon}>
+        <Button data-testid="cloud__button" onClick={startCloudDaemon} style={{ marginTop: 16 }}>
           Start Cloud Daemon
         </Button>
       )}
       {!!state && state.daemon_status === Core.CloudDaemonStatus.UNKNOWN && (
-        <Button data-testid="cloud__button" disabled={true}>
+        <Button data-testid="cloud__button" disabled style={{ marginTop: 16 }}>
           Loading...
         </Button>
       )}
-
       {!!state && state.is_running ? (
-        <Button data-testid="cloud__button" disabled={true} style={{ marginTop: 8 }}>
+        <Button data-testid="cloud__button" disabled style={{ marginTop: 16 }}>
           Updating Virus Database...
         </Button>
       ) : (
@@ -75,15 +76,13 @@ export function Cloud() {
           data-testid="cloud__button"
           disabled={!state || state.daemon_status !== Core.CloudDaemonStatus.STOPPED}
           onClick={startCloudUpdate}
-          style={{ marginTop: 8 }}
+          style={{ marginTop: 16 }}
         >
           {state?.daemon_status === Core.CloudDaemonStatus.STOPPED
             ? 'Update Virus Database'
             : 'Stop the Cloud Daemon first if you want to update manually'}
         </Button>
       )}
-
-      <Logger hasForcedScroll={true}>{logsAsString}</Logger>
     </Screen>
   )
 }
