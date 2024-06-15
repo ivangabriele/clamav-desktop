@@ -61,38 +61,26 @@ jobs:
   #         path: src-tauri/target/release/bundle/dmg/*.dmg
   #         retention-days: 1
 
-  # build_msi_release:
-  #   name: Build MSI Release
-  #   runs-on: windows-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         submodules: true
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         cache: yarn
-  #         node-version: 20
-  #     - name: Install
-  #       run: yarn
-  #     - name: Build
-  #       run: yarn release:msi
-  #     - name: Upload
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: ci-release-msi
-  #         path: src-tauri/target/release/bundle/msi/*.msi
-  #         retention-days: 1
-
-  build_msi_release_next:
-    name: Build MSI Release (Next)
+  build_msi_release:
+    name: Build MSI Release
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: true
+      - name: Download last ClamAV release
+        run: |
+          Invoke-WebRequest `
+            -Uri https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.3.1/clamav-1.3.1.win.x64.zip `
+            -OutFile clamav-1.3.1.win.x64.zip
+          Invoke-WebRequest `
+            -Uri https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.3.1/clamav-1.3.1.win.x64.zip.sig `
+            -OutFile clamav-1.3.1.win.x64.zip.sig
+          echo "${{ secrets.TALOS_GPG_PUBLIC_KEY }}" | gpg --import
+          gpg --verify clamav-1.3.1.win.x64.zip.sig clamav-1.3.1.win.x64.zip
+        working-directory: .\sidecars
+
       # - name: Setup Node.js
       #   uses: actions/setup-node@v4
       #   with:

@@ -1,0 +1,199 @@
+name: Build With ClamAV
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # build_deb_release:
+  #   name: Build DEB Release (With ClamAV)
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: ivangabriele/tauri:debian-bullseye-18
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         cache: yarn
+  #         node-version: 20
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn release:deb
+  #     - name: Upload
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ci-release-deb
+  #         path: src-tauri/target/release/bundle/deb/*.deb
+  #         retention-days: 1
+
+  # build_dmg_release:
+  #   name: Build DMG Release
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         cache: yarn
+  #         node-version: 20
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn release:dmg
+  #     - name: Upload
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ci-release-dmg
+  #         path: src-tauri/target/release/bundle/dmg/*.dmg
+  #         retention-days: 1
+
+  # build_msi_release:
+  #   name: Build MSI Release
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         cache: yarn
+  #         node-version: 20
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn release:msi
+  #     - name: Upload
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ci-release-msi
+  #         path: src-tauri/target/release/bundle/msi/*.msi
+  #         retention-days: 1
+
+  build_msi_release:
+    name: Build MSI Release (With ClamAV)
+    strategy:
+      fail-fast: true
+      matrix:
+        architecture: [x86, x86-64]
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+      # https://docs.clamav.net/manual/Installing/Installing-from-source-Windows.html#install-prerequisites
+      # (`choco install activeperl cmake nasm wixtoolset`)
+      # `perl` is installed by default on all GitHub Actions runners.
+      # `wixtoolset` is installed by default on GitHub Actions Windows runners.
+      - name: Install ClamAV build prerequisites
+        run: |
+          # perl -v
+          choco install `
+            cmake nasm
+          python3 -m pip install mussels
+      - name: Output ClamAV Git submodule status
+        run: |
+          git submodule foreach 'git fetch --tags'
+          $gitCommitSha = git rev-parse HEAD
+          $gitTag = git describe --tags --exact-match $gitCommitSha 2>$null
+          Write-Output "Git Commit SHA: $gitCommitSha"
+          Write-Output "Git Tag: $gitTag"
+        working-directory: .\clamav
+      - name: Prepare ClamAV build
+        run: |
+          mkdir build && cd build
+          msl update
+          msl cookbook trust -y clamav
+        working-directory: .\clamav
+      - name: Build ClamAV libraries (${{ matrix.architecture }})
+        run: |
+          if [ "${{ matrix.architecture }}" == "x86-64" ]; then
+            msl build clamav_deps
+          else
+            msl build clamav_deps -t x86
+          fi
+        working-directory: .\clamav\build
+      - name: Build ClamAV binaries (${{ matrix.architecture }})
+        run: |
+          if [ "${{ matrix.architecture }}" == "x86-64" ]; then
+            cmake ..  -G "Visual Studio 16 2019" -A x64 `
+              -D JSONC_INCLUDE_DIR="$home\.mussels\install\x64\include\json-c"         `
+              -D JSONC_LIBRARY="$home\.mussels\install\x64\lib\json-c.lib"             `
+              -D ENABLE_JSON_SHARED=OFF                                              `
+              -D BZIP2_INCLUDE_DIR="$home\.mussels\install\x64\include"                `
+              -D BZIP2_LIBRARY_RELEASE="$home\.mussels\install\x64\lib\libbz2.lib"     `
+              -D CURL_INCLUDE_DIR="$home\.mussels\install\x64\include"                 `
+              -D CURL_LIBRARY="$home\.mussels\install\x64\lib\libcurl_imp.lib"         `
+              -D OPENSSL_ROOT_DIR="$home\.mussels\install\x64"                         `
+              -D OPENSSL_INCLUDE_DIR="$home\.mussels\install\x64\include"              `
+              -D OPENSSL_CRYPTO_LIBRARY="$home\.mussels\install\x64\lib\libcrypto.lib" `
+              -D OPENSSL_SSL_LIBRARY="$home\.mussels\install\x64\lib\libssl.lib"       `
+              -D ZLIB_LIBRARY="$home\.mussels\install\x64\lib\libssl.lib"              `
+              -D LIBXML2_INCLUDE_DIR="$home\.mussels\install\x64\include"              `
+              -D LIBXML2_LIBRARY="$home\.mussels\install\x64\lib\libxml2.lib"          `
+              -D PCRE2_INCLUDE_DIR="$home\.mussels\install\x64\include"                `
+              -D PCRE2_LIBRARY="$home\.mussels\install\x64\lib\pcre2-8.lib"            `
+              -D CURSES_INCLUDE_DIR="$home\.mussels\install\x64\include"               `
+              -D CURSES_LIBRARY="$home\.mussels\install\x64\lib\pdcurses.lib"          `
+              -D PThreadW32_INCLUDE_DIR="$home\.mussels\install\x64\include"           `
+              -D PThreadW32_LIBRARY="$home\.mussels\install\x64\lib\pthreadVC2.lib"    `
+              -D ZLIB_INCLUDE_DIR="$home\.mussels\install\x64\include"                 `
+              -D ZLIB_LIBRARY="$home\.mussels\install\x64\lib\zlibstatic.lib"          `
+              -D LIBCHECK_INCLUDE_DIR="$home\.mussels\install\x64\include"             `
+              -D LIBCHECK_LIBRARY="$home\.mussels\install\x64\lib\checkDynamic.lib"    `
+              -D CMAKE_INSTALL_PREFIX="install"
+          else
+            cmake ..  -G "Visual Studio 16 2019" `
+              -D JSONC_INCLUDE_DIR="$home\.mussels\install\x64\include\json-c"         `
+              -D JSONC_LIBRARY="$home\.mussels\install\x64\lib\json-c.lib"             `
+              -D ENABLE_JSON_SHARED=OFF                                              `
+              -D BZIP2_INCLUDE_DIR="$home\.mussels\install\x64\include"                `
+              -D BZIP2_LIBRARY_RELEASE="$home\.mussels\install\x64\lib\libbz2.lib"     `
+              -D CURL_INCLUDE_DIR="$home\.mussels\install\x64\include"                 `
+              -D CURL_LIBRARY="$home\.mussels\install\x64\lib\libcurl_imp.lib"         `
+              -D OPENSSL_ROOT_DIR="$home\.mussels\install\x64"                         `
+              -D OPENSSL_INCLUDE_DIR="$home\.mussels\install\x64\include"              `
+              -D OPENSSL_CRYPTO_LIBRARY="$home\.mussels\install\x64\lib\libcrypto.lib" `
+              -D OPENSSL_SSL_LIBRARY="$home\.mussels\install\x64\lib\libssl.lib"       `
+              -D ZLIB_LIBRARY="$home\.mussels\install\x64\lib\libssl.lib"              `
+              -D LIBXML2_INCLUDE_DIR="$home\.mussels\install\x64\include"              `
+              -D LIBXML2_LIBRARY="$home\.mussels\install\x64\lib\libxml2.lib"          `
+              -D PCRE2_INCLUDE_DIR="$home\.mussels\install\x64\include"                `
+              -D PCRE2_LIBRARY="$home\.mussels\install\x64\lib\pcre2-8.lib"            `
+              -D CURSES_INCLUDE_DIR="$home\.mussels\install\x64\include"               `
+              -D CURSES_LIBRARY="$home\.mussels\install\x64\lib\pdcurses.lib"          `
+              -D PThreadW32_INCLUDE_DIR="$home\.mussels\install\x64\include"           `
+              -D PThreadW32_LIBRARY="$home\.mussels\install\x64\lib\pthreadVC2.lib"    `
+              -D ZLIB_INCLUDE_DIR="$home\.mussels\install\x64\include"                 `
+              -D ZLIB_LIBRARY="$home\.mussels\install\x64\lib\zlibstatic.lib"          `
+              -D LIBCHECK_INCLUDE_DIR="$home\.mussels\install\x64\include"             `
+              -D LIBCHECK_LIBRARY="$home\.mussels\install\x64\lib\checkDynamic.lib"    `
+              -D CMAKE_INSTALL_PREFIX="install"
+          fi
+          cmake --build . --config RelWithDebInfo
+        working-directory: .\clamav\build
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     cache: yarn
+      #     node-version: 20
+      # - name: Install
+      #   run: yarn
+      # - name: Build
+      #   run: yarn release:msi
+      # - name: Upload
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ci-release-msi
+      #     path: src-tauri/target/release/bundle/msi/*.msi
+      #     retention-days: 1
