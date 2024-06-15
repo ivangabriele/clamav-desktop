@@ -3,76 +3,100 @@ name: Build
 on: push
 
 jobs:
-  build_deb_release:
-    name: Build DEB Release
-    runs-on: ubuntu-latest
-    container:
-      image: ivangabriele/tauri:debian-bullseye-18
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: yarn
-          node-version: 20
-      - name: Install
-        run: yarn
-      - name: Build
-        run: yarn release:deb
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: ci-release-deb
-          path: src-tauri/target/release/bundle/deb/*.deb
-          retention-days: 1
+  # build_deb_release:
+  #   name: Build DEB Release
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: ivangabriele/tauri:debian-bullseye-18
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         cache: yarn
+  #         node-version: 20
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn release:deb
+  #     - name: Upload
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ci-release-deb
+  #         path: src-tauri/target/release/bundle/deb/*.deb
+  #         retention-days: 1
 
-  build_dmg_release:
-    name: Build DMG Release
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: yarn
-          node-version: 20
-      - name: Install
-        run: yarn
-      - name: Build
-        run: yarn release:dmg
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: ci-release-dmg
-          path: src-tauri/target/release/bundle/dmg/*.dmg
-          retention-days: 1
+  # build_dmg_release:
+  #   name: Build DMG Release
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         cache: yarn
+  #         node-version: 20
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn release:dmg
+  #     - name: Upload
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ci-release-dmg
+  #         path: src-tauri/target/release/bundle/dmg/*.dmg
+  #         retention-days: 1
 
-  build_msi_release:
-    name: Build MSI Release
+  # build_msi_release:
+  #   name: Build MSI Release
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         submodules: true
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         cache: yarn
+  #         node-version: 20
+  #     - name: Install
+  #       run: yarn
+  #     - name: Build
+  #       run: yarn release:msi
+  #     - name: Upload
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ci-release-msi
+  #         path: src-tauri/target/release/bundle/msi/*.msi
+  #         retention-days: 1
+
+  build_msi_release_next:
+    name: Build MSI Release (Next)
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: yarn
-          node-version: 20
-      - name: Install
-        run: yarn
-      - name: Build
-        run: yarn release:msi
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: ci-release-msi
-          path: src-tauri/target/release/bundle/msi/*.msi
-          retention-days: 1
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     cache: yarn
+      #     node-version: 20
+      # - name: Install
+      #   run: yarn
+      # - name: Build
+      #   run: yarn release:msi
+      # - name: Upload
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ci-release-msi
+      #     path: src-tauri/target/release/bundle/msi/*.msi
+      #     retention-days: 1
