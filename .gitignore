@@ -157,4 +157,5 @@ dist
 /.debug/*
 !/.debug/.gitkeep
 
-# /clamav/build
+/sidecars/*
+!/sidecars/.gitkeep

@@ -30,12 +30,12 @@ fn main() {
                     let window = app.get_window("main").expect("Could not get window.");
                     window
                         .set_size(LogicalSize::<u32> {
-                            height: 768,
+                            height: 900,
                             width: 1024,
                         })
                         .expect("Could not set window size.");
                     window
-                        .set_always_on_top(true)
+                        .set_always_on_top(false)
                         .expect("Could not set always on top.");
 
                     window.open_devtools();
