@@ -9,6 +9,10 @@ on:
     # Every day at 12:00 UTC
     - cron: '0 12 * * *'
 
+concurrency:
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
 jobs:
   codeql:
     name: CodeQL (${{ matrix.label }})
