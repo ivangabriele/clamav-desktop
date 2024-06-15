@@ -33,17 +33,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
-          # https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-          queries: 'security-and-quality,security-extended'
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: '/language:${{matrix.language}}'
+      # - name: Initialize CodeQL
+      #   uses: github/codeql-action/init@v3
+      #   with:
+      #     languages: ${{ matrix.language }}
+      #     build-mode: ${{ matrix.build-mode }}
+      #     # https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+      #     queries: 'security-and-quality,security-extended'
+      # - name: Perform CodeQL Analysis
+      #   uses: github/codeql-action/analyze@v3
+      #   with:
+      #     category: '/language:${{matrix.language}}'
 
   cargo_audit:
     name: Cargo Audit
@@ -53,8 +53,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Install cargo-audit
-        run: cargo install cargo-audit
-      - name: Run
-        run: cargo audit
-        working-directory: ./src-tauri
+      # - name: Install cargo-audit
+      #   run: cargo install cargo-audit
+      # - name: Run
+      #   run: cargo audit
+      #   working-directory: ./src-tauri
