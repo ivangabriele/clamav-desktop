@@ -12,22 +12,20 @@ import { useCachedState } from '../hooks/useCachedState'
 import { Screen } from '../layouts/Screen'
 import { Core, Webview } from '../types'
 
-type ScannerProps = {}
-// eslint-disable-next-line no-empty-pattern
-export function Scanner({}: ScannerProps) {
+export function Scanner() {
   const [state, setState] = useCachedState<Core.ScannerState | undefined>(Webview.CacheKey.SCANNER_STATE, undefined)
   const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(Webview.CacheKey.SCANNER_STATUS, undefined)
 
-  const isLoading = !state || !state.is_ready
+  const isLoading = !state?.is_ready
 
   const handleFileExplorerCheck = useCallback(async (node: Core.FileExplorerNode) => {
-    invoke('toggle_file_explorer_node_check', {
+    await invoke('toggle_file_explorer_node_check', {
       indexPath: node.index_path,
     })
   }, [])
 
   const handleFileExplorerExpansion = useCallback(async (node: Core.FileExplorerNode) => {
-    invoke('toggle_file_explorer_node_expansion', {
+    await invoke('toggle_file_explorer_node_expansion', {
       indexPath: node.index_path,
     })
   }, [])
@@ -43,11 +41,11 @@ export function Scanner({}: ScannerProps) {
   useEffect(() => {
     invoke('load_scanner_state')
 
-    listen<Core.ScannerState>('scanner:state', event => {
+    listen<Core.ScannerState>('scanner:state', (event) => {
       setState(event.payload)
     })
 
-    listen<Core.ScannerStatus>('scanner:status', event => {
+    listen<Core.ScannerStatus>('scanner:status', (event) => {
       setStatus(event.payload)
     })
   }, [setState, setStatus])

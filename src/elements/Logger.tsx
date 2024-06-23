@@ -8,7 +8,6 @@ export type LoggerProps = Omit<DOMAttributes<HTMLPreElement>, 'children'> & {
   hasForcedScroll?: boolean
 }
 function UnmemoizedLogger({ children, hasForcedScroll, ...nativeProps }: LoggerProps) {
-  // eslint-disable-next-line no-null/no-null
   const preElementRef = useRef<HTMLPreElement | null>(null)
   const [maxWidth, setMaxWidth] = useState<number | undefined>(undefined)
 
@@ -17,30 +16,26 @@ function UnmemoizedLogger({ children, hasForcedScroll, ...nativeProps }: LoggerP
     style.maxWidth = `${maxWidth}px`
   }
 
-  useEffect(
-    () => {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (!preElementRef.current) {
+      return
+    }
+
+    setTimeout(() => {
       if (!preElementRef.current) {
         return
       }
 
-      setTimeout(() => {
-        if (!preElementRef.current) {
-          return
-        }
+      setMaxWidth(preElementRef.current.offsetWidth)
+    }, 250)
 
-        setMaxWidth(preElementRef.current.offsetWidth)
-      }, 250)
+    if (!hasForcedScroll) {
+      return
+    }
 
-      if (!hasForcedScroll) {
-        return
-      }
-
-      preElementRef.current.scrollTo(0, preElementRef.current.scrollHeight)
-    },
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [children, hasForcedScroll],
-  )
+    preElementRef.current.scrollTo(0, preElementRef.current.scrollHeight)
+  }, [children, hasForcedScroll])
 
   return (
     <Pre ref={preElementRef} {...nativeProps} style={style}>

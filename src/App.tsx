@@ -10,16 +10,16 @@ import { Scanner } from './screens/Scanner'
 import { Settings } from './screens/Settings'
 
 export function App() {
-  const [page, setPage] = useState<Page>(Page.DASHBOARD)
+  const [page, setPage] = useState<Page>(Page.Dashboard)
 
   return (
     <>
       <MainMenu currentPage={page} onChange={setPage} />
       <Main>
-        {page === Page.DASHBOARD && <Dashboard />}
-        {page === Page.SCANNER && <Scanner />}
-        {page === Page.CLOUD && <Cloud />}
-        {page === Page.CONFIG && <Settings />}
+        {page === Page.Dashboard && <Dashboard />}
+        {page === Page.Scanner && <Scanner />}
+        {page === Page.Cloud && <Cloud />}
+        {page === Page.Config && <Settings />}
 
         <Toaster />
       </Main>

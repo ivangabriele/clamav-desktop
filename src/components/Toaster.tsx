@@ -1,4 +1,4 @@
-import { toast, ToastBar, Toaster as RhtToaster } from 'react-hot-toast'
+import { Toaster as RhtToaster, ToastBar, toast } from 'react-hot-toast'
 import { MdOutlineClose } from 'react-icons/md'
 import styled from 'styled-components'
 
@@ -51,7 +51,7 @@ const TOAST_OPTIONS = {
   className: 'Toast',
   duration: 5000,
   error: {
-    duration: Infinity,
+    duration: Number.POSITIVE_INFINITY,
     style: {
       background: 'red',
     },
@@ -70,7 +70,7 @@ export function Toaster() {
   return (
     <Box>
       <RhtToaster position="top-right" toastOptions={TOAST_OPTIONS}>
-        {thisToast => (
+        {(thisToast) => (
           <ToastBar toast={thisToast}>
             {({ icon, message }) => (
               <>

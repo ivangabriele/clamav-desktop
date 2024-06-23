@@ -9,14 +9,12 @@ import { useCachedState } from '../hooks/useCachedState'
 import { Screen } from '../layouts/Screen'
 import { Core, Webview } from '../types'
 
-type DashboardProps = {}
-// eslint-disable-next-line no-empty-pattern
-export function Dashboard({}: DashboardProps) {
+export function Dashboard() {
   const timerRef = useRef<number | undefined>(undefined)
 
   const [state, setState] = useCachedState<Core.DashboardState | undefined>(Webview.CacheKey.DASHBOARD_STATE, undefined)
 
-  const isLoading = !state || !state.is_ready
+  const isLoading = !state?.is_ready
   const logsAsString = (state?.logs || []).join('\n')
 
   const startDaemon = useCallback(() => {
@@ -30,7 +28,7 @@ export function Dashboard({}: DashboardProps) {
   useEffect(() => {
     invoke('get_dashboard_state')
 
-    listen<Core.DashboardState>('dashboard:state', event => {
+    listen<Core.DashboardState>('dashboard:state', (event) => {
       setState(event.payload)
     })
 
@@ -47,8 +45,8 @@ export function Dashboard({}: DashboardProps) {
 
   return (
     <Screen isLoading={isLoading}>
-      {(!state || !state.is_ready || state.status === Core.DashboardStatus.UNKNOWN) && (
-        <Button data-testid="dashboard__button" disabled>
+      {(!state?.is_ready || state.status === Core.DashboardStatus.UNKNOWN) && (
+        <Button data-testid="dashboard__button" disabled={true}>
           Waiting for Daemon status…
         </Button>
       )}
@@ -63,7 +61,7 @@ export function Dashboard({}: DashboardProps) {
         </Button>
       )}
 
-      <Logger hasForcedScroll>{logsAsString}</Logger>
+      <Logger hasForcedScroll={true}>{logsAsString}</Logger>
     </Screen>
   )
 }
