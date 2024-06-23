@@ -31,7 +31,7 @@ export function Cloud() {
   useEffect(() => {
     invoke('get_cloud_state')
 
-    listen<Core.CloudState>('cloud:state', event => {
+    listen<Core.CloudState>('cloud:state', (event) => {
       setState(event.payload)
     })
 
@@ -61,13 +61,13 @@ export function Cloud() {
         </Button>
       )}
       {!!state && state.daemon_status === Core.CloudDaemonStatus.UNKNOWN && (
-        <Button data-testid="cloud__button" disabled>
+        <Button data-testid="cloud__button" disabled={true}>
           Loading...
         </Button>
       )}
 
       {!!state && state.is_running ? (
-        <Button data-testid="cloud__button" disabled style={{ marginTop: 8 }}>
+        <Button data-testid="cloud__button" disabled={true} style={{ marginTop: 8 }}>
           Updating Virus Database...
         </Button>
       ) : (
@@ -83,7 +83,7 @@ export function Cloud() {
         </Button>
       )}
 
-      <Logger hasForcedScroll>{logsAsString}</Logger>
+      <Logger hasForcedScroll={true}>{logsAsString}</Logger>
     </Screen>
   )
 }
