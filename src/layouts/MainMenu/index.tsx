@@ -1,8 +1,8 @@
-import { MdOutlineCloudDownload, MdLocationSearching, MdOutlineSettings, MdOutlineShield } from 'react-icons/md'
+import { MdLocationSearching, MdOutlineCloudDownload, MdOutlineSettings, MdOutlineShield } from 'react-icons/md'
 import styled from 'styled-components'
 
-import { Button } from './Button'
 import { Page } from '../../constants'
+import { Button } from './Button'
 
 type MainMenuProps = {
   currentPage: Page
@@ -10,17 +10,17 @@ type MainMenuProps = {
 }
 export function MainMenu({ currentPage, onChange }: MainMenuProps) {
   return (
-    <Box data-tauri-drag-region>
-      <Button isActive={currentPage === Page.DASHBOARD} onClick={() => onChange(Page.DASHBOARD)}>
+    <Box data-tauri-drag-region={true}>
+      <Button isActive={currentPage === Page.Dashboard} onClick={() => onChange(Page.Dashboard)}>
         <MdOutlineShield />
       </Button>
-      <Button isActive={currentPage === Page.SCANNER} onClick={() => onChange(Page.SCANNER)}>
+      <Button isActive={currentPage === Page.Scanner} onClick={() => onChange(Page.Scanner)}>
         <MdLocationSearching />
       </Button>
-      <Button isActive={currentPage === Page.CLOUD} onClick={() => onChange(Page.CLOUD)}>
+      <Button isActive={currentPage === Page.Cloud} onClick={() => onChange(Page.Cloud)}>
         <MdOutlineCloudDownload />
       </Button>
-      <Button isActive={currentPage === Page.CONFIG} onClick={() => onChange(Page.CONFIG)}>
+      <Button isActive={currentPage === Page.Config} onClick={() => onChange(Page.Config)}>
         <MdOutlineSettings />
       </Button>
     </Box>

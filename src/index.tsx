@@ -1,6 +1,6 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import reactDom from 'react-dom/client'
+import { ThemeProvider, createGlobalStyle } from 'styled-components'
 
 import { App } from './App'
 
@@ -66,7 +66,7 @@ const GlobalStyleCustom = createGlobalStyle`
  }
 `
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const root = reactDom.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={{}}>

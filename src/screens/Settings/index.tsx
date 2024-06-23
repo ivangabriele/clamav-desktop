@@ -5,19 +5,23 @@ import CodeMirror from '@uiw/react-codemirror'
 import { useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
-import { CODE_MIRROR_OPTIONS, CODE_MIRROR_THEME } from './constants'
 import { Button } from '../../elements/Button'
 import { useCachedState } from '../../hooks/useCachedState'
 import { Screen } from '../../layouts/Screen'
-import { Webview, type Core } from '../../types'
+import { type Core, Webview } from '../../types'
+import { CODE_MIRROR_OPTIONS, CODE_MIRROR_THEME } from './constants'
 
 export function Settings() {
   const clamdConfFileSourceRef = useRef<string | null>(null)
 
   const [state, setState, updateState] = useCachedState<Core.SettingsState>(Webview.CacheKey.SETTINGS_STATE, {
+    // biome-ignore lint/style/useNamingConvention: Core event data.
     clamd_conf_file_path: null,
+    // biome-ignore lint/style/useNamingConvention: Core event data.
     clamd_conf_file_source: null,
+    // biome-ignore lint/style/useNamingConvention: Core event data.
     is_ready: false,
+    // biome-ignore lint/style/useNamingConvention: Core event data.
     is_writing: false,
   })
 
@@ -36,8 +40,9 @@ export function Settings() {
       nextSource: clamdConfFileSourceRef.current,
     })
 
-    updateState(prevState => ({
+    updateState((prevState) => ({
       ...prevState,
+      // biome-ignore lint/style/useNamingConvention: Core event data.
       is_writing: true,
     }))
 
@@ -45,12 +50,12 @@ export function Settings() {
   }
 
   const waitForWritingEnd = useCallback(
-    async (isFirstCall: boolean = false) => {
-      if (!isFirstCall && !state.is_writing) {
+    async (isFirstCall = false) => {
+      if (!(isFirstCall || state.is_writing)) {
         return
       }
 
-      invoke('get_settings_state')
+      await invoke('get_settings_state')
 
       window.setTimeout(waitForWritingEnd, 500)
     },
@@ -60,7 +65,7 @@ export function Settings() {
   useEffect(() => {
     invoke('load_settings_state')
 
-    listen<Core.SettingsState>('settings:state', event => {
+    listen<Core.SettingsState>('settings:state', (event) => {
       setState(event.payload)
 
       clamdConfFileSourceRef.current = event.payload.clamd_conf_file_source

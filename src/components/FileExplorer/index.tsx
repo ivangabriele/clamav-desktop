@@ -2,8 +2,8 @@ import styled from 'styled-components'
 
 import { Node } from './Node'
 
-import type { Core } from '../../types'
 import type { Promisable } from 'type-fest'
+import type { Core } from '../../types'
 
 type FileExplorerProps = {
   onCheck: (node: Core.FileExplorerNode) => Promisable<void>
@@ -13,7 +13,7 @@ type FileExplorerProps = {
 export function FileExplorer({ onCheck, onExpand, tree }: FileExplorerProps) {
   return (
     <Box>
-      {tree.map(node => (
+      {tree.map((node) => (
         <Node key={node.path} node={node} onCheck={onCheck} onExpand={onExpand} parentIsChecked={false} />
       ))}
     </Box>

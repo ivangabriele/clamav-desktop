@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useCallback, useRef } from 'react'
@@ -30,11 +31,13 @@ describe('hooks/useForceUpdate()', () => {
 
     render(<TestComponent />)
 
+    // @ts-ignore
     expect(screen.getByTestId('count')).toHaveTextContent('0')
 
     await userEvent.click(screen.getByTestId('increment-count'))
     await userEvent.click(screen.getByTestId('increment-count'))
 
+    // @ts-ignore
     expect(screen.getByTestId('count')).toHaveTextContent('2')
   })
 })

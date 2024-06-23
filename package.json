@@ -25,7 +25,7 @@
     "start": "./src-tauri/target/release/clamav-desktop",
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
     "test:e2e": "xvfb-run wdio run ./configs/wdio.config.ts",
-    "test:lint": "eslint --cache --ext cjs,cts,js,jsx,mjs,mts,ts,tsx .",
+    "test:lint": "biome check --files-ignore-unknown=true --no-errors-on-unmatched --write .",
     "test:sec": "ggshield iac scan all",
     "test:type": "tsc --noEmit -p ./tsconfig.ci.json",
     "test:unit:core": "make test",
@@ -52,12 +52,13 @@
     "typescript": "5.5.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.2",
     "@commitlint/cli": "19.3.0",
     "@commitlint/config-conventional": "19.2.2",
+    "@ivangabriele/biome-config": "1.0.2",
     "@ivangabriele/commitlint-config": "2.0.3",
-    "@ivangabriele/eslint-config-typescript-react": "10.0.0",
-    "@ivangabriele/prettier-config": "5.0.1",
     "@ivangabriele/tsconfig-react": "2.0.0",
+    "@jest/globals": "29.7.0",
     "@swc/core": "1.6.5",
     "@swc/jest": "0.2.36",
     "@tauri-apps/cli": "1.5.14",
@@ -74,8 +75,6 @@
     "@types/react-dom": "18.3.0",
     "@types/shelljs": "0.8.15",
     "@types/styled-components": "5.1.34",
-    "@typescript-eslint/eslint-plugin": "6.21.0",
-    "@typescript-eslint/parser": "6.21.0",
     "@vitejs/plugin-react": "4.3.1",
     "@wdio/cli": "8.38.2",
     "@wdio/local-runner": "8.38.2",
@@ -83,20 +82,6 @@
     "@wdio/spec-reporter": "8.38.2",
     "bhala": "3.0.4",
     "cross-env": "7.0.3",
-    "eslint": "8.57.0",
-    "eslint-config-airbnb": "19.0.4",
-    "eslint-config-airbnb-typescript": "17.1.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jest": "27.9.0",
-    "eslint-plugin-jsx-a11y": "6.9.0",
-    "eslint-plugin-no-null": "1.0.2",
-    "eslint-plugin-prettier": "5.1.3",
-    "eslint-plugin-react": "7.34.3",
-    "eslint-plugin-react-hooks": "4.6.2",
-    "eslint-plugin-sort-destructure-keys": "1.6.0",
-    "eslint-plugin-sort-keys-fix": "1.1.2",
-    "eslint-plugin-typescript-sort-keys": "3.2.0",
     "esm-path": "1.0.1",
     "execa": "9.3.0",
     "husky": "9.0.11",
@@ -104,7 +89,6 @@
     "jest-environment-jsdom": "29.7.0",
     "lint-staged": "15.2.7",
     "make-dir-cli": "4.0.0",
-    "prettier": "3.3.2",
     "shelljs": "0.8.5",
     "ts-node": "10.9.2",
     "type-fest": "4.20.1",
@@ -116,9 +100,10 @@
     "ws": ">=8.17.1"
   },
   "lint-staged": {
-    "*.{json,md,yaml,yml}": "prettier --write",
+    "*.{cjs,cts,d.cts,d.mts,d.ts,js,json,jsonc,jsx,mjs,mts,ts,tson,tsx}": [
+      "biome check --files-ignore-unknown=true --no-errors-on-unmatched --write"
+    ],
     "*.{ts,tsx}": [
-      "yarn eslint --ext cjs,cts,js,jsx,mjs,mts,ts,tsx",
       "bash -c 'npm run test:type'"
     ]
   },
@@ -136,6 +121,5 @@
       "last 1 chrome version"
     ]
   },
-  "packageManager": "yarn@4.3.1",
-  "prettier": "@ivangabriele/prettier-config"
+  "packageManager": "yarn@4.3.1"
 }

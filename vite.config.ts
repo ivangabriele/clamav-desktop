@@ -1,14 +1,12 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
-// eslint-disable-next-line import/no-default-export
+// biome-ignore lint/style/noDefaultExport: <explanation>
 export default defineConfig({
   build: {
     // don't minify for debug builds
-    minify: !process.env.TAURI_DEBUG ? 'esbuild' : false,
+    minify: process.env.TAURI_DEBUG ? false : 'esbuild',
 
     // produce sourcemaps for debug builds
     sourcemap: !!process.env.TAURI_DEBUG,

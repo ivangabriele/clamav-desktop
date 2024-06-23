@@ -8,5 +8,5 @@ if (matches.length !== 2) {
   B.error('[scripts/print_clamav_version.js]', `\`matches\` has a length of ${matches.length} instead of 2.`)
 }
 
-// eslint-disable-next-line no-console
+// biome-ignore lint/suspicious/noConsoleLog: <explanation>
 console.log(matches[1])

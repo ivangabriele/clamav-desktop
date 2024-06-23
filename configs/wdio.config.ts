@@ -1,8 +1,8 @@
-import { spawn } from 'child_process'
+import { spawn } from 'node:child_process'
 
+import type { ChildProcessByStdio } from 'node:child_process'
+import type { Writable } from 'node:stream'
 import type { Options } from '@wdio/types'
-import type { ChildProcessByStdio } from 'child_process'
-import type { Writable } from 'stream'
 
 let tauriDriver: ChildProcessByStdio<Writable, null, null>
 
@@ -19,7 +19,6 @@ export const config: Options.Testrunner = {
   // ensure we are running `tauri-driver` before the session starts so that we can proxy the webdriver requests
   beforeSession: () => {
     tauriDriver = spawn('tauri-driver', [], {
-      // eslint-disable-next-line no-null/no-null
       stdio: [null, process.stdout, process.stderr],
     })
   },
@@ -38,6 +37,7 @@ export const config: Options.Testrunner = {
       ...{
         'tauri:options': {
           application: './src-tauri/target/release/clamav-desktop',
+          // biome-ignore lint/suspicious/noExplicitAny: Only way to pass type-checking since it's a custom config.
         } as any,
       },
     },

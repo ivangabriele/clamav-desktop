@@ -11,7 +11,7 @@ type ScreenProps = {
 export function Screen({ children, isLoading }: ScreenProps) {
   if (isLoading) {
     return (
-      <Box $isLoading>
+      <Box $isLoading={true}>
         <LoadingSpinner />
       </Box>
     )
@@ -24,12 +24,12 @@ const Box = styled.div<{
   $isLoading?: boolean
 }>`
   display: flex;
-  flex-direction: ${p => (p.$isLoading ? 'row' : 'column')};
+  flex-direction: ${(p) => (p.$isLoading ? 'row' : 'column')};
   flex-grow: 1;
   height: 100%;
   padding: 1rem;
 
-  ${p =>
+  ${(p) =>
     p.$isLoading &&
     css`
       align-items: center;

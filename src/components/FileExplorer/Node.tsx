@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { Core } from '../../types'
 import type { Promisable } from 'type-fest'
+import type { Core } from '../../types'
 
 type NodeProps = {
   node: Core.FileExplorerNode
@@ -17,13 +17,13 @@ export function Node({ node, onCheck, onExpand, parentIsChecked }: NodeProps) {
         <ExpansionButton $isExpanded={node.is_expanded} onClick={() => onExpand(node)} type="button">
           {node.is_expanded ? '🞃' : '🞂'}
         </ExpansionButton>
-        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
         <span onClick={() => onExpand(node)} style={{ cursor: 'pointer' }}>
           {node.name}
         </span>
       </Row>
 
-      {node.children.map(nodeChild => (
+      {node.children.map((nodeChild) => (
         <Node
           key={nodeChild.path}
           node={nodeChild}
@@ -43,7 +43,7 @@ const Box = styled.div<{
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
-  padding-left: ${p => p.$depth}rem;
+  padding-left: ${(p) => p.$depth}rem;
 `
 
 const Row = styled.div`
@@ -116,7 +116,7 @@ const ExpansionButton = styled.button<{
   color: gray;
   cursor: pointer;
   font-size: 120%;
-  margin: ${p => (p.$isExpanded ? '6px' : '4px')} 4px 0 16px;
+  margin: ${(p) => (p.$isExpanded ? '6px' : '4px')} 4px 0 16px;
   padding: 0;
 
   :hover {
