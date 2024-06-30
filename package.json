@@ -83,7 +83,7 @@
     "@wdio/spec-reporter": "8.38.2",
     "bhala": "3.0.4",
     "cross-env": "7.0.3",
-    "eslint": "8.57.0",
+    "eslint": "9.6.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.1.0",
     "eslint-config-prettier": "9.1.0",
