@@ -1,4 +1,3 @@
-// biome-ignore lint/style/noDefaultExport: <explanation>
 export default {
   clearMocks: true,
   collectCoverageFrom: ['<rootDir>/src/{hooks,libs,utils}/**/*.t{s,sx}', '<rootDir>/src/**/utils.t{s,sx}'],

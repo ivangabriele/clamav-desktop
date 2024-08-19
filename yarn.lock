@@ -1378,12 +1378,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ivangabriele/biome-config@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@ivangabriele/biome-config@npm:1.0.2"
+"@ivangabriele/biome-config@npm:1.3.0":
+  version: 1.3.0
+  resolution: "@ivangabriele/biome-config@npm:1.3.0"
   peerDependencies:
     "@biomejs/biome": ^1
-  checksum: 10/ae9e048e26e74298502ad9edae5a171528f6eb8c6d86d000e520b5e9088eb0154b50453444de98ad0bd696d361401134a9f90675beefca6c7968cb7d4585198f
+  checksum: 10/5e4cc33e2a32e1747283482b6a90c5cc9849b5cfc5cc129968b3b0d7ec13ce5cfcf836394b233aaccafc379f9d377a3483e6d7ff880a2e226d7af433dfff2ba5
   languageName: node
   linkType: hard
 
@@ -1517,7 +1517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/globals@npm:29.7.0, @jest/globals@npm:^29.7.0":
+"@jest/globals@npm:^29.7.0":
   version: 29.7.0
   resolution: "@jest/globals@npm:29.7.0"
   dependencies:
@@ -4027,10 +4027,9 @@ __metadata:
     "@biomejs/biome": "npm:1.8.2"
     "@commitlint/cli": "npm:19.3.0"
     "@commitlint/config-conventional": "npm:19.2.2"
-    "@ivangabriele/biome-config": "npm:1.0.2"
+    "@ivangabriele/biome-config": "npm:1.3.0"
     "@ivangabriele/commitlint-config": "npm:2.0.3"
     "@ivangabriele/tsconfig-react": "npm:2.0.0"
-    "@jest/globals": "npm:29.7.0"
     "@lezer/highlight": "npm:1.2.0"
     "@swc/core": "npm:1.6.5"
     "@swc/jest": "npm:0.2.36"

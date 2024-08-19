@@ -4,10 +4,8 @@
   "files": {
     "ignore": ["./.vscode-test/*", "./.yarn/*", "./e2e/*", "./node_modules/*", "./package.json"]
   },
-  "formatter": {
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 120
+  "javascript": {
+    "globals": ["afterAll", "afterEach", "beforeAll", "beforeEach", "describe", "expect", "it", "test"]
   },
   "linter": {
     "rules": {
@@ -17,11 +15,6 @@
       "style": {
         "noNamespace": "off"
       }
-    }
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single"
     }
   }
 }
