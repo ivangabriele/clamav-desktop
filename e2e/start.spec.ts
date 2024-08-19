@@ -1,5 +1,3 @@
-import { describe, expect, it } from '@jest/globals'
-
 describe('Start', () => {
   before(async () => {
     $('button[data-testid="dashboard__button"]').waitUntil(
@@ -17,7 +15,6 @@ describe('Start', () => {
   it('should show the Dashboard', async () => {
     const button = await $('button[data-testid="dashboard__button"]')
 
-    // @ts-ignore
     expect(button).toHaveText('Waiting for Daemon status…')
   })
 })
