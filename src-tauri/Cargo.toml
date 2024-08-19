@@ -21,25 +21,25 @@ custom-protocol = ["tauri/custom-protocol"]
 members = ["cli", "common", "dev", "fast-cli", "filer"]
 
 [build-dependencies]
-tauri-build = { version = "1.5.2", features = [] }
+tauri-build = { version = "1.5.3", features = [] }
 
 [dependencies]
 chrono = "0.4.38"
 cli = { path = "./cli" }
 dev = { path = "./dev" }
 filer = { path = "./filer" }
-lazy_static = "1.4.0"
-regex = "1.10.4"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0.117"
-tauri = { version = "1.6.8", features = ["api-all", "icon-png", "system-tray"] }
-tokio = { version = "1.38.0", features = ["full"] }
+lazy_static = "1.5.0"
+regex = "1.10.6"
+serde = { version = "1.0.208", features = ["derive"] }
+serde_json = "1.0.125"
+tauri = { version = "1.7.1", features = ["api-all", "icon-png", "system-tray"] }
+tokio = { version = "1.39.3", features = ["full"] }
 tokio-util = "0.7.11"
 walkdir = "2.5.0"
 
 [dev-dependencies]
 jrest = "0.2.3"
-mockall = "0.12.1"
+mockall = "0.13.0"
 
 [package.metadata.deb]
 copyright = "2022-present, Ivan Gabriele <ivan.gabriele@gmail.com>"

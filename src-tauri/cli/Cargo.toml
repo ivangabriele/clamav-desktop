@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 colored = "2.1.0"
 common = { path = "../common" }
-tokio = { version = "1.38.0", features = ["full"] }
+tokio = { version = "1.39.3", features = ["full"] }
 
 [dev-dependencies]
 dev = { path = "../dev" }
