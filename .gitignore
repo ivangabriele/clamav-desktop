@@ -156,6 +156,7 @@ dist
 
 /bins/*
 !/bins/.gitkeep
+!/bins/*.c
 
 /.debug/*
 !/.debug/.gitkeep
