@@ -9,21 +9,15 @@ import { Button } from '../../elements/Button'
 import { useCachedState } from '../../hooks/useCachedState'
 import { Screen } from '../../layouts/Screen'
 import { type Core, Webview } from '../../types'
-import { CODE_MIRROR_OPTIONS, CODE_MIRROR_THEME } from './constants'
+import { CODE_MIRROR_OPTIONS, CODE_MIRROR_THEME, INITIAL_SETTINGS_STATE } from './constants'
 
 export function Settings() {
   const clamdConfFileSourceRef = useRef<string | null>(null)
 
-  const [state, setState, updateState] = useCachedState<Core.SettingsState>(Webview.CacheKey.SETTINGS_STATE, {
-    // biome-ignore lint/style/useNamingConvention: Core event data.
-    clamd_conf_file_path: null,
-    // biome-ignore lint/style/useNamingConvention: Core event data.
-    clamd_conf_file_source: null,
-    // biome-ignore lint/style/useNamingConvention: Core event data.
-    is_ready: false,
-    // biome-ignore lint/style/useNamingConvention: Core event data.
-    is_writing: false,
-  })
+  const [state, setState, updateState] = useCachedState<Core.SettingsState>(
+    Webview.CacheKey.SETTINGS_STATE,
+    INITIAL_SETTINGS_STATE,
+  )
 
   const isLoading = !state.is_ready
 
@@ -42,7 +36,7 @@ export function Settings() {
 
     updateState(prevState => ({
       ...prevState,
-      // biome-ignore lint/style/useNamingConvention: Core event data.
+      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_writing: true,
     }))
 

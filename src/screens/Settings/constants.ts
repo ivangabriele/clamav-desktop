@@ -2,6 +2,7 @@ import { tags as t } from '@lezer/highlight'
 import createTheme from '@uiw/codemirror-themes'
 
 import type { BasicSetupOptions } from '@uiw/react-codemirror'
+import type { Core } from '../../types'
 
 export const CODE_MIRROR_OPTIONS: BasicSetupOptions = {
   allowMultipleSelections: false,
@@ -68,3 +69,10 @@ export const CODE_MIRROR_THEME = createTheme({
   ],
   theme: 'dark',
 })
+
+export const INITIAL_SETTINGS_STATE: Core.SettingsState = {
+  clamd_conf_file_path: null,
+  clamd_conf_file_source: null,
+  is_ready: false,
+  is_writing: false,
+}
