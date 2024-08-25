@@ -13,7 +13,7 @@
     "build:core": "cd ./src-tauri && cargo build",
     "build:linux:debian": "sh ./scripts/build_linux_debian.sh",
     "build:webview": "tsc -p ./tsconfig.build.json && vite build",
-    "clean": "rm -Rf ./.e2e ./coverage ./dist ./node_modules/.vite ./src-tauri/target ./src-tauri/cobertura.xml",
+    "clean": "rm -fr ./.e2e ./coverage ./dist ./node_modules/.vite ./src-tauri/target ./src-tauri/cobertura.xml",
     "dev": "cross-env RUST_BACKTRACE=full TAURI_DEV=true tauri dev",
     "dev:webview": "vite",
     "postinstall": "node ./scripts/dev/post_install.js",
@@ -29,7 +29,9 @@
     "test:sec": "ggshield iac scan all",
     "test:type": "tsc --noEmit -p ./tsconfig.ci.json",
     "test:unit:core": "make test",
-    "test:unit:webview": "jest --config=./configs/jest.config.js --detectOpenHandles",
+    "test:unit:webview": "jest --config=./configs/jest.config.js",
+    "test:unit:webview:debug": "test:unit:webview --detectOpenHandles",
+    "test:unit:webview:watch": "test:unit:webview --watch",
     "postversion": "git push origin HEAD --tags"
   },
   "dependencies": {
