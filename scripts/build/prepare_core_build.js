@@ -9,6 +9,9 @@ const ALLOWED_TARGETS = ['arm64ec-pc-windows-msvc', 'i686-pc-windows-msvc', 'x86
 const ROOT_PATH = getAbsolutePath(import.meta.url, '../..')
 
 const { TARGET } = process.env
+if (!TARGET) {
+  process.exit(0)
+}
 if (!ALLOWED_TARGETS.includes(TARGET)) {
   B.error('[prepare_core_build.js]', `Invalid target: \`${TARGET}\`.`)
 
