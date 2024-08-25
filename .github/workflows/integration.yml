@@ -46,7 +46,7 @@ jobs:
       # - name: Install Node.js dependencies
       #   run: yarn --frozen-lockfile
       # - name: Build binary
-      #   run: yarn release:bin
+      #   run: yarn bundle:bin
       # - name: Run tests
       #   uses: nick-fields/retry@v3
       #   with:

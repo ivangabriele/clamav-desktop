@@ -135,25 +135,27 @@ embed macOS & Windows environments).
 ### Binary (standalone)
 
 ```sh
-yarn release:bin
+yarn bundle:bin
 ```
 
 ### Debian-based OS (deb)
 
 ```sh
-yarn release:deb
+yarn bundle:deb
 ```
 
 ### macOS (dmg)
 
 ```sh
-yarn release:dmg
+yarn bundle:dmg
 ```
 
 ### Windows 8+ (msi)
 
 ```sh
-yarn release:msi
+yarn bundle:msi:arch64
+yarn bundle:msi:x32
+yarn bundle:msi:x64
 ```
 
 ## Tests
@@ -173,7 +175,7 @@ yarn test:unit:webview
 ### E2E tests
 
 ```sh
-yarn release:bin
+yarn bundle:bin
 yarn test:e2e
 ```
 

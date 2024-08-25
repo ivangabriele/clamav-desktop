@@ -1,11 +1,11 @@
-name: Build With ClamAV
+name: Bundle With ClamAV
 
 on:
   workflow_dispatch:
 
 jobs:
-  # build_deb_release:
-  #   name: Build DEB Release (With ClamAV)
+  # bundle_deb:
+  #   name: Bundle DEB (With ClamAV)
   #   runs-on: ubuntu-latest
   #   container:
   #     image: ivangabriele/tauri:debian-bullseye-18
@@ -21,8 +21,8 @@ jobs:
   #         node-version: 20
   #     - name: Install
   #       run: yarn
-  #     - name: Build
-  #       run: yarn release:deb
+  #     - name: Bundle
+  #       run: yarn bundle:deb
   #     - name: Upload
   #       uses: actions/upload-artifact@v4
   #       with:
@@ -30,8 +30,8 @@ jobs:
   #         path: src-tauri/target/release/bundle/deb/*.deb
   #         retention-days: 1
 
-  # build_dmg_release:
-  #   name: Build DMG Release
+  # bundle_dmg:
+  #   name: Bundle DMG
   #   runs-on: macos-latest
   #   steps:
   #     - name: Checkout
@@ -45,8 +45,8 @@ jobs:
   #         node-version: 20
   #     - name: Install
   #       run: yarn
-  #     - name: Build
-  #       run: yarn release:dmg
+  #     - name: Bundle
+  #       run: yarn bundle:dmg
   #     - name: Upload
   #       uses: actions/upload-artifact@v4
   #       with:
@@ -54,8 +54,8 @@ jobs:
   #         path: src-tauri/target/release/bundle/dmg/*.dmg
   #         retention-days: 1
 
-  # build_msi_release:
-  #   name: Build MSI Release
+  # bundle_msi:
+  #   name: Bundle MSI
   #   runs-on: windows-latest
   #   steps:
   #     - name: Checkout
@@ -69,8 +69,8 @@ jobs:
   #         node-version: 20
   #     - name: Install
   #       run: yarn
-  #     - name: Build
-  #       run: yarn release:msi
+  #     - name: Bundle
+  #       run: yarn bundle:msi
   #     - name: Upload
   #       uses: actions/upload-artifact@v4
   #       with:
@@ -78,8 +78,8 @@ jobs:
   #         path: src-tauri/target/release/bundle/msi/*.msi
   #         retention-days: 1
 
-  build_msi_release:
-    name: Build MSI Release (With ClamAV)
+  bundle_msi:
+    name: Bundle MSI (With ClamAV)
     strategy:
       fail-fast: true
       matrix:
@@ -190,7 +190,7 @@ jobs:
       # - name: Install
       #   run: yarn
       # - name: Build
-      #   run: yarn release:msi
+      #   run: yarn bundle:msi
       # - name: Upload
       #   uses: actions/upload-artifact@v4
       #   with:

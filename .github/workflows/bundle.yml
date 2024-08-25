@@ -1,4 +1,4 @@
-name: Build
+name: Bundle
 
 on:
   push:
@@ -11,8 +11,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 jobs:
-  # build_deb_release:
-  #   name: Build DEB Release
+  # bundle_deb:
+  #   name: Bundle DEB
   #   runs-on: ubuntu-latest
   #   container:
   #     image: ivangabriele/tauri:debian-bullseye-18
@@ -28,8 +28,8 @@ jobs:
   #         node-version: 20
   #     - name: Install
   #       run: yarn
-  #     - name: Build
-  #       run: yarn release:deb
+  #     - name: Bundle
+  #       run: yarn bundle:deb
   #     - name: Upload
   #       uses: actions/upload-artifact@v4
   #       with:
@@ -37,8 +37,8 @@ jobs:
   #         path: src-tauri/target/release/bundle/deb/*.deb
   #         retention-days: 1
 
-  # build_dmg_release:
-  #   name: Build DMG Release
+  # bundle_dmg:
+  #   name: Bundle DMG
   #   runs-on: macos-latest
   #   steps:
   #     - name: Checkout
@@ -52,8 +52,8 @@ jobs:
   #         node-version: 20
   #     - name: Install
   #       run: yarn
-  #     - name: Build
-  #       run: yarn release:dmg
+  #     - name: Bundle
+  #       run: yarn bundle:dmg
   #     - name: Upload
   #       uses: actions/upload-artifact@v4
   #       with:
@@ -61,8 +61,8 @@ jobs:
   #         path: src-tauri/target/release/bundle/dmg/*.dmg
   #         retention-days: 1
 
-  build_msi_release:
-    name: Build MSI Release
+  bundle_msi:
+    name: Bundle MSI
     strategy:
       matrix:
         target: ['arm64ec-pc-windows-msvc', 'i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
@@ -79,20 +79,10 @@ jobs:
           node-version: 20
       - name: Install
         run: yarn
-      - name: Download latest ClamAV release
-        run: yarn release:msi --target ${{ matrix.target }}
+      - name: Bundle
+        run: yarn bundle:msi --target ${{ matrix.target }}
         env:
           TARGET: ${{ matrix.target }}
-
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     cache: yarn
-      #     node-version: 20
-      # - name: Install
-      #   run: yarn
-      # - name: Build
-      #   run: yarn release:msi
       # - name: Upload
       #   uses: actions/upload-artifact@v4
       #   with:
