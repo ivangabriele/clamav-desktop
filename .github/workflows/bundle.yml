@@ -62,7 +62,7 @@ jobs:
           retention-days: 1
 
   bundle_msi:
-    name: Bundle MSI
+    name: Bundle MSI (${{ matrix.target }})
     strategy:
       matrix:
         # target: ['arm64ec-pc-windows-msvc', 'i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
@@ -92,7 +92,7 @@ jobs:
           retention-days: 1
 
   bundle_msi_arm64:
-    name: Bundle MSI
+    name: Bundle MSI (arm64ec-pc-windows-msvc)
     runs-on: windows-latest
     steps:
       - name: Checkout
