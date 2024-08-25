@@ -90,3 +90,34 @@ jobs:
           name: ci-release-msi
           path: src-tauri/target/release/bundle/msi/*.msi
           retention-days: 1
+
+  bundle_msi_arm64:
+    name: Bundle MSI
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          targets: 'arm64ec-pc-windows-msvc'
+          toolchain: nightly
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: yarn
+          node-version: 20
+      - name: Install
+        run: yarn
+      - name: Bundle
+        run: yarn bundle:msi --target arm64ec-pc-windows-msvc
+        env:
+          TARGET: 'arm64ec-pc-windows-msvc'
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-release-msi
+          path: src-tauri/target/release/bundle/msi/*.msi
+          retention-days: 1

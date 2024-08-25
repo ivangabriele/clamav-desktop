@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: false
       # https://github.com/Swatinem/rust-cache#example-usage
       - uses: Swatinem/rust-cache@v2
         with:
