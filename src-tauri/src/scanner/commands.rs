@@ -114,8 +114,6 @@ pub async fn start_scanner(
     )
     .await;
 
-    let mut args_with_clamscan = vec!["clamscan".to_string()];
-    args_with_clamscan.extend(args.iter().cloned());
     let child = libs::cli::run(String::from("clamscan"), args).await;
     child.id();
 
