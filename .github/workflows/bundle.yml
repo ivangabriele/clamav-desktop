@@ -65,7 +65,8 @@ jobs:
     name: Bundle MSI
     strategy:
       matrix:
-        target: ['arm64ec-pc-windows-msvc', 'i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
+        # target: ['arm64ec-pc-windows-msvc', 'i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
+        target: ['i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
     runs-on: windows-latest
     steps:
       - name: Checkout
