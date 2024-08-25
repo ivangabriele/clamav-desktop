@@ -154,12 +154,8 @@ dist
 ########################################
 # Custom
 
-/bins/*
-!/bins/.gitkeep
-!/bins/*.c
+/resources/*
+!/resources/.gitkeep
 
 /.debug/*
 !/.debug/.gitkeep
-
-/sidecars/*
-!/sidecars/.gitkeep

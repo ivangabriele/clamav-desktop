@@ -63,23 +63,26 @@ jobs:
 
   build_msi_release:
     name: Build MSI Release
+    strategy:
+      matrix:
+        target: ['arm64ec-pc-windows-msvc', 'i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: true
-      - name: Download last ClamAV release
-        run: |
-          Invoke-WebRequest `
-            -Uri https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.3.1/clamav-1.3.1.win.x64.zip `
-            -OutFile clamav-1.3.1.win.x64.zip
-          Invoke-WebRequest `
-            -Uri https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.3.1/clamav-1.3.1.win.x64.zip.sig `
-            -OutFile clamav-1.3.1.win.x64.zip.sig
-          echo "${{ secrets.TALOS_GPG_PUBLIC_KEY }}" | gpg --import
-          gpg --verify clamav-1.3.1.win.x64.zip.sig clamav-1.3.1.win.x64.zip
-        working-directory: .\sidecars
+          submodules: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: yarn
+          node-version: 20
+      - name: Install
+        run: yarn
+      - name: Download latest ClamAV release
+        run: yarn release:msi
+        env:
+          TARGET: ${{ matrix.target }}
 
       # - name: Setup Node.js
       #   uses: actions/setup-node@v4

@@ -14,6 +14,9 @@ trim_trailing_whitespace = true
 max_line_length = 0
 trim_trailing_whitespace = false
 
+[*.{c,cpp,h,hpp}]
+indent_size = 4
+
 [*.py]
 indent_size = 4
 
@@ -31,3 +34,12 @@ max_line_length = 0
 indent_size = 8
 indent_style = tab
 max_line_length = 80
+
+# Ignored files
+[*.{asc,cer,crt,der,key,pem}]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
