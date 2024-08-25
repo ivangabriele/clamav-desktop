@@ -1,6 +1,7 @@
 {
   "extends": "@ivangabriele/tsconfig-react/tsconfig.json",
   "compilerOptions": {
+    "incremental": true,
     "jsx": "react-jsx",
     "noImplicitAny": false,
     "noImplicitOverride": true,
