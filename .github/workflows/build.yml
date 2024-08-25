@@ -80,7 +80,7 @@ jobs:
       - name: Install
         run: yarn
       - name: Download latest ClamAV release
-        run: yarn release:msi
+        run: yarn release:msi --target ${{ matrix.target }}
         env:
           TARGET: ${{ matrix.target }}
 
