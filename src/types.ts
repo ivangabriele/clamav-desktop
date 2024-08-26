@@ -7,10 +7,10 @@ export namespace Core {
   // Cloud
 
   export type CloudState = {
-    daemon_status: CloudDaemonStatus
     is_ready: boolean
     is_running: boolean
     logs: string[]
+    status: CloudDaemonStatus
   }
 
   export enum CloudDaemonStatus {
