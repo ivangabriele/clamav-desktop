@@ -39,11 +39,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ci-release-deb
-          path: src-tauri/target/release/bundle/deb/*.deb
+          path: src-tauri/target//${ matrix.target }}release/bundle/deb/*.deb
           retention-days: 1
 
   bundle_dmg:
-    name: Bundle DMG
+    name: Bundle DMG (${{ matrix.target }})
+    strategy:
+      matrix:
+        target: ['aarch64-apple-darwin']
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -58,12 +61,14 @@ jobs:
       - name: Install
         run: yarn
       - name: Bundle
-        run: yarn bundle:dmg
+        run: yarn bundle:dmg --target ${{ matrix.target }}
+        env:
+          TARGET: ${{ matrix.target }}
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: ci-release-dmg
-          path: src-tauri/target/release/bundle/dmg/*.dmg
+          path: src-tauri/target/${ matrix.target }}/release/bundle/dmg/*.dmg
           retention-days: 1
 
   bundle_msi:
@@ -93,7 +98,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ci-release-msi
-          path: src-tauri/target/release/bundle/msi/*.msi
+          path: src-tauri/target//${ matrix.target }}release/bundle/msi/*.msi
           retention-days: 1
 
   # bundle_msi_arm64:

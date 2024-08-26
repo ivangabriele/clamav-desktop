@@ -6,6 +6,7 @@ import { normalizeSidecarNames } from './actions/normalizeSidecarNames.js'
 
 // `rustc --print target-list` to get the list of supported targets
 const ALLOWED_TARGETS = [
+  'aarch64-apple-darwin',
   'arm64ec-pc-windows-msvc',
   'i686-unknown-linux-gnu',
   'i686-pc-windows-msvc',
