@@ -83,6 +83,7 @@ jobs:
   core_test_macos_and_windows:
     name: Test Core
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
