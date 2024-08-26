@@ -14,6 +14,7 @@ jobs:
   bundle_deb:
     name: Bundle DEB (${{ matrix.target }})
     strategy:
+      fail-fast: false
       matrix:
         target: ['i686-unknown-linux-gnu', 'x86_64-unknown-linux-gnu']
     runs-on: ubuntu-latest
@@ -45,6 +46,7 @@ jobs:
   bundle_dmg:
     name: Bundle DMG (${{ matrix.target }})
     strategy:
+      fail-fast: false
       matrix:
         target: ['aarch64-apple-darwin']
     runs-on: macos-latest
@@ -74,6 +76,7 @@ jobs:
   bundle_msi:
     name: Bundle MSI (${{ matrix.target }})
     strategy:
+      fail-fast: false
       matrix:
         # target: ['arm64ec-pc-windows-msvc', 'i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
         target: ['i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
