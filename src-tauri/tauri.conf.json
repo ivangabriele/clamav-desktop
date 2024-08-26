@@ -8,7 +8,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "Clamav Desktop",
+    "productName": "ClamAV Desktop",
     "version": "0.3.24"
   },
   "tauri": {
@@ -26,6 +26,11 @@
           "/usr/share/polkit-1/actions/com.clamav-desktop.app.policy": "../assets/deb/com.clamav-desktop.app.policy"
         }
       },
+      "externalBin": [
+        "../sidecars/target/release/clamd",
+        "../sidecars/target/release/clamscan",
+        "../sidecars/target/release/freshclam"
+      ],
       "icon": [
         "../assets/icons/32x32.png",
         "../assets/icons/128x128.png",
