@@ -66,6 +66,9 @@ jobs:
           rustc -V
           cargo -V
           clamscan -V
+      - name: Build Sidecars
+        run: cargo build --release
+        working-directory: ./sidecars
       # https://github.com/tauri-apps/tauri/issues/3142
       - name: Create fake /dist directory
         run: mkdir ./dist
@@ -112,6 +115,9 @@ jobs:
       # https://github.com/tauri-apps/tauri/issues/3142
       - name: Create fake /dist directory
         run: mkdir ./dist
+      - name: Build Sidecars
+        run: cargo build --release
+        working-directory: ./sidecars
       - name: Build
         run: cargo build
         working-directory: ./src-tauri
