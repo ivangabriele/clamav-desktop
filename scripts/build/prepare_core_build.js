@@ -5,7 +5,13 @@ import { downloadClamavStandaloneBuild } from './actions/downloadClamavStandalon
 import { normalizeSidecarNames } from './actions/normalizeSidecarNames.js'
 
 // `rustc --print target-list` to get the list of supported targets
-const ALLOWED_TARGETS = ['arm64ec-pc-windows-msvc', 'i686-pc-windows-msvc', 'x86_64-pc-windows-msvc']
+const ALLOWED_TARGETS = [
+  'arm64ec-pc-windows-msvc',
+  'i686-unknown-linux-gnu',
+  'i686-pc-windows-msvc',
+  'x86_64-unknown-linux-gnu',
+  'x86_64-pc-windows-msvc',
+]
 
 const ROOT_PATH = getAbsolutePath(import.meta.url, '../..')
 
