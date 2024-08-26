@@ -7,7 +7,7 @@ pub struct DashboardSharedState(pub DashboardState);
 
 #[derive(Default)]
 pub struct DashboardState {
-    pub private: DashboardPrivateState,
+    // pub private: DashboardPrivateState,
     pub public: Arc<Mutex<DashboardPublicState>>,
 }
 

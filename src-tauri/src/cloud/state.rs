@@ -7,7 +7,7 @@ pub struct CloudSharedState(pub CloudState);
 
 #[derive(Default)]
 pub struct CloudState {
-    pub private: CloudPrivateState,
+    // pub private: CloudPrivateState,
     pub public: Arc<Mutex<CloudPublicState>>,
 }
 
