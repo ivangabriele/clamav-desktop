@@ -12,7 +12,7 @@
     "prebuild:core": "yarn clean && yarn build:webview && yarn build:sidecars && node ./scripts/build/prepare_core_build.js",
     "build": "cd ./src-tauri && cargo build",
     "build:linux:debian": "sh ./scripts/build_linux_debian.sh",
-    "build:sidecars": "cd ./sidecars && cargo build --release",
+    "build:sidecars": "cd ./sidecars && cargo build --release && cd ..",
     "build:webview": "tsc -p ./tsconfig.build.json && vite build",
     "bundle:bin": "tauri build -b none",
     "bundle:deb": "tauri build -b deb",
