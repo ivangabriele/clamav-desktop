@@ -20,6 +20,7 @@
     "bundle:deb:x32": "TARGET=i686-unknown-linux-gnu yarn bundle:deb --target i686-unknown-linux-gnu",
     "bundle:deb:x64": "TARGET=x86_64-unknown-linux-gnu yarn bundle:deb --target x86_64-unknown-linux-gnu",
     "bundle:dmg": "tauri build -b dmg",
+    "bundle:dmg:x64": "TARGET=aarch64-apple-darwin yarn bundle:dmg --target aarch64-apple-darwin",
     "bundle:msi": "tauri build -b msi",
     "bundle:msi:arm64": "TARGET=arm64ec-pc-windows-msvc yarn bundle:msi --target arm64ec-pc-windows-msvc",
     "bundle:msi:x32": "TARGET=i686-pc-windows-msvc yarn bundle:msi --target i686-pc-windows-msvc",
