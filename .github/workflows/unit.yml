@@ -104,9 +104,6 @@ jobs:
           prefix-key: rust-cache
           shared-key: v0
           workspaces: './src-tauri -> target'
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
       - name: Print versions
         run: |
           rustc -V
