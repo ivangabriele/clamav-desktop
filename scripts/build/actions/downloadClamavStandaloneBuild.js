@@ -90,7 +90,7 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   try {
     await verificationResult.signatures[0].verified // Throws an error if verification fails
   } catch (err) {
-    B.error('[prepare_core_build.js]', 'ClamAV v${clamavVersion} standalone build signature verification failed.')
+    B.error('[prepare_core_build.js]', `ClamAV v${clamavVersion} standalone build signature verification failed.`)
     console.error(err)
 
     process.exit(1)
