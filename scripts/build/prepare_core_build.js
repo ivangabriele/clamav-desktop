@@ -27,7 +27,7 @@ const ROOT_PATH = getAbsolutePath(import.meta.url, '../..')
 
 const { TARGET } = process.env
 const CONTROLLED_TARGET = TARGET ?? DEFAULT_TARGET_MAP[process.platform]
-if (!TARGET) {
+if (!CONTROLLED_TARGET) {
   process.exit(0)
 }
 if (!ALLOWED_TARGETS.includes(CONTROLLED_TARGET)) {
