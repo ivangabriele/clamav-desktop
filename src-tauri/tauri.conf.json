@@ -13,7 +13,27 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": true,
+      "shell": {
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "../sidecars/target/release/clamd",
+            "sidecar": true,
+            "args": true
+          },
+          {
+            "name": "../sidecars/target/release/clamscan",
+            "sidecar": true,
+            "args": true
+          },
+          {
+            "name": "../sidecars/target/release/freshclam",
+            "sidecar": true,
+            "args": true
+          }
+        ]
+      }
     },
     "bundle": {
       "active": true,
