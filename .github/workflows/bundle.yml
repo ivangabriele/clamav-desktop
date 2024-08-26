@@ -12,7 +12,10 @@ concurrency:
 
 jobs:
   bundle_deb:
-    name: Bundle DEB
+    name: Bundle DEB (${{ matrix.target }})
+    strategy:
+      matrix:
+        target: ['i686-unknown-linux-gnu', 'x86_64-unknown-linux-gnu']
     runs-on: ubuntu-latest
     container:
       image: ivangabriele/tauri:debian-bullseye-18
@@ -29,7 +32,9 @@ jobs:
       - name: Install
         run: yarn
       - name: Bundle
-        run: yarn bundle:deb
+        run: yarn bundle:deb --target ${{ matrix.target }}
+        env:
+          TARGET: ${{ matrix.target }}
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
