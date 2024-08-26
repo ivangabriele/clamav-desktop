@@ -25,6 +25,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
+      - name: Setup Rust
+        run: rustup target add ${{ matrix.target }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
