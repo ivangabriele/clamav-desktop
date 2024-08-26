@@ -1,5 +1,5 @@
-import { promises as fs } from 'node:fs'
-import { join, sep } from 'node:path'
+import { existsSync, promises as fs } from 'node:fs'
+import { join } from 'node:path'
 import { B } from 'bhala'
 import decompress from 'decompress'
 import { deleteAsync } from 'del'
@@ -38,11 +38,11 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   const downloadedBuildZipSignaturePath = `${downloadedBuildZipPath}.sig`
   const targetBuildPath = join(resourcesPath, 'clamav')
 
-  // -----------------------------------------------------------------------------
-  // Clean up resources
+  if (existsSync(targetBuildPath)) {
+    B.info('[prepare_core_build.js]', 'ClamAV standalone build downloaded. Skipping standalone download...')
 
-  B.info('[prepare_core_build.js]', 'Cleaning up resources directory...')
-  await deleteAsync([`${resourcesPath}${sep}*`, `!${resourcesPath}${sep}.gitkeep`])
+    return
+  }
 
   // -----------------------------------------------------------------------------
   // Download ClamAV standalone build
@@ -54,12 +54,9 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   ].join('/')
   const signatureDownloadUrl = `${buildDownloadUrl}.sig`
 
-  B.info(
-    '[prepare_core_build.js]',
-    `Downloading ClamAV v${clamavVersion} standalone build for target: ${targetSlug}...`,
-  )
+  B.log('[prepare_core_build.js]', `Downloading ClamAV v${clamavVersion} standalone build for target: ${targetSlug}...`)
   await download(buildDownloadUrl, resourcesPath)
-  B.info(
+  B.log(
     '[prepare_core_build.js]',
     `Downloading ClamAV v${clamavVersion} standalone build signature for target: ${targetSlug}...`,
   )
@@ -68,7 +65,7 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   // -----------------------------------------------------------------------------
   // Verify ClamAV standalone build signature
 
-  B.info('[prepare_core_build.js]', `Verifying ClamAV v${clamavVersion} standalone build signature...`)
+  B.log('[prepare_core_build.js]', `Verifying ClamAV v${clamavVersion} standalone build signature...`)
   const publicKeyArmored = await fs.readFile(signaturePublicKeyPath, 'utf8')
   const signatureArmored = await fs.readFile(downloadedBuildZipSignaturePath, 'utf8')
   const zipFile = await fs.readFile(downloadedBuildZipPath)
@@ -99,19 +96,19 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   // -----------------------------------------------------------------------------
   // Extract ClamAV standalone build
 
-  B.info('[prepare_core_build.js]', `Extracting ClamAV v${clamavVersion} standalone build...`)
+  B.log('[prepare_core_build.js]', `Extracting ClamAV v${clamavVersion} standalone build...`)
   await decompress(downloadedBuildZipPath, resourcesPath)
 
   // -----------------------------------------------------------------------------
   // Clean up downloaded files
 
-  B.info('[prepare_core_build.js]', 'Cleaning up downloaded files...')
+  B.log('[prepare_core_build.js]', 'Cleaning up downloaded files...')
   await deleteAsync([downloadedBuildZipPath, downloadedBuildZipSignaturePath])
 
   // -----------------------------------------------------------------------------
   // Normalize extracted directory name
 
-  B.info('[prepare_core_build.js]', 'Normalizing extracted directory name...')
+  B.log('[prepare_core_build.js]', 'Normalizing extracted directory name...')
   await move(downloadedBuildPath, targetBuildPath)
 
   // -----------------------------------------------------------------------------
