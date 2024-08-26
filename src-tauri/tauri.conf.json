@@ -39,7 +39,7 @@
         "../assets/icons/icon.ico"
       ],
       "identifier": "com.clamav-desktop.app",
-      "longDescription": "ClamAV Desktop is a free and open-source GUI for ClamAV antivirus.\n\nPlease file your bugs (and only your bugs!) at: https://github.com/ivangabriele/clamav-desktop/issues.\n\nFor your questions and suggestions: https://github.com/ivangabriele/clamav-desktop/discussions.\n\nBe aware that ClamAV Desktop is neither endorsed nor part of official Cisco Systems projects.",
+      "longDescription": "ClamAV Desktop is a free and open-source GUI for ClamAV antivirus.\n\nPlease file your bugs (and only your bugs!) at: https://github.com/ivangabriele/clamav-desktop/issues.\n\nFor your questions and suggestions: https://github.com/ivangabriele/clamav-desktop/discussions.\n\nBe aware that ClamAV Desktop is neither endorsed nor part of official Cisco-Talos projects.",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -47,14 +47,18 @@
         "providerShortName": null,
         "signingIdentity": null
       },
+      "publisher": "Ivan Gabriele",
       "resources": ["../resources/*"],
-      "shortDescription": "ClamAV Antivirus Desktop Application",
+      "shortDescription": "ClamAV Antivirus Desktop Application.",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
       }
+    },
+    "pattern": {
+      "use": "brownfield"
     },
     "security": {
       "csp": null
