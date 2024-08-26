@@ -69,7 +69,7 @@
       },
       "publisher": "Ivan Gabriele",
       "resources": ["../resources/*"],
-      "shortDescription": "ClamAV Antivirus Desktop Application.",
+      "shortDescription": "ClamAV Desktop",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
