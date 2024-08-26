@@ -1,6 +1,10 @@
+use crate::debug;
+
 use super::*;
 
 pub fn get_service_status() -> (state::DashboardStatus, Vec<String>) {
+    debug!("get_service_status()", "Call.");
+
     if cfg!(target_os = "linux") {
         use regex::Regex;
         use std::process::Command;
