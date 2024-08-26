@@ -116,5 +116,5 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
 
   // -----------------------------------------------------------------------------
 
-  B.success('[prepare_core_build.js]', `ClamAV v${clamavVersion} standalone build downloaded successfully.`)
+  B.success('[prepare_core_build.js]', `ClamAV v${clamavVersion} standalone build successfully downloaded.`)
 }

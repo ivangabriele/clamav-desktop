@@ -1,0 +1,18 @@
+[package]
+name = "sidecars"
+version = "0.3.24"
+edition = "2021"
+
+[[bin]]
+name = "clamd"
+path = "src/clamd.rs"
+
+[[bin]]
+name = "clamscan"
+path = "src/clamscan.rs"
+
+[[bin]]
+name = "freshclam"
+path = "src/freshclam.rs"
+
+[dependencies]
