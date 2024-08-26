@@ -1,12 +1,13 @@
 name: Release
 
 on:
-  workflow_run:
-    workflows:
-      - Unit
-      - Integration
-    types:
-      - completed
+  workflow_dispatch:
+  # workflow_run:
+  #   workflows:
+  #     - Unit
+  #     - Integration
+  #   types:
+  #     - completed
 
 jobs:
   draft:
