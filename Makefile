@@ -24,10 +24,5 @@ test-filer:
 test-filer-watch:
 	cd ./src-tauri/filer && cargo watch -x "test -- --nocapture"
 
-test-jest:
-	cd ./src-tauri/jest && cargo test --no-fail-fast -- --nocapture
-test-jest-watch:
-	cd ./src-tauri/jest && cargo watch -x "test -- --nocapture"
-
 upgrade:
 	cd ./src-tauri && cargo upgrade
