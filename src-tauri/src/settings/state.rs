@@ -7,7 +7,7 @@ pub struct SharedSettingsState(pub SettingsState);
 
 #[derive(Default)]
 pub struct SettingsState {
-    pub private: SettingsPrivateState,
+    // pub private: SettingsPrivateState,
     pub public: Arc<Mutex<SettingsPublicState>>,
 }
 
