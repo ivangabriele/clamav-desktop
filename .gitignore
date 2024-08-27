@@ -154,8 +154,9 @@ dist
 ########################################
 # Custom
 
-/resources/*
-!/resources/.gitkeep
+/src-tauri/resources/*
+!/src-tauri/resources/.gitkeep
+!/src-tauri/resources/*.conf
 
 /.debug/*
 !/.debug/.gitkeep

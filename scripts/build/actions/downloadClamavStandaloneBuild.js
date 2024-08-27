@@ -29,7 +29,7 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   const meta = JSON.parse(metaSource)
 
   const clamavVersion = meta.clamav.version
-  const resourcesPath = join(rootPath, 'resources')
+  const resourcesPath = join(rootPath, 'src-tauri/resources')
   const signaturePublicKeyPath = join(rootPath, 'scripts/build/cisco-talos-gpg-public-key.asc')
   const targetSlug = OS_WITH_ARCH_MAP[target]
 
