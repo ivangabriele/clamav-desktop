@@ -25,7 +25,7 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
     return
   }
 
-  const metaSource = await fs.readFile(`${rootPath}/meta.json`, 'utf8')
+  const metaSource = await fs.readFile(`${rootPath}/src-tauri/resources/meta.json`, 'utf8')
   const meta = JSON.parse(metaSource)
 
   const clamavVersion = meta.clamav.version
