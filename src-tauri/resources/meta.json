@@ -1,0 +1,30 @@
+{
+  "clamav": {
+    "version": "1.4.0"
+  },
+  "migrations": [
+    {
+      "version": "0.4.0",
+      "files": [
+        {
+          "action": "CREATE_FILE",
+          "location": "APP_CONFIG_DIR",
+          "path": "clamd.conf",
+          "description": "ClamAV v1.4.0 clamd configuration file."
+        },
+        {
+          "action": "CREATE_FILE",
+          "location": "APP_CONFIG_DIR",
+          "path": "freshclam.conf",
+          "description": "ClamAV v1.4.0 freshclam configuration file."
+        },
+        {
+          "action": "CREATE_FILE",
+          "location": "APP_DATA_DIR",
+          "path": "???",
+          "description": "ClamAV v1.4.0 fresclam virus definitions database."
+        }
+      ]
+    }
+  ]
+}
