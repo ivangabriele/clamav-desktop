@@ -28,9 +28,7 @@ if ($program) {
 
     Write-Host "[uninstall_msi_bundle.ps1] ClamAV Dektop successfully uninstalled from installed programs." -ForegroundColor Blue
 } else {
-    Write-Host "[uninstall_msi_bundle.ps1] Error: ClamAV Dektop not found in installed programs." -ForegroundColor Red
-
-    exit
+    Write-Host "[uninstall_msi_bundle.ps1] Warning: ClamAV Dektop not found in installed programs." -ForegroundColor Yellow
 }
 
 Write-Host "[uninstall_msi_bundle.ps1] Cleaning up leftover directories..."
