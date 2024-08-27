@@ -68,7 +68,7 @@
         "signingIdentity": null
       },
       "publisher": "Ivan Gabriele",
-      "resources": ["../resources/*"],
+      "resources": ["resources/*"],
       "shortDescription": "ClamAV Desktop",
       "targets": "all",
       "windows": {
