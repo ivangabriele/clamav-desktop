@@ -26,7 +26,7 @@
     "bundle:msi:arm64": "TARGET=arm64ec-pc-windows-msvc yarn bundle:msi --target arm64ec-pc-windows-msvc",
     "bundle:msi:x32": "TARGET=i686-pc-windows-msvc yarn bundle:msi --target i686-pc-windows-msvc",
     "bundle:msi:x64": "TARGET=x86_64-pc-windows-msvc yarn bundle:msi --target x86_64-pc-windows-msvc",
-    "bundle:msi:install": "powershell -ExecutionPolicy Bypass -File ./scripts/dev/install_msi_bundle.ps1",
+    "bundle:msi:install": "yarn bundle:msi:uninstall && powershell -ExecutionPolicy Bypass -File ./scripts/dev/install_msi_bundle.ps1",
     "bundle:msi:uninstall": "powershell -ExecutionPolicy Bypass -File ./scripts/dev/uninstall_msi_bundle.ps1",
     "predev": "yarn build:sidecars && node ./scripts/build/prepare_core_build.js && yarn dev:webview",
     "dev": "cross-env RUST_BACKTRACE=full TAURI_DEV=true tauri dev",
