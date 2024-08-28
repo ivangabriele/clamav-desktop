@@ -1,0 +1,9 @@
+[package]
+name = "config"
+description = "Read, parse and write ClamAV configuration files."
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dev-dependencies]
+jrest = "0.2.3"
