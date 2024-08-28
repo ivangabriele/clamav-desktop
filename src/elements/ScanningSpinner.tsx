@@ -1,8 +1,11 @@
 import styled, { keyframes } from 'styled-components'
 
-export function ScanningSpinner() {
+type ScanningSpinnerProps = Readonly<{
+  size?: number
+}>
+export function ScanningSpinner({ size = 120 }: ScanningSpinnerProps) {
   return (
-    <Box>
+    <Box $size={size}>
       <OuterFace>
         <Circle />
       </OuterFace>
@@ -13,10 +16,12 @@ export function ScanningSpinner() {
   )
 }
 
-const Box = styled.div`
-  width: 120px;
-  height: 120px;
-  font-size: 10px;
+const Box = styled.div<{
+  $size: number
+}>`
+  width: ${p => p.$size}px;
+  height: ${p => p.$size}px;
+  font-size: ${p => Math.round(p.$size / 12)}px;
   position: relative;
   display: flex;
   align-items: center;
@@ -29,7 +34,7 @@ const rotateFace = keyframes`
   }
 `
 const Face = styled.div`
-  animation: ${rotateFace} 1s linear infinite;
+  animation: ${rotateFace} 0.25s linear infinite;
   border-radius: 50%;
   border-style: solid;
   position: absolute;

@@ -5,12 +5,12 @@ import { useCallback, useEffect } from 'react'
 // import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
-import { FileExplorer } from '../components/FileExplorer'
-import { Button } from '../elements/Button'
-import { ScanningSpinner } from '../elements/ScanningSpinner'
-import { useCachedState } from '../hooks/useCachedState'
-import { Screen } from '../layouts/Screen'
-import { Core, Webview } from '../types'
+import { FileExplorer } from '../../components/FileExplorer'
+import { Button } from '../../elements/Button'
+import { ScanningSpinner } from '../../elements/ScanningSpinner'
+import { useCachedState } from '../../hooks/useCachedState'
+import { Screen } from '../../layouts/Screen'
+import { Core, Webview } from '../../types'
 
 export function Scanner() {
   const [state, setState] = useCachedState<Core.ScannerState | undefined>(Webview.CacheKey.SCANNER_STATE, undefined)

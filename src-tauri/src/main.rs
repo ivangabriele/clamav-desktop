@@ -9,6 +9,7 @@ use tauri::LogicalSize;
 use tauri::{api, Manager, SystemTrayEvent};
 
 mod cloud;
+mod copilot;
 mod dashboard;
 mod globals;
 mod libs;
@@ -25,37 +26,57 @@ fn main() {
         .setup(
             #[allow(unused_variables)]
             |app: &mut tauri::App| {
-                #[cfg(debug_assertions)]
-                {
-                    let window = app.get_window("main").expect("Could not get window.");
-                    window
-                        .set_size(LogicalSize::<u32> {
-                            height: 900,
-                            width: 1024,
-                        })
-                        .expect("Could not set window size.");
-                    window
-                        .set_always_on_top(false)
-                        .expect("Could not set always on top.");
+                let app_handle = app.handle();
+                tauri::async_runtime::block_on(async move {
+                    #[cfg(debug_assertions)]
+                    {
+                        let window = app_handle.get_window("main").expect("Could not get window.");
+                        window
+                            .set_size(LogicalSize::<u32> {
+                                height: 900,
+                                width: 1024,
+                            })
+                            .expect("Could not set window size.");
+                        window.set_always_on_top(false).expect("Could not set always on top.");
 
-                    window.open_devtools();
-                }
+                        window.open_devtools();
+                    }
 
-                // Store config in a variable to extend its lifetime
-                let config_binding = app.config();
-                let config = config_binding.as_ref();
+                    // Store config in a variable to extend its lifetime
+                    let config_binding = app_handle.config();
+                    let config = config_binding.as_ref();
 
-                let mut log_directory_path = globals::LOG_DIRECTORY_PATH
-                    .lock()
-                    .expect("Could not lock log directory path.");
-                *log_directory_path =
-                    api::path::app_log_dir(config).expect("Could not get log directory.");
+                    // let app_cache_dir = api::path::app_cache_dir(config).expect("Could not get cache directory.");
+                    // println!("Cache directory: {:?}", app_cache_dir);
+                    // let app_config_dir = api::path::app_config_dir(config).expect("Could not get config directory.");
+                    // println!("Config directory: {:?}", app_config_dir);
+                    // let app_data_dir = api::path::app_data_dir(config).expect("Could not get data directory.");
+                    // println!("Data directory: {:?}", app_data_dir);
+                    // let app_local_data_dir =
+                    //     api::path::app_local_data_dir(config).expect("Could not get local data directory.");
+                    // println!("Local data directory: {:?}", app_local_data_dir);
+                    // let app_log_dir = api::path::app_log_dir(config).expect("Could not get log directory.");
+                    // println!("Log directory: {:?}", app_log_dir);
+
+                    let mut config_directory_path = globals::CONFIG_DIRECTORY_PATH.lock().await;
+                    *config_directory_path =
+                        api::path::app_config_dir(config).expect("Could not get app config directory path.");
+                    let mut local_data_directory_path = globals::LOCAL_DATA_DIRECTORY_PATH.lock().await;
+                    *local_data_directory_path =
+                        api::path::app_local_data_dir(config).expect("Could not get local data directory path.");
+                    let mut log_directory_path = globals::LOG_DIRECTORY_PATH.lock().await;
+                    *log_directory_path =
+                        api::path::app_log_dir(config).expect("Could not get app log directory path.");
+
+                    debug!("main()", "App started.");
+                });
 
                 Ok(())
             },
         )
         // https://github.com/tauri-apps/tauri/blob/dev/examples/state/main.rs
         .manage(cloud::state::CloudSharedState(Default::default()))
+        .manage(copilot::state::CopilotSharedState(Default::default()))
         .manage(dashboard::state::DashboardSharedState(Default::default()))
         .manage(scanner::state::SharedScannerState(Default::default()))
         .manage(settings::state::SharedSettingsState(Default::default()))
@@ -64,6 +85,8 @@ fn main() {
             cloud::commands::start_cloud_daemon,
             cloud::commands::start_cloud_update,
             cloud::commands::stop_cloud_daemon,
+            copilot::commands::get_copilot_state,
+            copilot::commands::start_copilot_checklist,
             dashboard::commands::get_dashboard_state,
             dashboard::commands::start_daemon,
             dashboard::commands::stop_daemon,
@@ -80,9 +103,7 @@ fn main() {
         .system_tray(system_tray)
         .on_system_tray_event(|app_handle, event| match event {
             SystemTrayEvent::LeftClick {
-                position: _,
-                size: _,
-                ..
+                position: _, size: _, ..
             } => modules::window::toggle(app_handle),
             SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
                 "toggle" => modules::window::toggle(app_handle),

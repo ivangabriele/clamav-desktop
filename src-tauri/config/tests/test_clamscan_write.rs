@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::Write;
 use std::path::Path;
 
-use config::clamscan::Config;
+use config::freshclam::Config;
 use config::{ConfigValue, YesNo};
 
 #[test]

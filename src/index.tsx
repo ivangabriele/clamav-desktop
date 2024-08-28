@@ -43,7 +43,7 @@ const GlobalStyleCustom = createGlobalStyle`
 
   html {
     display: flex;
-    max-height: 528px;
+    height: 100%;
     overflow: hidden;
     width: 100%;
   }
@@ -57,6 +57,7 @@ const GlobalStyleCustom = createGlobalStyle`
     font-family: 'Poppins', sans-serif;
     font-size: 100%;
     font-weight: 300;
+    height: 100%;
     line-height: 1.5;
     margin: 0;
     overflow: hidden;
@@ -84,6 +85,5 @@ root.render(
 
       <App />
     </ThemeProvider>
-    ,
   </React.StrictMode>,
 )

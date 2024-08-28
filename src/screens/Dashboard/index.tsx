@@ -3,11 +3,11 @@ import { listen } from '@tauri-apps/api/event'
 import { useCallback, useEffect, useRef } from 'react'
 // import { toast } from 'react-hot-toast'
 
-import { Button } from '../elements/Button'
-import { Logger } from '../elements/Logger'
-import { useCachedState } from '../hooks/useCachedState'
-import { Screen } from '../layouts/Screen'
-import { Core, Webview } from '../types'
+import { Button } from '../../elements/Button'
+import { Logger } from '../../elements/Logger'
+import { useCachedState } from '../../hooks/useCachedState'
+import { Screen } from '../../layouts/Screen'
+import { Core, Webview } from '../../types'
 
 export function Dashboard() {
   const timerRef = useRef<number | undefined>(undefined)
