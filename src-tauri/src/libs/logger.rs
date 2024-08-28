@@ -7,10 +7,8 @@ use std::{
 use crate::globals::LOG_DIRECTORY_PATH;
 
 /// Write a log message to a specified log file.
-pub fn write_log_message(log_file_name: &str, scope: &str, message: &str) {
-    let log_directory_path = LOG_DIRECTORY_PATH
-        .lock()
-        .expect("Failed to lock log directory path.");
+pub async fn write_log_message(log_file_name: &str, scope: &str, message: &str) {
+    let log_directory_path = LOG_DIRECTORY_PATH.lock().await;
     let log_directory_path_clone = log_directory_path.clone();
     if !log_directory_path_clone.exists() {
         fs::create_dir_all(&log_directory_path_clone).expect("Failed to create log directory.");
@@ -59,7 +57,9 @@ macro_rules! debug {
             println!("\x1b[0;34m[DEBUG] [{}] {}\x1b[0m", scope, message);
         }
 
-        crate::libs::logger::write_log_message("debug.csv", &scope, &message);
+        tokio::spawn(async move {
+            crate::libs::logger::write_log_message("debug.csv", &scope, &message).await;
+        });
     }};
 }
 
@@ -83,6 +83,8 @@ macro_rules! error {
 
         println!("\x1b[0;0;31m[ERROR] [{}] {}\x1b[0m", scope, message);
 
-        crate::libs::logger::write_log_message("error.csv", &scope, &message);
+        tokio::spawn(async move {
+            crate::libs::logger::write_log_message("error.csv", &scope, &message).await;
+        });
     }};
 }

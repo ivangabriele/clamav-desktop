@@ -18,7 +18,7 @@ repository = "https://github.com/ivangabriele/clamav-desktop.git"
 custom-protocol = ["tauri/custom-protocol"]
 
 [workspace]
-members = ["cli", "common", "dev", "fast-cli", "filer"]
+members = ["cli", "common", "config", "dev", "fast-cli", "filer"]
 
 [build-dependencies]
 tauri-build = { version = "1.5.4", features = [] }
@@ -26,9 +26,9 @@ tauri-build = { version = "1.5.4", features = [] }
 [dependencies]
 chrono = "0.4.38"
 cli = { path = "./cli" }
+config = { path = "./config" }
 dev = { path = "./dev" }
 filer = { path = "./filer" }
-lazy_static = "1.5.0"
 regex = "1.10.6"
 serde = { version = "1.0.209", features = ["derive"] }
 serde_json = "1.0.127"

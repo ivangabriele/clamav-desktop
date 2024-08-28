@@ -26,7 +26,7 @@ impl FromStr for YesNo {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum ConfigValue {
     StringVal(String),
     U32Val(u32),

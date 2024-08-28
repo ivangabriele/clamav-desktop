@@ -41,12 +41,10 @@ pub async fn start_cloud_update(
     use tauri::api::process::{Command, CommandEvent};
 
     debug!("start_cloud_update()", "Command call.");
-    println!("1");
 
     let is_dev_mode = env::var("TAURI_DEV").is_ok();
 
     if cfg!(target_os = "linux") {
-        println!("2");
         // Update cloud state
         let mut public_state_mutex_guard = shared_state.0.public.lock().await;
         public_state_mutex_guard.is_running = true;
@@ -122,13 +120,10 @@ pub async fn start_cloud_update(
     }
 
     if cfg!(target_os = "macos") {
-        println!("3");
         return Ok(());
     }
 
     if cfg!(target_os = "windows") {
-        println!("4");
-
         let (mut rx, _child) = Command::new_sidecar("freshclam")
             .expect("failed to create `freshclam` binary command")
             .spawn()
@@ -172,7 +167,6 @@ pub async fn start_cloud_update(
 
         return Ok(());
     }
-    println!("5");
 
     panic!("Unsupported OS.");
 }

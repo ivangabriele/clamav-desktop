@@ -7,11 +7,19 @@ import { MainMenu } from './layouts/MainMenu'
 import { TitleBar } from './layouts/TitleBar'
 import { Cloud } from './screens/Cloud'
 import { Dashboard } from './screens/Dashboard'
+import { Loader } from './screens/Loader'
 import { Scanner } from './screens/Scanner'
 import { Settings } from './screens/Settings'
 
 export function App() {
+  const [isLoading, setIsLoading] = useState(true)
   const [page, setPage] = useState<Page>(Page.Dashboard)
+
+  const disableIsLoading = () => setIsLoading(false)
+
+  if (isLoading) {
+    return <Loader onReady={disableIsLoading} />
+  }
 
   return (
     <Box>
