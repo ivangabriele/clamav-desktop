@@ -33,15 +33,129 @@ impl Config {
             let key = split.next().unwrap().to_string();
             let value = split.next().unwrap().trim_matches('"');
 
-            config.config_map.insert(
-                key.clone(),
-                match key.clone().as_str() {
-                    "MaxAttempts" => constants::ConfigValue::U32Val(value.parse().unwrap()),
-                    "ScriptedUpdates" | "LogVerbose" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
-                    "DatabaseMirror" => constants::ConfigValue::StringVal(value.to_string()),
-                    _ => continue,
+            let config_value = match key.as_str() {
+                // Path to the database directory.
+                "DatabaseDirectory" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Path to the log file (make sure it has proper permissions)
+                "UpdateLogFile" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Maximum size of the log file.
+                "LogFileMaxSize" => constants::ConfigValue::SizedStringVal(value.to_string()),
+
+                // Log time with each message.
+                "LogTime" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Enable verbose logging.
+                "LogVerbose" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Use system logger (can work together with UpdateLogFile).
+                "LogSyslog" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Specify the type of syslog messages.
+                "LogFacility" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Enable log rotation. Always enabled when LogFileMaxSize is enabled.
+                "LogRotate" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Write the daemon's pid to the specified file.
+                "PidFile" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Change the database owner.
+                "DatabaseOwner" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Use DNS to verify virus database version.
+                "DNSDatabaseInfo" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // DatabaseMirror
+                "DatabaseMirror" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // How many attempts to make before giving up.
+                "MaxAttempts" => constants::ConfigValue::U32Val(value.parse().unwrap()),
+
+                // Control scripted updates.
+                "ScriptedUpdates" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Enable compression of local databases.
+                "CompressLocalDatabase" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Provide custom sources for database files.
+                "DatabaseCustomURL" => constants::ConfigValue::StringListVal(vec![value.to_string()]),
+
+                // Point freshclam to private mirrors.
+                "PrivateMirror" => constants::ConfigValue::StringListVal(vec![value.to_string()]),
+
+                // Number of database checks per day.
+                "Checks" => constants::ConfigValue::U32Val(value.parse().unwrap()),
+
+                // Proxy settings
+                "HTTPProxyServer" => constants::ConfigValue::StringVal(value.to_string()),
+                "HTTPProxyPort" => constants::ConfigValue::U32Val(value.parse().unwrap()),
+                "HTTPProxyUsername" => constants::ConfigValue::StringVal(value.to_string()),
+                "HTTPProxyPassword" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Force the use of a different User-Agent header.
+                "HTTPUserAgent" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Use a specific IP address for downloading databases.
+                "LocalIPAddress" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Send the RELOAD command to clamd.
+                "NotifyClamd" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Run command after successful database update.
+                "OnUpdateExecute" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Run command when database update process fails.
+                "OnErrorExecute" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Run command when freshclam reports outdated version.
+                "OnOutdatedExecute" => constants::ConfigValue::StringVal(value.to_string()),
+
+                // Don't fork into background.
+                "Foreground" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Enable debug messages in libclamav.
+                "Debug" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Timeout in seconds when connecting to database server.
+                "ConnectTimeout" => constants::ConfigValue::U32Val(value.parse().unwrap()),
+
+                // Timeout in seconds when reading from database server.
+                "ReceiveTimeout" => constants::ConfigValue::U32Val(value.parse().unwrap()),
+
+                // Load new databases into memory to ensure they are properly handled by libclamav.
+                "TestDatabases" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Enable downloading of bytecode.cvd.
+                "Bytecode" => constants::ConfigValue::YesNoVal(value.parse().unwrap()),
+
+                // Include an optional signature database.
+                "ExtraDatabase" => {
+                    let entry = config.config_map.entry(key.clone()).or_insert_with(|| {
+                        constants::ConfigValue::StringListVal(Vec::new())
+                    });
+                    if let constants::ConfigValue::StringListVal(vals) = entry {
+                        vals.push(value.to_string());
+                    }
+                    continue;
                 },
-            );
+
+                // Exclude a standard signature database.
+                "ExcludeDatabase" => {
+                    let entry = config.config_map.entry(key.clone()).or_insert_with(|| {
+                        constants::ConfigValue::StringListVal(Vec::new())
+                    });
+                    if let constants::ConfigValue::StringListVal(vals) = entry {
+                        vals.push(value.to_string());
+                    }
+                    continue;
+                },
+
+                _ => constants::ConfigValue::StringVal(value.to_string()),
+            };
+
+            config.config_map.insert(key, config_value);
         }
 
         Ok(config)
@@ -65,7 +179,16 @@ impl Config {
 
         // Write the configuration options
         for (key, value) in &self.config_map {
-            writeln!(file, "{} {}", key, value.to_string())?;
+            match value {
+                constants::ConfigValue::StringListVal(vals) => {
+                    for val in vals {
+                        writeln!(file, "{} \"{}\"", key, val)?;
+                    }
+                },
+                _ => {
+                    writeln!(file, "{} {}", key, value.to_string())?;
+                }
+            }
         }
 
         Ok(())
