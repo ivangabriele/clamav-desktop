@@ -31,6 +31,8 @@ pub enum ConfigValue {
     StringVal(String),
     U32Val(u32),
     YesNoVal(YesNo),
+    StringListVal(Vec<String>), // For multiple entries
+    SizedStringVal(String),     // For strings with size suffixes like M or K
 }
 impl ConfigValue {
     pub fn to_string(&self) -> String {
@@ -38,6 +40,8 @@ impl ConfigValue {
             ConfigValue::StringVal(val) => format!("\"{}\"", val),
             ConfigValue::U32Val(val) => val.to_string(),
             ConfigValue::YesNoVal(val) => val.to_string(),
+            ConfigValue::StringListVal(vals) => vals.join(","),
+            ConfigValue::SizedStringVal(val) => val.to_string(),
         }
     }
 }

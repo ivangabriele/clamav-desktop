@@ -12,7 +12,7 @@ fn test_clamscan_write() {
     let mut file = File::create(&test_config_path).expect("Failed to create test config file");
     writeln!(
         file,
-        "DatabaseMirror \"test.database.clamav.net\"\nMaxAttempts 3\nScriptedUpdates yes\nLogVerbose no"
+        "DatabaseMirror \"test.database.clamav.net\"\nMaxAttempts 3\nScriptedUpdates yes\nLogVerbose no\nExtraDatabase \"extra.db1\"\nExtraDatabase \"extra.db2\"\nLogFileMaxSize 5M"
     )
     .expect("Failed to write to test config file");
 
@@ -26,6 +26,11 @@ fn test_clamscan_write() {
     modified_config.set_value("MaxAttempts", ConfigValue::U32Val(5));
     modified_config.set_value("ScriptedUpdates", ConfigValue::YesNoVal(YesNo::No));
     modified_config.set_value("LogVerbose", ConfigValue::YesNoVal(YesNo::Yes));
+    modified_config.set_value(
+        "ExtraDatabase",
+        ConfigValue::StringListVal(vec!["modified.db1".to_string(), "modified.db2".to_string()]),
+    );
+    modified_config.set_value("LogFileMaxSize", ConfigValue::SizedStringVal("10M".to_string()));
     modified_config
         .to_file(&test_config_path)
         .expect("Failed to write modified config file");
@@ -47,6 +52,14 @@ fn test_clamscan_write() {
     assert!(matches!(
         modified_config.get_value("LogVerbose"),
         Some(ConfigValue::YesNoVal(YesNo::Yes))
+    ));
+    assert!(matches!(
+        modified_config.get_value("ExtraDatabase"),
+        Some(ConfigValue::StringListVal(vals)) if *vals == vec!["modified.db1".to_string(), "modified.db2".to_string()]
+    ));
+    assert!(matches!(
+        modified_config.get_value("LogFileMaxSize"),
+        Some(ConfigValue::SizedStringVal(val)) if val == "10M"
     ));
 
     std::fs::remove_file(test_config_path).expect("Failed to remove test config file");
