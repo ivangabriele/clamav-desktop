@@ -16,7 +16,7 @@ fn construct_path_from_root(root_path: &str, relative_path: &[&str]) -> String {
 
 #[cfg(not(tarpaulin_include))]
 pub fn get_debug_clamd_conf_file_path() -> String {
-    construct_path_from_root("", &["..", ".debug", "clamd.conf"])
+    construct_path_from_root("", &["..", ".dev", "clamd.conf"])
 }
 #[cfg(not(tarpaulin_include))]
 pub fn get_sample_directory_path() -> String {
