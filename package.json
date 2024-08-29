@@ -31,7 +31,7 @@
     "dev": "cross-env RUST_BACKTRACE=full TAURI_DEV=true tauri dev",
     "dev:webview": "vite",
     "postinstall": "node ./scripts/dev/post_install.js",
-    "prune": "rm -fr ./coverage ./dist ./node_modules/.vite ./resources/clamav ./sidecars/target ./src-tauri/target ./src-tauri/cobertura.xml",
+    "prune": "node ./scripts/dev/prune.js",
     "start": "./src-tauri/target/release/clamav-desktop",
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
     "test:e2e": "xvfb-run wdio run ./configs/wdio.config.ts",
