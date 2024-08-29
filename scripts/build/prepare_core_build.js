@@ -1,11 +1,14 @@
 import { B } from 'bhala'
 import { getAbsolutePath } from 'esm-path'
 
-import { downloadClamavStandaloneBuild } from './actions/downloadClamavStandaloneBuild.js'
+import { buildClamavFromSource } from './actions/buildClamavFromSource.js'
+import { buildTranslatorSidecars } from './actions/buildTranslatorSidecars.js'
+import { downloadClamavBuild } from './actions/downloadClamavBuild.js'
+import { downloadClamavSource } from './actions/downloadClamavSource.js'
 import { normalizeSidecarNames } from './actions/normalizeSidecarNames.js'
 
 // - `rustc --print target-list` to get the list of supported targets.
-// - `rusup target list` to get the list of installed targets.
+// - `rustup target list` to get the list of installed targets.
 // - `rustup target add <target>` to install a target.
 const ALLOWED_TARGETS = [
   'aarch64-apple-darwin',
@@ -37,7 +40,16 @@ if (!ALLOWED_TARGETS.includes(CONTROLLED_TARGET)) {
 }
 
 B.info('[prepare_core_build.js]', 'Downloading ClamAV standalone build...')
-await downloadClamavStandaloneBuild(CONTROLLED_TARGET, ROOT_PATH)
+await downloadClamavBuild(CONTROLLED_TARGET, ROOT_PATH)
+
+B.info('[prepare_core_build.js]', 'Building translator sidecars...')
+await buildTranslatorSidecars(ROOT_PATH)
+
+B.info('[prepare_core_build.js]', 'Downloading ClamAV source...')
+await downloadClamavSource(ROOT_PATH)
+
+B.info('[prepare_core_build.js]', 'Building ClamAV from source...')
+await buildClamavFromSource(ROOT_PATH)
 
 B.info('[prepare_core_build.js]', 'Normalizing sidecar names...')
 await normalizeSidecarNames(CONTROLLED_TARGET, ROOT_PATH)
