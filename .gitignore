@@ -154,7 +154,7 @@ dist
 ########################################
 # Custom
 
-/src-tauri/resources/clamav/*
+/src-tauri/resources/clamav/
 
-/.debug/*
-!/.debug/.gitkeep
+/.dev/*
+!/.dev/.gitkeep
