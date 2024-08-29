@@ -10,7 +10,7 @@
   "scripts": {
     "prebuild": "yarn build:clean && yarn build:webview && yarn build:sidecars && node ./scripts/build/prepare_core_build.js",
     "build": "cd ./src-tauri && cargo build",
-    "build:clean": "rm -fr ./dist ./sidecars/target ./src-tauri/target",
+    "build:clean": "node ./scripts/build/clean.js",
     "build:linux:debian": "sh ./scripts/build_linux_debian.sh",
     "build:sidecars": "cd ./sidecars && cargo build --release && cd ..",
     "build:webview": "tsc -p ./tsconfig.build.json && vite build",
