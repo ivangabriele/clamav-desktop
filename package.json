@@ -5,8 +5,7 @@
   "version": "0.3.24",
   "type": "module",
   "engines": {
-    "node": "20",
-    "npm": "10"
+    "node": "22"
   },
   "scripts": {
     "prebuild": "yarn build:clean && yarn build:webview && yarn build:sidecars && node ./scripts/build/prepare_core_build.js",

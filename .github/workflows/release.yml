@@ -43,7 +43,7 @@ jobs:
   #       uses: actions/setup-node@v3
   #       with:
   #         cache: yarn
-  #         node-version: 20
+  #         node-version: 22
   #     - name: Install
   #       run: yarn
   #     - name: Build
