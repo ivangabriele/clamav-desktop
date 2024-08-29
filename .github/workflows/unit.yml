@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 20
+          node-version: 22
       - name: Install Node.js dependencies
         run: yarn
       - name: Run
@@ -70,7 +70,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 20
+          node-version: 22
       - name: Install Node.js dependencies
         run: yarn
       - name: Build Sidecars
@@ -124,7 +124,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 20
+          node-version: 22
       - name: Install Node.js dependencies
         run: yarn
       # https://github.com/tauri-apps/tauri/issues/3142
@@ -153,7 +153,7 @@ jobs:
   #       uses: actions/setup-node@v3
   #       with:
   #         cache: yarn
-  #         node-version: 20
+  #         node-version: 22
   #     - name: Install Node.js dependencies
   #       run: yarn
   #     - name: Run
