@@ -158,3 +158,6 @@ dist
 
 /.dev/*
 !/.dev/.gitkeep
+
+/src-tauri/sidecars/*
+!/src-tauri/sidecars/.gitkeep

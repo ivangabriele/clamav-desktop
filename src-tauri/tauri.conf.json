@@ -46,11 +46,7 @@
           "/usr/share/polkit-1/actions/com.clamav-desktop.app.policy": "../assets/deb/com.clamav-desktop.app.policy"
         }
       },
-      "externalBin": [
-        "../sidecars/target/release/clamd",
-        "../sidecars/target/release/clamscan",
-        "../sidecars/target/release/freshclam"
-      ],
+      "externalBin": ["sidecars/clamd", "sidecars/clamscan", "sidecars/freshclam"],
       "icon": [
         "../assets/icons/32x32.png",
         "../assets/icons/128x128.png",

@@ -1,4 +1,4 @@
-import { existsSync, promises as fs } from 'node:fs'
+import { promises as fs, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { B } from 'bhala'
 import decompress from 'decompress'
@@ -15,12 +15,12 @@ const OS_WITH_ARCH_MAP = {
 }
 
 /**
- * Download ClamAV standalone build for Windows.
+ * Download ClamAV build for Windows.
  */
-export async function downloadClamavStandaloneBuild(target, rootPath) {
-  // We only download the standalone build for Windows, for simplicity. For Linux and macOS, we build them from source.
+export async function downloadClamavBuild(target, rootPath) {
+  // We only download the build for Windows, for simplicity. For Linux and macOS, we build ClamAV binaries from source.
   if (process.platform !== 'win32') {
-    B.info('[prepare_core_build.js]', 'Not a Windows machine. Skipping standalone download...')
+    B.info('[prepare_core_build.js]', 'Not a Windows machine. Skipping build download...')
 
     return
   }
@@ -33,19 +33,19 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   const signaturePublicKeyPath = join(rootPath, 'scripts/build/cisco-talos-gpg-public-key.asc')
   const targetSlug = OS_WITH_ARCH_MAP[target]
 
-  const downloadedBuildPath = join(resourcesPath, `clamav-${clamavVersion}.${targetSlug}`)
-  const downloadedBuildZipPath = `${downloadedBuildPath}.zip`
-  const downloadedBuildZipSignaturePath = `${downloadedBuildZipPath}.sig`
-  const targetBuildPath = join(resourcesPath, 'clamav')
+  const downloadedBuildDirectoryPath = join(resourcesPath, `clamav-${clamavVersion}.${targetSlug}`)
+  const downloadedBuildArchivePath = `${downloadedBuildDirectoryPath}.zip`
+  const downloadedBuildArchiveSignaturePath = `${downloadedBuildArchivePath}.sig`
+  const targetBuildDirectoryPath = join(resourcesPath, 'clamav')
 
-  if (existsSync(targetBuildPath)) {
-    B.info('[prepare_core_build.js]', 'ClamAV standalone build downloaded. Skipping standalone download...')
+  if (existsSync(targetBuildDirectoryPath)) {
+    B.info('[prepare_core_build.js]', 'ClamAV build already downloaded. Skipping build download...')
 
     return
   }
 
   // -----------------------------------------------------------------------------
-  // Download ClamAV standalone build
+  // Download ClamAV build
 
   const buildDownloadUrl = [
     'https://github.com/Cisco-Talos/clamav/releases/download',
@@ -54,21 +54,18 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   ].join('/')
   const signatureDownloadUrl = `${buildDownloadUrl}.sig`
 
-  B.log('[prepare_core_build.js]', `Downloading ClamAV v${clamavVersion} standalone build for target: ${targetSlug}...`)
+  B.log('[prepare_core_build.js]', `Downloading ClamAV v${clamavVersion} build for target: ${targetSlug}...`)
   await download(buildDownloadUrl, resourcesPath)
-  B.log(
-    '[prepare_core_build.js]',
-    `Downloading ClamAV v${clamavVersion} standalone build signature for target: ${targetSlug}...`,
-  )
+  B.log('[prepare_core_build.js]', `Downloading ClamAV v${clamavVersion} build signature for target: ${targetSlug}...`)
   await download(signatureDownloadUrl, resourcesPath)
 
   // -----------------------------------------------------------------------------
-  // Verify ClamAV standalone build signature
+  // Verify ClamAV build signature
 
-  B.log('[prepare_core_build.js]', `Verifying ClamAV v${clamavVersion} standalone build signature...`)
+  B.log('[prepare_core_build.js]', `Verifying ClamAV v${clamavVersion} build signature...`)
   const publicKeyArmored = await fs.readFile(signaturePublicKeyPath, 'utf8')
-  const signatureArmored = await fs.readFile(downloadedBuildZipSignaturePath, 'utf8')
-  const zipFile = await fs.readFile(downloadedBuildZipPath)
+  const signatureArmored = await fs.readFile(downloadedBuildArchiveSignaturePath, 'utf8')
+  const zipFile = await fs.readFile(downloadedBuildArchivePath)
 
   const publicKey = await readKey({ armoredKey: publicKeyArmored })
   const signature = await readSignature({ armoredSignature: signatureArmored })
@@ -87,31 +84,31 @@ export async function downloadClamavStandaloneBuild(target, rootPath) {
   try {
     await verificationResult.signatures[0].verified // Throws an error if verification fails
   } catch (err) {
-    B.error('[prepare_core_build.js]', `ClamAV v${clamavVersion} standalone build signature verification failed.`)
+    B.error('[prepare_core_build.js]', `ClamAV v${clamavVersion} build signature verification failed.`)
     console.error(err)
 
     process.exit(1)
   }
 
   // -----------------------------------------------------------------------------
-  // Extract ClamAV standalone build
+  // Extract ClamAV build
 
-  B.log('[prepare_core_build.js]', `Extracting ClamAV v${clamavVersion} standalone build...`)
-  await decompress(downloadedBuildZipPath, resourcesPath)
+  B.log('[prepare_core_build.js]', `Extracting ClamAV v${clamavVersion} build...`)
+  await decompress(downloadedBuildArchivePath, resourcesPath)
 
   // -----------------------------------------------------------------------------
   // Clean up downloaded files
 
   B.log('[prepare_core_build.js]', 'Cleaning up downloaded files...')
-  await deleteAsync([downloadedBuildZipPath, downloadedBuildZipSignaturePath])
+  await deleteAsync([downloadedBuildArchivePath, downloadedBuildArchiveSignaturePath])
 
   // -----------------------------------------------------------------------------
   // Normalize extracted directory name
 
   B.log('[prepare_core_build.js]', 'Normalizing extracted directory name...')
-  await move(downloadedBuildPath, targetBuildPath)
+  await move(downloadedBuildDirectoryPath, targetBuildDirectoryPath)
 
   // -----------------------------------------------------------------------------
 
-  B.success('[prepare_core_build.js]', `ClamAV v${clamavVersion} standalone build successfully downloaded.`)
+  B.success('[prepare_core_build.js]', `ClamAV v${clamavVersion} build successfully downloaded.`)
 }
