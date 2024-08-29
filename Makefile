@@ -1,5 +1,7 @@
 setup-debian:
 	./scripts/dev/install_debian_requirements.sh
+setup-macos:
+	./scripts/dev/install_macos_requirements.sh
 
 test:
 	cd ./src-tauri && cargo test --no-fail-fast --workspace -- --nocapture
