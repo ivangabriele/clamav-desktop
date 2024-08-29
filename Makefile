@@ -1,3 +1,6 @@
+setup-debian:
+	./scripts/dev/install_debian_requirements.sh
+
 test:
 	cd ./src-tauri && cargo test --no-fail-fast --workspace -- --nocapture
 test-cover:
