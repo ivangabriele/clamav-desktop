@@ -40,11 +40,6 @@ jobs:
         run: |
           apt-get update
           apt-get install -y dbus-x11
-      - name: Install ClamAV
-        run: |
-          apt-get install -y clamav
-      - name: Print ClamAV version
-        run: clamscan -V
       - name: Install Node.js dependencies
         run: yarn --frozen-lockfile
       - name: Build binary
