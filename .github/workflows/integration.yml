@@ -27,6 +27,10 @@ jobs:
           prefix-key: rust-cache
           shared-key: v0
           workspaces: './src-tauri -> target'
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: '1.80'
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
