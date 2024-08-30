@@ -18,7 +18,7 @@ export async function buildTranslatorSidecars(rootPath) {
   const sidecarsDirectoryPath = join(rootPath, 'src-tauri/sidecars')
 
   B.info('[prepare_core_build.js]', 'Building translator sidecars...')
-  const buildConfigResponse = await execa('cargo', ['build'], {
+  const buildConfigResponse = await execa('cargo', ['build', '--release'], {
     cwd: sourceDirectoryPath,
     reject: false,
     stdio: 'inherit',
