@@ -61,7 +61,6 @@ jobs:
           cat /etc/os-release
           rustc -V
           cargo -V
-          clamscan -V
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -117,7 +116,6 @@ jobs:
         run: |
           rustc -V
           cargo -V
-          # clamscan -V
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
