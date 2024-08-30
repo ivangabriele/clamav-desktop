@@ -55,6 +55,9 @@ jobs:
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
+          components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
+          rustflags: ''
+          targets: ${{ matrix.target }}
           toolchain: '1.80'
       - name: Print versions
         run: |
@@ -68,10 +71,8 @@ jobs:
           node-version: 22
       - name: Install Node.js dependencies
         run: yarn
-      - name: Build Sidecars
-        run: |
-          cd ./sidecars && cargo build --release && cd ..
-          node ./scripts/build/prepare_core_build.js
+      - name: Prepare core build
+        run: node ./scripts/build/prepare_core_build.js
       # https://github.com/tauri-apps/tauri/issues/3142
       - name: Create fake /dist directory
         run: mkdir ./dist
@@ -111,6 +112,9 @@ jobs:
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
+          components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
+          rustflags: ''
+          targets: ${{ matrix.target }}
           toolchain: '1.80'
       - name: Print versions
         run: |
@@ -126,10 +130,8 @@ jobs:
       # https://github.com/tauri-apps/tauri/issues/3142
       - name: Create fake /dist directory
         run: mkdir ./dist
-      - name: Build Sidecars
-        run: |
-          cd ./sidecars && cargo build --release && cd ..
-          node ./scripts/build/prepare_core_build.js
+      - name: Prepare core build
+        run: node ./scripts/build/prepare_core_build.js
       - name: Build
         run: cargo build
         working-directory: ./src-tauri
