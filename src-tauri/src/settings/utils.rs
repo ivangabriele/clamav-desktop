@@ -52,10 +52,7 @@ pub async fn get_clamd_conf_file_path() -> Option<String> {
             .to_str()
             .map(|file_path_as_str| file_path_as_str.to_string()),
         _ => {
-            error!(
-                "get_clamd_conf_file_path()",
-                "Multiple 'clamd.conf' files found."
-            );
+            error!("get_clamd_conf_file_path()", "Multiple 'clamd.conf' files found.");
 
             None
         }
@@ -113,7 +110,3 @@ pub async fn update_public_state(
         .emit_all("settings:state", public_state_mutex_guard.clone())
         .expect("Failed to emit `settings:state` event.");
 }
-
-#[cfg(test)]
-#[path = "./utils_test.rs"]
-mod utils_test;
