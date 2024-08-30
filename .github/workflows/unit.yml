@@ -52,6 +52,8 @@ jobs:
           prefix-key: rust-cache
           shared-key: v0
           workspaces: './src-tauri -> target'
+      - name: Install core build requirements
+        run: make setup-debian
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
@@ -108,6 +110,9 @@ jobs:
           prefix-key: rust-cache
           shared-key: v0
           workspaces: './src-tauri -> target'
+      - if: matrix.os == 'macos-latest'
+        name: Install core build requirements
+        run: make setup-macos
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
