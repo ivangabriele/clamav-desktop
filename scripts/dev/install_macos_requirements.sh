@@ -15,4 +15,8 @@ for item in "${packages[@]}"; do
   brew install $item || true; brew upgrade $item || brew upgrade $item
 done
 
-python3 -m pip install --user cmake pytest
+# Install Python packages withing a virtual environment
+# Original command: `python3 -m pip install --user cmake pytest``
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install cmake pytest
