@@ -30,7 +30,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           targets: ${{ matrix.target }}
-          toolchain: 1.80
+          toolchain: '1.80'
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -65,7 +65,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           targets: ${{ matrix.target }}
-          toolchain: 1.80
+          toolchain: '1.80'
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -99,7 +99,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           targets: ${{ matrix.target }}
-          toolchain: 1.80
+          toolchain: '1.80'
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
