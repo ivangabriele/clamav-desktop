@@ -11,7 +11,7 @@ export async function buildClamavFromSource(rootPath) {
   if (!['darwin', 'linux'].includes(process.platform)) {
     B.info('[prepare_core_build.js]', 'Not a Linux or macOS machine. Skipping ClamAV build...')
 
-    process.exit(0)
+    return
   }
 
   const sourceDirectoryPath = join(rootPath, '.dev/clamav')
