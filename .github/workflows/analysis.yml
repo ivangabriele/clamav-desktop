@@ -36,8 +36,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: false
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
@@ -58,8 +56,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: false
       - name: Install cargo-audit
         run: cargo install cargo-audit
       - name: Run
