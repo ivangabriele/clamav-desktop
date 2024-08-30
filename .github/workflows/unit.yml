@@ -57,7 +57,6 @@ jobs:
         with:
           components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
           rustflags: ''
-          targets: ${{ matrix.target }}
           toolchain: '1.80'
       - name: Print versions
         run: |
@@ -114,7 +113,6 @@ jobs:
         with:
           components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
           rustflags: ''
-          targets: ${{ matrix.target }}
           toolchain: '1.80'
       - name: Print versions
         run: |
