@@ -20,3 +20,6 @@ done
 python3 -m venv venv
 source venv/bin/activate
 python3 -m pip install cmake pytest
+
+# Install Ninja for faster builds
+brew install ninja
