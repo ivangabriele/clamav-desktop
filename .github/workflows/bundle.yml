@@ -47,7 +47,7 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: ci-release-deb
+          name: ${{ matrix.target }}.deb
           path: src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
           retention-days: 1
 
@@ -84,7 +84,7 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: ci-release-dmg
+          name: ${{ matrix.target }}.dmg
           path: src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
           retention-days: 1
 
@@ -120,7 +120,7 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: ci-release-msi
+          name: ${{ matrix.target }}.msi
           path: src-tauri/target/${{ matrix.target }}/release/bundle/msi/*.msi
           retention-days: 1
 
