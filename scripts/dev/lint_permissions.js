@@ -7,7 +7,7 @@ import { ascend, prop, sort } from 'ramda'
 
 const ROOT_PATH = getAbsolutePath(import.meta.url, '../..')
 
-const EXECUTABLE_FILE_PATHS = ['**/*.bin', '**/*.exe', '**/*.sh']
+const EXECUTABLE_FILE_PATHS = ['**/*.bin', '**/*.exe', '**/*.ps1', '**/*.sh']
 const SENSITIVE_FILE_PATHS = ['**/*.asc', 'e2e/samples/directory/INFECTED.eicar.com.txt']
 const TEMPORARY_FILE_PATHS = ['/.dev/**']
 const IGNORED_FILE_PATHS = ['/assets/deb/template.desktop']
