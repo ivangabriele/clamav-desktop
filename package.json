@@ -35,6 +35,7 @@
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
     "test:e2e": "xvfb-run wdio run ./configs/wdio.config.ts",
     "test:lint": "biome check --no-errors-on-unmatched --write .",
+    "test:perms": "node ./scripts/dev/lint_permissions.js",
     "test:sec": "ggshield iac scan all",
     "test:type": "tsc --noEmit -p ./tsconfig.ci.json",
     "test:unit:core": "make test",
