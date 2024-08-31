@@ -120,7 +120,7 @@ function printWrongPermissions(wrongPermissionRecordsByPath, shouldFix) {
   console.info()
 
   if (!shouldFix) {
-    B.info('[lint_permissions]', 'Run "yarn lint:perms --fix" to automatically fix these permissions.')
+    B.info('[lint_permissions]', 'Run "yarn test:perms --fix" to automatically fix these permissions.')
   }
 }
 
@@ -128,8 +128,13 @@ function printWrongPermissions(wrongPermissionRecordsByPath, shouldFix) {
  * @param {PermissionRecord[]} wrongPermissionRecordsByPath
  */
 async function fixPermissions(wrongPermissionRecordsByPath) {
-  B.info('[lint_permissions]', 'Fixing permissions...')
+  if (WRONG_PERMISSION_RECORDS.length === 0) {
+    B.info('[lint_permissions]', 'Nothing to fix. All files have correct permissions.')
 
+    return
+  }
+
+  B.info('[lint_permissions]', 'Fixing permissions...')
   for (const { absolutePath, currentPermission, expectedPermission, relativePath } of wrongPermissionRecordsByPath) {
     B.info(
       '[lint_permissions]',
