@@ -25,7 +25,7 @@
     - [Conventional Commit Types](#conventional-commit-types)
     - [Conventional Commit Scopes](#conventional-commit-scopes)
 - [IDEs Configuration](#ides-configuration)
-  - [VSCode](#vscode)
+  - [Visual Studio Code](#visual-studio-code)
 
 ## Personal Note
 
@@ -225,12 +225,45 @@ Our official `feat`, `fix`, `perf`, `refactor`, `style` & `test` scopes are:
 
 ## IDEs Configuration
 
-### VSCode
+### Visual Studio Code
+
+`.vscode/extensions.json`
+
+```json
+{
+  "recommendations": [
+    "biomejs.biome",
+    "coolbear.systemd-unit-file",
+    "fill-labs.dependi",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "idleberg.nsis",
+    "rust-lang.rust-analyzer",
+    "tamasfe.even-better-toml",
+    "tauri-apps.tauri-vscode"
+  ]
+}
+```
 
 `.vscode/settings.json`
 
 ```json
 {
-  "rust-analyzer.files.excludeDirs": ["./clamav"]
+  "editor.defaultFormatter": "biomejs.biome",
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
 }
 ```
