@@ -9,7 +9,7 @@ import { createMessage, enums, readKey, readSignature, verify } from 'openpgp'
 
 // Key: rustc target triple, Value: ClamAV architecture file name
 const OS_WITH_ARCH_MAP = {
-  'arm64ec-pc-windows-msvc': 'win.arm64',
+  'aarch64-pc-windows-msvc': 'win.arm64',
   'i686-pc-windows-msvc': 'win.win32',
   'x86_64-pc-windows-msvc': 'win.x64',
 }
