@@ -93,11 +93,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-14, windows-2022]
     runs-on: ${{ matrix.os }}
     env:
-      PROJECT_ROOT_PATH: ${{ matrix.os == 'macos-latest' && '/Users/runner/work/clamav-desktop/clamav-desktop' ||
-        'D:\a\clamav-desktop\clamav-desktop' }}
+      PROJECT_ROOT_PATH: ${{ matrix.os == 'macos-14' && '/Users/runner/work/clamav-desktop/clamav-desktop' || 'D:\a\clamav-desktop\clamav-desktop' }}
       RUST_BACKTRACE: 1
     steps:
       - name: Checkout
@@ -110,7 +109,7 @@ jobs:
           prefix-key: rust-cache
           shared-key: v0
           workspaces: './src-tauri -> target'
-      - if: matrix.os == 'macos-latest'
+      - if: matrix.os == 'macos-14'
         name: Install core build requirements
         run: make setup-macos
       - name: Setup Rust
@@ -141,71 +140,3 @@ jobs:
       - name: Run tests
         run: cargo test --no-fail-fast --workspace -- --nocapture
         working-directory: ./src-tauri
-
-  # webview_build:
-  #   name: Build Webview
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         cache: yarn
-  #         node-version: 22
-  #     - name: Install Node.js dependencies
-  #       run: yarn
-  #     - name: Run
-  #       run: yarn build:webview
-  #     - name: Upload Webview Artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: webview
-  #         path: ./build
-
-  # core_test:
-  #   name: Test Core
-  #   needs: [webview_build]
-  #   runs-on: ubuntu-latest
-  #   container:
-  #     image: ivangabriele/tauri:bullseye-18
-  #     options: --security-opt seccomp=unconfined
-  #   env:
-  #     CARGO_TERM_COLOR: always
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Download Webview Artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: webview
-  #         path: ./build
-  #     - name: Get Clamav Desktop version
-  #       id: get_version
-  #       uses: battila7/get-version-action@v2.3.0
-  #     - uses: Swatinem/rust-cache@v2
-  #       with:
-  #         key: unit
-  #         shared-key: ${{ steps.get_version.outputs.version }}
-  #         workspaces: './src-tauri -> target'
-  #     - name: Install ClamAV
-  #       run: |
-  #         apt-get update
-  #         apt-get install -y clamav
-  #     - name: Print ClamAV version
-  #       run: clamscan -V
-  #     - name: Build
-  #       run: cargo build
-  #       working-directory: ./src-tauri
-  #     - name: Run
-  #       run: cargo test --no-fail-fast
-  #       working-directory: ./src-tauri
-  #     # TODO Investigate why this is so slow.
-  #     # https://github.com/xd009642/tarpaulin#github-actions
-  #     - name: Generate Coverage
-  #       run: cargo tarpaulin --timeout 120 --out Xml
-  #       working-directory: ./src-tauri
-  #     - name: Upload Coverage
-  #       uses: codecov/codecov-action@v3
-  #       with:
-  #         directory: ./src-tauri
