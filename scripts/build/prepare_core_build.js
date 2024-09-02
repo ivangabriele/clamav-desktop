@@ -49,7 +49,7 @@ B.info('[prepare_core_build.js]', 'Downloading ClamAV source...')
 await downloadClamavSource(ROOT_PATH)
 
 B.info('[prepare_core_build.js]', 'Building ClamAV from source...')
-await buildClamavFromSource(ROOT_PATH)
+await buildClamavFromSource(CONTROLLED_TARGET, ROOT_PATH)
 
 B.info('[prepare_core_build.js]', 'Normalizing sidecar names...')
 await normalizeSidecarNames(CONTROLLED_TARGET, ROOT_PATH)
