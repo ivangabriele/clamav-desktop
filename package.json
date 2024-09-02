@@ -11,7 +11,6 @@
     "prebuild": "yarn build:clean && yarn build:webview && node ./scripts/build/prepare_core_build.js",
     "build": "cd ./src-tauri && cargo build",
     "build:clean": "node ./scripts/build/clean.js",
-    "build:linux:debian": "sh ./scripts/build_linux_debian.sh",
     "build:webview": "tsc -p ./tsconfig.build.json && vite build",
     "bundle:bin": "tauri build -b none",
     "bundle:deb": "tauri build -b deb",
