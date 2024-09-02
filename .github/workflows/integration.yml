@@ -15,7 +15,7 @@ jobs:
     name: E2E (debian-latest)
     runs-on: ubuntu-latest
     container:
-      image: ivangabriele/tauri:debian-bullseye-18
+      image: ivangabriele/tauri:debian-bookworm-18
     steps:
       - name: Checkout
         uses: actions/checkout@v4
