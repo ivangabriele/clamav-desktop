@@ -12,11 +12,11 @@ import { normalizeSidecarNames } from './actions/normalizeSidecarNames.js'
 // - `rustup target add <target>` to install a target.
 const ALLOWED_TARGETS = [
   'aarch64-apple-darwin',
-  'arm64ec-pc-windows-msvc',
-  'i686-unknown-linux-gnu',
-  'i686-pc-windows-msvc',
-  'x86_64-unknown-linux-gnu',
+  'aarch64-pc-windows-msvc',
+  'aarch64-unknown-linux-gnu',
+  'x86_64-apple-darwin',
   'x86_64-pc-windows-msvc',
+  'x86_64-unknown-linux-gnu',
 ]
 
 // `[process.platform]`: target triple
