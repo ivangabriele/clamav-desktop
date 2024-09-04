@@ -29,6 +29,7 @@
     "predev": "node ./scripts/build/prepare_core_build.js && yarn dev:webview",
     "dev": "cross-env RUST_BACKTRACE=full TAURI_DEV=true tauri dev",
     "dev:webview": "vite",
+    "install:daemon:debian": "./scripts/dev/install_debian_service.sh",
     "postinstall": "node ./scripts/dev/post_install.js",
     "prune": "node ./scripts/dev/prune.js",
     "start": "./src-tauri/target/release/clamav-desktop",
