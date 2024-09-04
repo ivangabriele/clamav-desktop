@@ -1,0 +1,43 @@
+# https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
+
+[Unit]
+Description=TWPS Daemon
+# Wants=clamaav-daemon.service
+# After=clamaav-daemon.service
+
+[Service]
+ExecStart=/usr/bin/twps-daemon
+RemainAfterExit=yes
+Restart=always
+RestartSec=5
+StandardOutput=journal
+TimeoutStartSec=420
+
+# Security Privileges
+# PrivateUsers=no
+# ProtectClock=no
+# ProtectKernelLogs=no
+
+# Security Limitations
+# https://www.opensourcerers.org/2022/04/25/optimizing-a-systemd-service-for-security/
+# CapabilityBoundingSet=~CAP_LINUX_IMMUTABLE CAP_IPC_LOCK CAP_SYS_CHROOT CAP_BLOCK_SUSPEND CAP_LEASE
+# CapabilityBoundingSet=~CAP_SYS_ADMIN CAP_SYS_BOOT CAP_SYS_PACCT CAP_SYS_PTRACE CAP_SYS_RAWIO CAP_SYS_TIME CAP_SYS_TTY_CONFIG
+# CapabilityBoundingSet=~CAP_WAKE_ALARM  CAP_MAC_ADMIN CAP_MAC_OVERRIDE
+# CapabilityBoundingSet=~CAP_SETUID CAP_SETGID CAP_SETPCAP CAP_CHOWN CAP_NET_ADMIN
+# CapabilityBoundingSet=~CAP_CHOWN CAP_FSETID CAP_SETFCAP
+# CapabilityBoundingSet=~CAP_DAC_OVERRIDE CAP_DAC_READ_SEARCH CAP_FOWNER CAP_IPC_OWNER
+# LockPersonality=yes
+# MemoryDenyWriteExecute=yes
+# NoNewPrivileges=yes
+# PrivateTmp=yes
+# ProtectControlGroups=yes
+# ProtectHostname=yes
+# ProtectKernelModules=yes
+# ProtectKernelTunables=yes
+# RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+# RestrictNamespaces=yes
+# RestrictRealtime=yes
+# RestrictSUIDSGID=yes
+
+[Install]
+WantedBy=multi-user.target

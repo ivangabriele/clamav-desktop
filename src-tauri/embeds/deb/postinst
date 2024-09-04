@@ -1,0 +1,16 @@
+#!/bin/bash
+# https://man7.org/linux/man-pages/man5/deb-postinst.5.html
+
+# Stop the service if it's running
+if systemctl is-active --quiet clamav-desktop-daemon.service; then
+    systemctl stop clamav-desktop-daemon.service
+fi
+
+# Reload systemd manager configuration
+systemctl daemon-reload
+
+# Enable and start the service
+systemctl enable clamav-desktop-daemon.service
+systemctl start clamav-desktop-daemon.service
+
+exit 0

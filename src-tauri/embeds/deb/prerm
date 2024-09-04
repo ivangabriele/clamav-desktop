@@ -1,0 +1,20 @@
+#!/bin/bash
+# https://man7.org/linux/man-pages/man5/deb-prerm.5.html
+
+# Stop the service if it's running
+if systemctl is-active --quiet clamav-desktop-daemon.service; then
+    systemctl stop clamav-desktop-daemon.service
+fi
+
+# Disable the service
+systemctl disable clamav-desktop-daemon.service
+
+# Remove service file
+rm -f /usr/lib/systemd/system/clamav-desktop-daemon.service
+# Remove daemon binary
+rm -f /usr/bin/clamav-desktop-daemon
+
+# Reload systemd manager configuration
+systemctl daemon-reload
+
+exit 0
