@@ -40,7 +40,7 @@
       "category": "Utility",
       "copyright": "© 2022-present Ivan Gabriele",
       "deb": {
-        "depends": ["clamav", "clamav-daemon", "pkexec", "policykit-1"],
+        "depends": ["pkexec", "policykit-1"],
         "desktopTemplate": "../assets/deb/template.desktop",
         "files": {
           "/usr/share/polkit-1/actions/com.clamav-desktop.app.policy": "../assets/deb/com.clamav-desktop.app.policy"
