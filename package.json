@@ -31,6 +31,7 @@
     "dev:webview": "vite",
     "install:daemon:debian": "./scripts/dev/install_debian_service.sh",
     "postinstall": "node ./scripts/dev/post_install.js",
+    "log:daemon:debian": "./scripts/dev/log_debian_service.sh",
     "prune": "node ./scripts/dev/prune.js",
     "start": "./src-tauri/target/release/clamav-desktop",
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
