@@ -3,6 +3,7 @@ name = "clamav-desktop"
 description = "A cross-platform desktop GUI for ClamAV antivirus."
 license = "AGPL-3.0"
 version = "0.3.24"
+publish = false
 
 default-run = "clamav-desktop"
 edition = "2021"
