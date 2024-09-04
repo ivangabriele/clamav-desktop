@@ -11,6 +11,7 @@
     "prebuild": "yarn build:clean && yarn build:webview && node ./scripts/build/prepare_core_build.js",
     "build": "cd ./src-tauri && cargo build",
     "build:clean": "node ./scripts/build/clean.js",
+    "build:daemon": "cd ./daemon && cargo build",
     "build:webview": "tsc -p ./tsconfig.build.json && vite build",
     "bundle:bin": "tauri build -b none",
     "bundle:deb": "tauri build -b deb",
@@ -41,6 +42,7 @@
     "test:unit:webview": "jest --config=./configs/jest.config.js",
     "test:unit:webview:debug": "test:unit:webview --detectOpenHandles",
     "test:unit:webview:watch": "test:unit:webview --watch",
+    "uninstall:daemon:debian": "./scripts/dev/uninstall_debian_service.sh",
     "postversion": "git push origin HEAD --tags"
   },
   "dependencies": {
