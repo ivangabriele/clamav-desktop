@@ -41,9 +41,9 @@
       "copyright": "© 2022-present Ivan Gabriele",
       "deb": {
         "depends": ["pkexec", "policykit-1"],
-        "desktopTemplate": "../assets/deb/template.desktop",
+        "desktopTemplate": "./embeds/deb/template.desktop",
         "files": {
-          "/usr/share/polkit-1/actions/com.clamav-desktop.app.policy": "../assets/deb/com.clamav-desktop.app.policy"
+          "/usr/share/polkit-1/actions/com.clamav-desktop.app.policy": "./embeds/deb/com.clamav-desktop.app.policy"
         }
       },
       "externalBin": ["sidecars/clamd", "sidecars/clamscan", "sidecars/freshclam"],
