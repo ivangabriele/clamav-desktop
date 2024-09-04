@@ -6,7 +6,7 @@ Description=TWPS Daemon
 # After=clamaav-daemon.service
 
 [Service]
-ExecStart=/usr/bin/twps-daemon
+ExecStart=/usr/bin/clamav-desktop-daemon
 RemainAfterExit=yes
 Restart=always
 RestartSec=5
