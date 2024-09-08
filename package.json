@@ -28,10 +28,10 @@
     "clean": "node ./scripts/build/clean.js",
     "predev": "node ./scripts/build/prepare_core_build.js && yarn dev:webview",
     "dev": "cross-env RUST_BACKTRACE=full TAURI_DEV=true tauri dev",
-    "dev:daemon:debian": "./scripts/dev/uninstall_debian_service.sh && yarn build:daemon && ./scripts/dev/install_debian_service.sh",
+    "dev:daemon:linux": "./scripts/dev/uninstall_linux_service.sh && yarn build:daemon && ./scripts/dev/install_linux_service.sh",
     "dev:webview": "vite",
     "postinstall": "node ./scripts/dev/post_install.js",
-    "log:daemon:debian": "./scripts/dev/log_debian_service.sh",
+    "log:daemon:linux": "./scripts/dev/log_linux_service.sh",
     "prune": "node ./scripts/dev/prune.js",
     "start": "./src-tauri/target/release/clamav-desktop",
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
@@ -44,7 +44,7 @@
     "test:unit:webview": "jest --config=./configs/jest.config.js",
     "test:unit:webview:debug": "test:unit:webview --detectOpenHandles",
     "test:unit:webview:watch": "test:unit:webview --watch",
-    "uninstall:daemon:debian": "./scripts/dev/uninstall_debian_service.sh",
+    "uninstall:daemon:debian": "./scripts/dev/uninstall_linux_service.sh",
     "postversion": "git push origin HEAD --tags"
   },
   "dependencies": {
