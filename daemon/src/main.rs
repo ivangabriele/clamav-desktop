@@ -314,7 +314,7 @@ mod tests {
         tokio::spawn(start_server());
         wait_for_port(7878).await;
 
-        let url = Uri::from_static("ws://0.0.0.0:7878");
+        let url = Uri::from_static("ws://127.0.0.1:7878");
         let (ws_stream, _) = connect_async(url).await.expect("Failed to connect");
         let (mut write, mut read) = ws_stream.split();
 
