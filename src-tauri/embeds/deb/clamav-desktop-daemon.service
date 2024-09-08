@@ -1,9 +1,9 @@
 # https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
 
 [Unit]
-Description=TWPS Daemon
-# Wants=clamaav-daemon.service
-# After=clamaav-daemon.service
+Description=ClamAV Desktop Daemon
+# Wants=clamav-daemon.service
+# After=clamav-daemon.service
 
 [Service]
 ExecStart=/usr/bin/clamav-desktop-daemon
