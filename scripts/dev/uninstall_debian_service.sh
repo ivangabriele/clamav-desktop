@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-# Build daemon
-yarn build:daemon
-
 # Stop the service if it's running
 if systemctl is-active --quiet clamav-desktop-daemon.service; then
     sudo systemctl stop clamav-desktop-daemon.service
