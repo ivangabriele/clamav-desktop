@@ -2,7 +2,7 @@
 set -e
 
 # Install binary & service file
-sudo cp ./clamav-desktop-daemon/target/release/clamav-desktop-daemon /usr/bin/clamav-desktop-daemon
+sudo cp ./daemon/target/debug/clamav-desktop-daemon /usr/bin/clamav-desktop-daemon
 sudo cp ./src-tauri/embeds/deb/clamav-desktop-daemon.service /usr/lib/systemd/system/clamav-desktop-daemon.service
 
 # Reload systemd manager configuration
