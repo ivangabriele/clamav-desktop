@@ -1,7 +1,10 @@
-# Check if the script is running as administrator
+# Check if the script is run as administrator, otherwise relaunch it with elevated privileges
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Host "Script is not running as administrator. Relaunching with elevated privileges..."
-    Start-Process pwsh "-ExecutionPolicy Bypass -File $PSCommandPath" -Verb RunAs
+    Write-Host "[uninstall_windows_service] Must be run as an administrator. Relaunching with elevated privileges..."
+
+    # Relaunch script with elevated privileges using 'RunAs'
+    Start-Process powershell "-ExecutionPolicy Bypass -File $PSCommandPath" -Verb RunAs
+
     exit
 }
 
