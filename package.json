@@ -8,9 +8,8 @@
     "node": "22"
   },
   "scripts": {
-    "prebuild": "yarn build:clean && yarn build:webview && node ./scripts/build/prepare_core_build.js",
+    "prebuild": "yarn clean && yarn build:webview && node ./scripts/build/prepare_core_build.js",
     "build": "cd ./src-tauri && cargo build",
-    "build:clean": "node ./scripts/build/clean.js",
     "build:daemon": "cd ./daemon && cargo build",
     "build:webview": "tsc -p ./tsconfig.build.json && vite build",
     "bundle:bin": "tauri build -b none",
@@ -26,6 +25,7 @@
     "bundle:msi:x64": "TARGET=x86_64-pc-windows-msvc yarn bundle:msi --target x86_64-pc-windows-msvc",
     "bundle:msi:install": "yarn bundle:msi:uninstall && powershell -ExecutionPolicy Bypass -File ./scripts/dev/install_msi_bundle.ps1",
     "bundle:msi:uninstall": "powershell -ExecutionPolicy Bypass -File ./scripts/dev/uninstall_msi_bundle.ps1",
+    "clean": "node ./scripts/build/clean.js",
     "predev": "node ./scripts/build/prepare_core_build.js && yarn dev:webview",
     "dev": "cross-env RUST_BACKTRACE=full TAURI_DEV=true tauri dev",
     "dev:daemon:debian": "./scripts/dev/uninstall_debian_service.sh && yarn build:daemon && ./scripts/dev/install_debian_service.sh",
