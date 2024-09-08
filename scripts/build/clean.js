@@ -7,6 +7,7 @@ const ROOT_PATH = getAbsolutePath(import.meta.url, '../..')
 B.info('[clean.js]', 'Cleaning...')
 await deleteAsync(
   [
+    './daemon/target',
     './dist',
     './node_modules/.vite',
     './sidecars/target',
