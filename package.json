@@ -44,7 +44,7 @@
     "test:unit:webview": "jest --config=./configs/jest.config.js",
     "test:unit:webview:debug": "test:unit:webview --detectOpenHandles",
     "test:unit:webview:watch": "test:unit:webview --watch",
-    "uninstall:daemon:debian": "./scripts/dev/uninstall_linux_service.sh",
+    "uninstall:daemon:linux": "./scripts/dev/uninstall_linux_service.sh",
     "postversion": "git push origin HEAD --tags"
   },
   "dependencies": {
