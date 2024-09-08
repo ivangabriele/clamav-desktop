@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
 
-systemctl status --no-pager clamav-desktop-daemon.service
+systemctl status --lines=0 clamav-desktop-daemon.service
+journalctl -u clamav-desktop-daemon.service -f
