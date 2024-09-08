@@ -20,7 +20,7 @@ if [ -f /etc/os-release ]; then
     OS_NAME=$NAME
     OS_VERSION=$VERSION_ID
 
-    if [[ "${OS_NAME}" == "Debian" ]]; then
+    if [[ "${OS_NAME}" == "Debian GNU/Linux" ]]; then
         if [[ "${OS_VERSION%%.*}" -lt 12 ]]; then
             log_error_and_exit "Debian v${OS_VERSION} is unsupported. Required: Debian 12 or later."
         fi
