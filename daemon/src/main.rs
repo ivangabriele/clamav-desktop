@@ -140,9 +140,148 @@ async fn start_server() {
     }
 }
 
+#[cfg(target_os = "linux")]
+#[cfg(target_os = "macos")]
+mod unix_service_handler {
+    #[tokio::main]
+    async fn run() {
+        start_server().await;
+    }
+}
+
+#[cfg(target_os = "windows")]
+mod windows_service_handler {
+    use std::ffi::OsString;
+    use std::sync::mpsc::{self};
+    use std::time::Duration;
+    use tokio::runtime::Runtime;
+    use windows_service::{
+        define_windows_service,
+        service::{
+            ServiceControl, ServiceControlAccept, ServiceExitCode, ServiceState, ServiceStatus,
+            ServiceType,
+        },
+        service_control_handler, service_dispatcher, Result,
+    };
+
+    use crate::start_server;
+
+    define_windows_service!(ffi_service_main, my_service_main);
+
+    fn my_service_main(_arguments: Vec<OsString>) {
+        if let Err(e) = run_service() {
+            eprintln!("Service failed: {}", e);
+        }
+    }
+
+    fn run_service() -> windows_service::Result<()> {
+        let (shutdown_tx, shutdown_rx) = mpsc::channel::<()>();
+
+        let event_handler = {
+            let shutdown_tx = shutdown_tx.clone();
+            move |control_event| -> service_control_handler::ServiceControlHandlerResult {
+                match control_event {
+                    ServiceControl::Stop => {
+                        // Report that the service is stopping
+                        shutdown_tx.send(()).unwrap();
+                        service_control_handler::ServiceControlHandlerResult::NoError
+                    }
+                    ServiceControl::Interrogate => {
+                        // Service is running, report no error
+                        service_control_handler::ServiceControlHandlerResult::NoError
+                    }
+                    _ => service_control_handler::ServiceControlHandlerResult::NotImplemented,
+                }
+            }
+        };
+
+        // Register the control handler with Windows SCM
+        let status_handle =
+            service_control_handler::register("clamav-desktop-daemon", event_handler)?;
+
+        // Report service is starting
+        let start_pending_status = ServiceStatus {
+            service_type: ServiceType::OWN_PROCESS,
+            current_state: ServiceState::StartPending,
+            controls_accepted: ServiceControlAccept::STOP,
+            process_id: None,
+            exit_code: ServiceExitCode::Win32(0),
+            checkpoint: 0,
+            wait_hint: Duration::from_secs(30), // Hinting SCM that it will take time to start
+        };
+        status_handle.set_service_status(start_pending_status)?;
+
+        // Start the Tokio runtime
+        let rt = Runtime::new().unwrap();
+        rt.block_on(async {
+            // Start the server asynchronously
+            tokio::spawn(async {
+                start_server().await;
+            });
+        });
+
+        // Report service is now running
+        let running_status = ServiceStatus {
+            service_type: ServiceType::OWN_PROCESS,
+            current_state: ServiceState::Running,
+            controls_accepted: ServiceControlAccept::STOP,
+            process_id: None,
+            exit_code: ServiceExitCode::Win32(0),
+            checkpoint: 0,
+            wait_hint: Duration::from_secs(0),
+        };
+        status_handle.set_service_status(running_status)?;
+
+        // Block until we receive a shutdown signal
+        shutdown_rx.recv().unwrap();
+
+        // Report service is stopping
+        let stop_pending_status = ServiceStatus {
+            service_type: ServiceType::OWN_PROCESS,
+            current_state: ServiceState::StopPending,
+            controls_accepted: ServiceControlAccept::empty(),
+            process_id: None,
+            exit_code: ServiceExitCode::Win32(0),
+            checkpoint: 0,
+            wait_hint: Duration::from_secs(30),
+        };
+        status_handle.set_service_status(stop_pending_status)?;
+
+        // Properly clean up and stop the service
+        let stop_status = ServiceStatus {
+            service_type: ServiceType::OWN_PROCESS,
+            current_state: ServiceState::Stopped,
+            controls_accepted: ServiceControlAccept::empty(),
+            process_id: None,
+            exit_code: ServiceExitCode::Win32(0),
+            checkpoint: 0,
+            wait_hint: Duration::from_secs(0),
+        };
+        status_handle.set_service_status(stop_status)?;
+
+        Ok(())
+    }
+
+    pub fn run() -> Result<()> {
+        service_dispatcher::start("clamav-desktop-daemon", ffi_service_main)?;
+
+        Ok(())
+    }
+}
+
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 #[tokio::main]
-async fn main() {
-    start_server().await;
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    unix_service_handler::run().await;
+
+    Ok(())
+}
+
+#[cfg(target_os = "windows")]
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    windows_service_handler::run()?;
+
+    Ok(())
 }
 
 #[cfg(test)]
