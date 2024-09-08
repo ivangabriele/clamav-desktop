@@ -45,6 +45,7 @@
     "test:unit:webview:debug": "test:unit:webview --detectOpenHandles",
     "test:unit:webview:watch": "test:unit:webview --watch",
     "uninstall:daemon:linux": "./scripts/dev/uninstall_linux_service.sh",
+    "uninstall:daemon:windows": "powershell -ExecutionPolicy Bypass -File ./scripts/dev/uninstall_windows_service.ps1",
     "postversion": "git push origin HEAD --tags"
   },
   "dependencies": {
