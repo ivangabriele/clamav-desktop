@@ -175,6 +175,9 @@ Cargo.lock
 # Custom Cargo config
 **/.cargo/config.toml
 
+# Python virtual environment
+venv/
+
 # Tarpaulin coverage output
 cobertura.xml
 
