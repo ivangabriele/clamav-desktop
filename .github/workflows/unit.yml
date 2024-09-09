@@ -41,6 +41,8 @@ jobs:
       options: --security-opt seccomp=unconfined
     env:
       PROJECT_ROOT_PATH: /__w/clamav-desktop/clamav-desktop
+      RUST_BACKTRACE: 1
+      TARGET: x86_64-unknown-linux-gnu
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -88,16 +90,13 @@ jobs:
           flags: core
           token: ${{ secrets.CODECOV_TOKEN }}
 
-  core_test_macos_and_windows:
-    name: Test Core
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-14, windows-2022]
-    runs-on: ${{ matrix.os }}
+  core_test_macos:
+    name: Test Core (macos-14)
+    runs-on: macos-14
     env:
-      PROJECT_ROOT_PATH: ${{ matrix.os == 'macos-14' && '/Users/runner/work/clamav-desktop/clamav-desktop' || 'D:\a\clamav-desktop\clamav-desktop' }}
+      PROJECT_ROOT_PATH: '/Users/runner/work/clamav-desktop/clamav-desktop'
       RUST_BACKTRACE: 1
+      TARGET: aarch64-apple-darwin
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -105,13 +104,59 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           cache-on-failure: true
-          key: unit_core_test_${{ matrix.os }}
+          key: unit_core_test_macos-14
           prefix-key: rust-cache
           shared-key: v0
           workspaces: './src-tauri -> target'
-      - if: matrix.os == 'macos-14'
-        name: Install core build requirements
+      - name: Install core build requirements
         run: make setup-macos
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
+          rustflags: ''
+          toolchain: '1.80'
+      - name: Print versions
+        run: |
+          rustc -V
+          cargo -V
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: yarn
+          node-version: 22
+      - name: Install Node.js dependencies
+        run: yarn
+      # https://github.com/tauri-apps/tauri/issues/3142
+      - name: Create fake /dist directory
+        run: mkdir ./dist
+      - name: Prepare core build
+        run: node ./scripts/build/prepare_core_build.js
+      - name: Build
+        run: cargo build
+        working-directory: ./src-tauri
+      - name: Run tests
+        run: cargo test --no-fail-fast --workspace -- --nocapture
+        working-directory: ./src-tauri
+
+  core_test_windows:
+    name: Test Core (windows-2022)
+    runs-on: windows-2022
+    env:
+      PROJECT_ROOT_PATH: 'D:\a\clamav-desktop\clamav-desktop'
+      RUST_BACKTRACE: 1
+      TARGET: x86_64-pc-windows-msvc
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # https://github.com/Swatinem/rust-cache#example-usage
+      - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+          key: unit_core_test_windows-2022
+          prefix-key: rust-cache
+          shared-key: v0
+          workspaces: './src-tauri -> target'
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
