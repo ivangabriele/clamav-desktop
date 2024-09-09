@@ -140,15 +140,6 @@ async fn start_server() {
     }
 }
 
-#[cfg(target_os = "linux")]
-#[cfg(target_os = "macos")]
-mod unix_service_handler {
-    #[tokio::main]
-    async fn run() {
-        start_server().await;
-    }
-}
-
 #[cfg(target_os = "windows")]
 mod windows_service_handler {
     use std::ffi::OsString;
@@ -272,7 +263,7 @@ mod windows_service_handler {
 #[cfg(any(target_os = "linux", target_os = "macos"))]
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    unix_service_handler::run().await;
+    start_server().await;
 
     Ok(())
 }
@@ -298,8 +289,8 @@ mod tests {
 
     async fn is_port_in_use(port: u16) -> bool {
         match TcpListener::bind(("127.0.0.1", port)).await {
-            Ok(_) => false, // Port is free
-            Err(_) => true, // Port is in use
+            Ok(_) => false,
+            Err(_) => true,
         }
     }
 
