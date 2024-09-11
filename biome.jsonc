@@ -16,5 +16,17 @@
         "noNamespace": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["./.storybook/**/*.ts", "./src/stories/**/*.ts", "./src/stories/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    }
+  ]
 }

@@ -193,3 +193,5 @@ cobertura.xml
 # Used to build and embed sidecars during the bundling process.
 /src-tauri/sidecars/*
 !/src-tauri/sidecars/.gitkeep
+
+*storybook.log
