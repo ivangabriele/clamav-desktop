@@ -19,7 +19,7 @@
   },
   "overrides": [
     {
-      "include": ["./.storybook/**/*.ts", "./src/stories/**/*.ts", "./src/stories/**/*.tsx"],
+      "include": ["./.storybook/**/*.ts", "./.storybook/**/*.tsx", "./src/stories/**/*.ts", "./src/stories/**/*.tsx"],
       "linter": {
         "rules": {
           "style": {
