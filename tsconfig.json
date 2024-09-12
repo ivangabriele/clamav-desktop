@@ -22,7 +22,7 @@
     "verbatimModuleSyntax": true
   },
   "exclude": [".yarn/*", "build/*", "clamav/*", "node_modules/*", "src-tauri/*"],
-  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", ".storybook/**/*.ts", ".storybook/**/*.tsx"],
   "references": [
     {
       "path": "./tsconfig.node.json"
