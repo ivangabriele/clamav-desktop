@@ -1,0 +1,9 @@
+html, body {
+  background-color: white;
+  height: 100%;
+}
+
+#storybook-root {
+  display: flex;
+  height: 100%;
+}

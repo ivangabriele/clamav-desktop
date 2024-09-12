@@ -11,7 +11,7 @@ import '@fontsource/reddit-mono/600.css'
 import { App } from './App'
 
 // TODO Clean that.
-const GlobalStyleCustom = createGlobalStyle`
+export const GlobalStyleCustom = createGlobalStyle`
   * {
     box-sizing: border-box;
     cursor: default;
