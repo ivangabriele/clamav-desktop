@@ -5,20 +5,13 @@ import { Toaster } from './components/Toaster'
 import type { Page } from './constants'
 import { MainMenu } from './layouts/MainMenu'
 import { TitleBar } from './layouts/TitleBar'
-import { Loader } from './screens/Loader'
 
 type LayoutProps = Readonly<{
   children: ReactNode
-  isLoading: boolean
-  onLoaded: () => void
   onPageChange: (newPage: Page) => void
   page: Page
 }>
-export function Layout({ children, isLoading, onLoaded, onPageChange, page }: LayoutProps) {
-  if (isLoading) {
-    return <Loader onReady={onLoaded} />
-  }
-
+export function Layout({ children, onPageChange, page }: LayoutProps) {
   return (
     <Box>
       <TitleBar />
