@@ -1626,19 +1626,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chromatic-com/storybook@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "@chromatic-com/storybook@npm:1.9.0"
-  dependencies:
-    chromatic: "npm:^11.4.0"
-    filesize: "npm:^10.0.12"
-    jsonfile: "npm:^6.1.0"
-    react-confetti: "npm:^6.1.0"
-    strip-ansi: "npm:^7.1.0"
-  checksum: 10/27ca6930a4978a52471ed7256cbf549e57b5c9c45b650b55461400a63692f5b30a7a0a7436faadd713952ce6285b873041494c10e92cccdc5bdafee1f1755459
-  languageName: node
-  linkType: hard
-
 "@codemirror/autocomplete@npm:^6.0.0, @codemirror/autocomplete@npm:^6.3.2, @codemirror/autocomplete@npm:^6.7.1":
   version: 6.18.0
   resolution: "@codemirror/autocomplete@npm:6.18.0"
@@ -3545,17 +3532,6 @@ __metadata:
   peerDependencies:
     storybook: ^8.2.9
   checksum: 10/5a0c31b617bfdcd024c5325ab48771b8cf7b726336e24b9b0c7d4a4e8bda2093a8c2c264272b7fb36bf010f1bd54896df45b6f9092d020e696226b34e23ce208
-  languageName: node
-  linkType: hard
-
-"@storybook/addon-onboarding@npm:^8.2.9":
-  version: 8.2.9
-  resolution: "@storybook/addon-onboarding@npm:8.2.9"
-  dependencies:
-    react-confetti: "npm:^6.1.0"
-  peerDependencies:
-    storybook: ^8.2.9
-  checksum: 10/ce7b16e3ae2b979b3bf3d6daa29836b5196eb070edb3fd84c46e13158535dac0811bd65283fafa7c51d61e381a6eaad11d22a22d4b91a41a38850e8edf6c3816
   languageName: node
   linkType: hard
 
@@ -6379,25 +6355,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromatic@npm:^11.4.0":
-  version: 11.8.0
-  resolution: "chromatic@npm:11.8.0"
-  peerDependencies:
-    "@chromatic-com/cypress": ^0.*.* || ^1.0.0
-    "@chromatic-com/playwright": ^0.*.* || ^1.0.0
-  peerDependenciesMeta:
-    "@chromatic-com/cypress":
-      optional: true
-    "@chromatic-com/playwright":
-      optional: true
-  bin:
-    chroma: dist/bin.js
-    chromatic: dist/bin.js
-    chromatic-cli: dist/bin.js
-  checksum: 10/8e8fd12e9966bc763c3ca5daa7108576f7fc3b43b328b0ee3e10ddaf9e4704b6ebcd2969e5ce7d25bc6826f34020571a2397e2ec1d25d2fe8bf6c9c00d2bf537
-  languageName: node
-  linkType: hard
-
 "chromium-bidi@npm:0.4.16":
   version: 0.4.16
   resolution: "chromium-bidi@npm:0.4.16"
@@ -6449,7 +6406,6 @@ __metadata:
   resolution: "clamav-desktop@workspace:."
   dependencies:
     "@biomejs/biome": "npm:1.8.3"
-    "@chromatic-com/storybook": "npm:^1.9.0"
     "@commitlint/cli": "npm:19.4.1"
     "@commitlint/config-conventional": "npm:19.4.1"
     "@fontsource/poppins": "npm:5.0.16"
@@ -6461,7 +6417,6 @@ __metadata:
     "@storybook/addon-essentials": "npm:^8.2.9"
     "@storybook/addon-interactions": "npm:^8.2.9"
     "@storybook/addon-links": "npm:^8.2.9"
-    "@storybook/addon-onboarding": "npm:^8.2.9"
     "@storybook/addon-themes": "npm:8.3.0"
     "@storybook/blocks": "npm:^8.2.9"
     "@storybook/react": "npm:^8.2.9"
@@ -8341,13 +8296,6 @@ __metadata:
     strip-outer: "npm:^1.0.0"
     trim-repeated: "npm:^1.0.0"
   checksum: 10/d419eaa1b8c331ab8616e1fffe33e4af135c60b5364320bbe015bc93ded89c6c301363f69593991de18a8f9dd278324c0a0d89fd554c30250306f4c16c956673
-  languageName: node
-  linkType: hard
-
-"filesize@npm:^10.0.12":
-  version: 10.1.6
-  resolution: "filesize@npm:10.1.6"
-  checksum: 10/e800837c4fc02303f1944d5a4c7b706df1c5cd95d745181852604fb00a1c2d55d2d3921252722bd2f0c86b59c94edaba23fa224776bbf977455d4034e7be1f45
   languageName: node
   linkType: hard
 
@@ -10501,7 +10449,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonfile@npm:^6.0.1, jsonfile@npm:^6.1.0":
+"jsonfile@npm:^6.0.1":
   version: 6.1.0
   resolution: "jsonfile@npm:6.1.0"
   dependencies:
@@ -12628,17 +12576,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-confetti@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "react-confetti@npm:6.1.0"
-  dependencies:
-    tween-functions: "npm:^1.2.0"
-  peerDependencies:
-    react: ^16.3.0 || ^17.0.1 || ^18.0.0
-  checksum: 10/33423767c42362b29e0c8fd09f60bcf40d64aeb721fd63564f85c61357706a6080563ec40f33435d210d5b5b1af7277aef4545deccf771d08785a3cb19749470
-  languageName: node
-  linkType: hard
-
 "react-docgen-typescript@npm:^2.2.2":
   version: 2.2.2
   resolution: "react-docgen-typescript@npm:2.2.2"
@@ -14395,13 +14332,6 @@ __metadata:
   version: 2.6.3
   resolution: "tslib@npm:2.6.3"
   checksum: 10/52109bb681f8133a2e58142f11a50e05476de4f075ca906d13b596ae5f7f12d30c482feb0bff167ae01cfc84c5803e575a307d47938999246f5a49d174fc558c
-  languageName: node
-  linkType: hard
-
-"tween-functions@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "tween-functions@npm:1.2.0"
-  checksum: 10/f145f39187aacfe6e3c6bfe8452be4061a569b8e1e75c28169c55b7cdf519daa1877c79a8a2cdc902b68f49b67b8478f34818ff02529d27ae5aa0545e7fbdc06
   languageName: node
   linkType: hard
 
