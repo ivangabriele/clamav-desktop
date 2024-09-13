@@ -14,7 +14,6 @@ export function Cloud() {
 
   const [state, setState] = useCachedState<Core.CloudState | undefined>(Webview.CacheKey.CLOUD_STATE, undefined)
 
-  const isLoading = !state
   const logsAsString = (state?.logs || []).join('\n')
 
   const startCloudDaemon = useCallback(() => {
@@ -48,7 +47,7 @@ export function Cloud() {
   }, [setState])
 
   return (
-    <Screen isLoading={isLoading}>
+    <Screen>
       <Logger hasForcedScroll>{logsAsString}</Logger>
 
       <ActionsBox>
