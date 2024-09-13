@@ -14,7 +14,6 @@ export function Dashboard() {
 
   const [state, setState] = useCachedState<Core.DashboardState | undefined>(Webview.CacheKey.DASHBOARD_STATE, undefined)
 
-  const isLoading = !state?.is_ready
   const logsAsString = (state?.logs || []).join('\n')
 
   const startDaemon = useCallback(() => {
@@ -44,7 +43,7 @@ export function Dashboard() {
   }, [setState])
 
   return (
-    <Screen isLoading={isLoading}>
+    <Screen>
       <Logger hasForcedScroll>{logsAsString}</Logger>
 
       {(!state?.is_ready || state.status === Core.DashboardStatus.UNKNOWN) && (

@@ -19,8 +19,6 @@ export function Settings() {
     INITIAL_SETTINGS_STATE,
   )
 
-  const isLoading = !state.is_ready
-
   const handleChange = useCallback((nextClamdConfFileSource: string) => {
     clamdConfFileSourceRef.current = nextClamdConfFileSource
   }, [])
@@ -67,7 +65,7 @@ export function Settings() {
   }, [setState])
 
   return (
-    <StyledScreen isLoading={isLoading}>
+    <StyledScreen>
       {!!state.clamd_conf_file_source && (
         <Box>
           <CodeMirror

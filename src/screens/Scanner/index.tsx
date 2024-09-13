@@ -16,8 +16,6 @@ export function Scanner() {
   const [state, setState] = useCachedState<Core.ScannerState | undefined>(Webview.CacheKey.SCANNER_STATE, undefined)
   const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(Webview.CacheKey.SCANNER_STATUS, undefined)
 
-  const isLoading = !state?.is_ready
-
   const handleFileExplorerCheck = useCallback(async (node: Core.FileExplorerNode) => {
     await invoke('toggle_file_explorer_node_check', {
       indexPath: node.index_path,
@@ -53,7 +51,7 @@ export function Scanner() {
   const currentFilePath = status?.current_file_path
 
   return (
-    <Screen isLoading={isLoading}>
+    <Screen>
       {!!state && !state.is_running && (
         <Box>
           <FileExplorer
