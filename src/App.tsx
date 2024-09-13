@@ -4,6 +4,7 @@ import { Layout } from './Layout'
 import { Page } from './constants'
 import { Cloud } from './screens/Cloud'
 import { Dashboard } from './screens/Dashboard'
+import { LoaderScreen } from './screens/Loader'
 import { Scanner } from './screens/Scanner'
 import { Settings } from './screens/Settings'
 
@@ -13,8 +14,12 @@ export function App() {
 
   const disableIsLoading = () => setIsLoading(false)
 
+  if (isLoading) {
+    return <LoaderScreen onReady={disableIsLoading} />
+  }
+
   return (
-    <Layout isLoading={isLoading} onLoaded={disableIsLoading} onPageChange={setPage} page={page}>
+    <Layout onPageChange={setPage} page={page}>
       {page === Page.Dashboard && <Dashboard />}
       {page === Page.Scanner && <Scanner />}
       {page === Page.Cloud && <Cloud />}
