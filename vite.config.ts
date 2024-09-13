@@ -22,6 +22,9 @@ export default defineConfig({
 
   // tauri expects a fixed port, fail if that port is not available
   server: {
+    hmr: {
+      overlay: false,
+    },
     port: 1420,
     strictPort: true,
   },
