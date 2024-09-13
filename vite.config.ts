@@ -20,11 +20,8 @@ export default defineConfig({
 
   plugins: [react()],
 
-  // tauri expects a fixed port, fail if that port is not available
+  // Tauri expects a fixed port, fail if that port is not available
   server: {
-    hmr: {
-      overlay: false,
-    },
     port: 1420,
     strictPort: true,
   },
