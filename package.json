@@ -39,6 +39,7 @@
     "log:daemon:windows": "powershell -ExecutionPolicy Bypass -File ./scripts/dev/log_windows_service.ps1",
     "prune": "node ./scripts/dev/prune.js",
     "start": "./src-tauri/target/release/clamav-desktop",
+    "storybook": "storybook dev --no-open -p 6006",
     "test": "yarn test:lint && yarn test:type && yarn test:unit:core && test:unit:webview",
     "test:e2e": "xvfb-run wdio run ./configs/wdio.config.ts",
     "test:lint": "biome check --no-errors-on-unmatched --write .",
@@ -53,7 +54,6 @@
     "uninstall:daemon:macos": "./scripts/dev/uninstall_macos_service.sh",
     "uninstall:daemon:windows": "powershell -ExecutionPolicy Bypass -File ./scripts/dev/uninstall_windows_service.ps1",
     "postversion": "git push origin HEAD --tags",
-    "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
