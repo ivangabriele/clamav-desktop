@@ -1,5 +1,9 @@
-html, body {
+html {
+  height: 100%;
+}
+body {
   background-color: white;
+  border-radius: unset;
   height: 100%;
 }
 

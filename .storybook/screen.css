@@ -35,9 +35,9 @@ html {
 }
 
 body {
-  background-color: #1b1f38;
+  background-color: #660033;
   border-radius: 16px;
-  color: #495057;
+  color: white;
   display: flex;
   flex-grow: 1;
   font-family: 'Poppins', sans-serif;

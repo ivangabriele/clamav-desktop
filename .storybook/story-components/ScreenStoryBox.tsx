@@ -20,10 +20,10 @@ const Box = styled.div`
 `
 
 const ScreenBox = styled.div`
-  background-color: #660033;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #660033 0%, #330a1f 100%);
+  border-radius: 16px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.75);
   display: flex;
-  height: 500px;
+  height: 496px;
   width: 800px;
 `
