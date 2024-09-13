@@ -4,50 +4,6 @@ import styled, { keyframes } from 'styled-components'
 
 const SIZE = 44
 
-const circularRotateKeyframe = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`
-
-const circularDashKeyframe = keyframes`
-  0% {
-    stroke-dasharray: 1px, 200px;
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dasharray: 100px, 200px;
-    stroke-dashoffset: -15px;
-  }
-  100% {
-    stroke-dasharray: 100px, 200px;
-    stroke-dashoffset: -125px;
-  }
-`
-
-const CircularProgressRoot = styled.span<{ size: number }>`
-  display: inline-block;
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-  animation: ${circularRotateKeyframe} 1.4s linear infinite;
-`
-
-const CircularProgressSvg = styled.svg`
-  display: block; /* Keeps the progress centered */
-`
-
-const CircularProgressCircle = styled.circle<{ thickness: number; color: string }>`
-  stroke: ${({ color }) => color};
-  stroke-dasharray: 80px, 200px;
-  stroke-dashoffset: 0;
-  animation: ${circularDashKeyframe} 1.4s ease-in-out infinite;
-  stroke-width: ${({ thickness }) => thickness};
-  fill: none;
-`
-
 export type CircularProgressProps = Readonly<{
   color?: string
   size?: number
@@ -73,17 +29,66 @@ export function CircularProgress({
       : {}
 
   return (
-    <CircularProgressRoot size={size} role="progressbar">
+    <CircularProgressRoot $size={size} role="progressbar">
       <CircularProgressSvg viewBox={`${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}`}>
         <CircularProgressCircle
           cx={SIZE}
           cy={SIZE}
           r={(SIZE - thickness) / 2}
-          thickness={thickness}
-          color={color}
+          $thickness={thickness}
+          $color={color}
           style={circleStyle}
         />
       </CircularProgressSvg>
     </CircularProgressRoot>
   )
 }
+
+const circularRotateKeyframe = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`
+
+const circularDashKeyframe = keyframes`
+  0% {
+    stroke-dasharray: 1px, 200px;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 100px, 200px;
+    stroke-dashoffset: -15px;
+  }
+  100% {
+    stroke-dasharray: 100px, 200px;
+    stroke-dashoffset: -125px;
+  }
+`
+
+const CircularProgressRoot = styled.span<{
+  $size: number
+}>`
+  animation: ${circularRotateKeyframe} 1.4s linear infinite;
+  display: inline-block;
+  height: ${({ $size: size }) => size}px;
+  width: ${({ $size: size }) => size}px;
+`
+
+const CircularProgressSvg = styled.svg`
+  display: block; /* Keeps the spinner centered */
+`
+
+const CircularProgressCircle = styled.circle<{
+  $color: string
+  $thickness: number
+}>`
+  animation: ${circularDashKeyframe} 1.4s ease-in-out infinite;
+  fill: none;
+  stroke-dasharray: 80px, 200px;
+  stroke-dashoffset: 0;
+  stroke-width: ${({ $thickness: thickness }) => thickness};
+  stroke: ${({ $color: color }) => color};
+`
