@@ -6,12 +6,12 @@ import type { ReactNode } from 'react'
 
 type ScreenProps = {
   children: ReactNode
-  isLoading: boolean
+  isLoading?: boolean
 }
-export function Screen({ children, isLoading }: ScreenProps) {
+export function Screen({ children, isLoading = false }: ScreenProps) {
   if (isLoading) {
     return (
-      <Box $isLoading={true}>
+      <Box $isLoading>
         <LoadingSpinner />
       </Box>
     )
