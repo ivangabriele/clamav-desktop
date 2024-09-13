@@ -17,12 +17,11 @@ const preview: Preview = {
   decorators: [
     (Story, { parameters }) => {
       switch (parameters.type) {
-        case 'loading-screen':
         case 'screen':
           return (
             <StrictMode>
               <ThemeProvider theme={{}}>
-                <ScreenStoryBox page={parameters.page} type={parameters.type}>
+                <ScreenStoryBox>
                   <Story />
                 </ScreenStoryBox>
               </ThemeProvider>
