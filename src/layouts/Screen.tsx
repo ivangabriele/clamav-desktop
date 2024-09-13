@@ -26,7 +26,7 @@ const Box = styled.div.attrs({ className: 'Screen' })<{
   display: flex;
   flex-direction: ${p => (p.$isLoading ? 'row' : 'column')};
   flex-grow: 1;
-  padding: 16px;
+  padding: 16px 16px 16px 0;
 
   ${p =>
     p.$isLoading &&
