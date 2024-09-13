@@ -35,6 +35,13 @@ const preview: Preview = {
   ],
 
   parameters: {
+    backgrounds: {
+      values: [
+        { name: 'Dark', value: '#0d1117' },
+        { name: 'Light', value: '#f6f8fa' },
+      ],
+      default: 'Dark',
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
