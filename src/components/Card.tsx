@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import type { Promisable } from 'type-fest'
+import { CircularProgress } from '../elements/CircularSpinner'
 
 interface CardAction {
   callback: () => Promisable<void>
@@ -25,13 +26,20 @@ export function Card({ actions = [], children, gridArea, isCentered = false, isL
     >
       <Main>
         <Title>{title}</Title>
-        <Body $isCentered={isCentered}>{children}</Body>
+        {isLoading && (
+          <Body $isCentered>
+            <span>
+              <CircularProgress color="rgba(255, 215, 0, 0.5)" size={48} thickness={2} />
+            </span>
+          </Body>
+        )}
+        {!isLoading && <Body $isCentered={isCentered}>{children}</Body>}
       </Main>
 
       {actions.length > 0 && (
         <ActionBar $actionCount={actions.length}>
           {actions.map(action => (
-            <button key={action.label} onClick={action.callback} type="button">
+            <button key={action.label} disabled={isLoading} onClick={action.callback} type="button">
               {action.label}
             </button>
           ))}
@@ -94,7 +102,11 @@ const ActionBar = styled.div<{
     flex-grow: ${p => 1 / p.$actionCount};
     height: 32px;
 
-    &:hover {
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
       background-color: rgba(255, 255, 255, 1);
     }
   }
