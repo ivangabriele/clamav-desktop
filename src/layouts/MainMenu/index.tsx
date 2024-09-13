@@ -31,6 +31,6 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 120px;
-  min-width: 120px;
+  max-width: 72px;
+  min-width: 72px;
 `
