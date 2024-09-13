@@ -1,1 +1,3 @@
-export const noop = () => undefined
+export function noop(): void {
+  return
+}
