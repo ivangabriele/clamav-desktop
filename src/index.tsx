@@ -49,9 +49,9 @@ export const GlobalStyleCustom = createGlobalStyle`
   }
 
   body {
-    background-color: #1b1f38;
+    background: linear-gradient(135deg, #660033 0%, #330a1f 100%);
     border-radius: 16px;
-    color: #495057;
+    color: white;
     display: flex;
     flex-grow: 1;
     font-family: 'Poppins', sans-serif;
