@@ -12,7 +12,7 @@ const Row = styled.li`
   display: flex;
 `
 
-const Key = styled.span
+const Key = styled.span``
 
 const Value = styled.span`
   flex-grow: 1;
