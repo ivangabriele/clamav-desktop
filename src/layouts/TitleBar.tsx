@@ -10,7 +10,7 @@ export function TitleBar() {
 
 const Box = styled.div`
   align-items: center;
-  background-color: rgb(21, 23, 44);
+  background-color: rgba(0, 0, 0, 0.05);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   display: flex;
@@ -23,7 +23,7 @@ const Box = styled.div`
 const Title = styled.span`
   color: white;
   display: block;
-  font-weight: 400;
+  font-weight: 300;
   font-size: 110%;
-  opacity: 0.1;
+  opacity: 0.5;
 `
