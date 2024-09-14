@@ -5,7 +5,6 @@ const RawKeyValueList = styled.ul`
   flex-direction: column;
   font-family: 'Reddit Mono', monospace;
   font-size: 70%;
-  padding: 0;
 `
 
 const Row = styled.li`
