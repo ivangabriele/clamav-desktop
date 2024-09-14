@@ -1,4 +1,5 @@
-export default {
+/** @type {import('jest').Config} */
+const jestConfig = {
   clearMocks: true,
   collectCoverageFrom: ['<rootDir>/src/{hooks,libs,utils}/**/*.t{s,sx}', '<rootDir>/src/**/utils.t{s,sx}'],
   maxWorkers: '50%',
@@ -7,6 +8,14 @@ export default {
   setupFilesAfterEnv: ['<rootDir>/configs/jest.setup.ts'],
   testEnvironment: 'jsdom',
   testMatch: ['<rootDir>/src/**/*.test.t{s,sx}'],
+  testPathIgnorePatterns: [
+    '<rootDir>/.dev/*',
+    '<rootDir>/.yarn/*',
+    '<rootDir>/daemon/*',
+    '<rootDir>/node_modules/*',
+    '<rootDir>/sidecars/*',
+    '<rootDir>/src-tauri/*',
+  ],
   transform: {
     '.*\\.(j|t)sx?$': [
       '@swc/jest',
@@ -23,3 +32,5 @@ export default {
   },
   transformIgnorePatterns: [],
 }
+
+export default jestConfig
