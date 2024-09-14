@@ -1,12 +1,7 @@
 import type { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
-import type { Promisable } from 'type-fest'
-import { CircularProgress } from '../elements/CircularSpinner'
-
-interface CardAction {
-  callback: () => Promisable<void>
-  label: string
-}
+import { CircularProgress } from '../../elements/CircularSpinner'
+import type { CardAction } from './types'
 
 export interface CardProps {
   actions?: CardAction[]
