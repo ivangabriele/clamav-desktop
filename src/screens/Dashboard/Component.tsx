@@ -13,7 +13,7 @@ export type DashboardScreenComponentProps = Readonly<{
 }>
 export function DashboardScreenComponent({ daemonClientState, daemonLogs }: DashboardScreenComponentProps) {
   return (
-    <ScreenBox>
+    <ScreenBox isGrid>
       <Card gridArea="1 / 1 / 2 / 2" isCentered title="Health">
         <MdVerifiedUser color="#006633" size={96} />
       </Card>
