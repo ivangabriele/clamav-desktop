@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api'
 import { type UnlistenFn, listen } from '@tauri-apps/api/event'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Copilot } from '../../modules/Copilot/Copilot.types'
+import type { Copilot } from '../../core/Copilot/types'
 import { LoaderScreenComponent } from './Component'
 
 type LoaderScreenProps = Readonly<{

@@ -3,16 +3,16 @@ import { listen } from '@tauri-apps/api/event'
 import { useCallback, useEffect, useRef } from 'react'
 // import { toast } from 'react-hot-toast'
 
+import { Core, Webview } from '../../core/types'
 import { Button } from '../../elements/Button'
 import { Logger } from '../../elements/Logger'
 import { useCachedState } from '../../hooks/useCachedState'
 import { ScreenBox } from '../../layouts/ScreenBox'
-import { Core, Webview } from '../../types'
 
 export function Dashboard() {
   const timerRef = useRef<number | undefined>(undefined)
 
-  const [state, setState] = useCachedState<Core.DashboardState | undefined>(Webview.CacheKey.DASHBOARD_STATE, undefined)
+  const [state, setState] = useCachedState<Core.DashboardState | undefined>(Webview.CacheKey.DashboardState, undefined)
 
   const logsAsString = (state?.logs || []).join('\n')
 
@@ -46,17 +46,17 @@ export function Dashboard() {
     <ScreenBox>
       <Logger hasForcedScroll>{logsAsString}</Logger>
 
-      {(!state?.is_ready || state.status === Core.DashboardStatus.UNKNOWN) && (
+      {(!state?.is_ready || state.status === Core.DashboardStatus.Unknown) && (
         <Button data-testid="dashboard__button" disabled style={{ marginTop: 16 }}>
           Waiting for Daemon status…
         </Button>
       )}
-      {!!state && state.is_ready && state.status === Core.DashboardStatus.RUNNING && (
+      {!!state && state.is_ready && state.status === Core.DashboardStatus.Running && (
         <Button data-testid="dashboard__button" onClick={stopDaemon} style={{ marginTop: 16 }}>
           Stop Daemon
         </Button>
       )}
-      {!!state && state.is_ready && state.status === Core.DashboardStatus.STOPPED && (
+      {!!state && state.is_ready && state.status === Core.DashboardStatus.Stopped && (
         <Button data-testid="dashboard__button" onClick={startDaemon} style={{ marginTop: 16 }}>
           Start Daemon
         </Button>

@@ -1,5 +1,5 @@
 {
-  "extends": "@ivangabriele/tsconfig-react/tsconfig.json",
+  "extends": "@ivangabriele/tsconfig-react",
   "compilerOptions": {
     "incremental": true,
     "jsx": "react-jsx",

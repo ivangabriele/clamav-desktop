@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Node } from './Node'
 
 import type { Promisable } from 'type-fest'
-import type { Core } from '../../types'
+import type { Core } from '../../core/types'
 
 type FileExplorerProps = {
   onCheck: (node: Core.FileExplorerNode) => Promisable<void>

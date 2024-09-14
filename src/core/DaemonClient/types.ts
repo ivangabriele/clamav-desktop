@@ -1,4 +1,4 @@
-import type { Core } from '../../types'
+import type { Core } from '../types'
 
 export namespace DaemonClient {
   export interface State {

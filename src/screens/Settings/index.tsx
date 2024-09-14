@@ -5,17 +5,17 @@ import CodeMirror from '@uiw/react-codemirror'
 import { useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
+import { type Core, Webview } from '../../core/types'
 import { Button } from '../../elements/Button'
 import { useCachedState } from '../../hooks/useCachedState'
 import { ScreenBox } from '../../layouts/ScreenBox'
-import { type Core, Webview } from '../../types'
 import { CODE_MIRROR_OPTIONS, CODE_MIRROR_THEME, INITIAL_SETTINGS_STATE } from './constants'
 
 export function Settings() {
   const clamdConfFileSourceRef = useRef<string | null>(null)
 
   const [state, setState, updateState] = useCachedState<Core.SettingsState>(
-    Webview.CacheKey.SETTINGS_STATE,
+    Webview.CacheKey.SettingsState,
     INITIAL_SETTINGS_STATE,
   )
 

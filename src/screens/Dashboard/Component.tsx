@@ -2,9 +2,9 @@ import { MdCloudDone, MdDeveloperBoard, MdVerifiedUser } from 'react-icons/md'
 import { Card } from '../../components/Card'
 import { KeyValueList } from '../../components/KeyValueList'
 import { LogList } from '../../components/LogList'
+import type { DaemonClient } from '../../core/DaemonClient/types'
+import { Core } from '../../core/types'
 import { ScreenBox } from '../../layouts/ScreenBox'
-import type { DaemonClient } from '../../modules/DaemonClient/DaemonClient.types'
-import { Core } from '../../types'
 import { noop } from '../../utils/noop'
 
 export type DashboardScreenComponentProps = Readonly<{
