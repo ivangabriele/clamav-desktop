@@ -18,13 +18,15 @@ export interface CardProps {
   title: string
 }
 export function Card({ actions = [], children, gridArea, isCentered = false, isLoading = false, title }: CardProps) {
+  const hasActionBar = actions.length > 0
+
   return (
     <Box
       style={{
         gridArea,
       }}
     >
-      <Main>
+      <Main $withBottomPadding={!hasActionBar}>
         <Title>{title}</Title>
         {isLoading && (
           <Body $isCentered>
@@ -36,7 +38,7 @@ export function Card({ actions = [], children, gridArea, isCentered = false, isL
         {!isLoading && <Body $isCentered={isCentered}>{children}</Body>}
       </Main>
 
-      {actions.length > 0 && (
+      {hasActionBar && (
         <ActionBar $actionCount={actions.length}>
           {actions.map(action => (
             <button key={action.label} disabled={isLoading} onClick={action.callback} type="button">
@@ -56,17 +58,19 @@ const Box = styled.div`
   flex-direction: column;
 `
 
-const Main = styled.div`
+const Main = styled.div<{
+  $withBottomPadding: boolean
+}>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 16px;
+  padding: 16px 16px ${p => (p.$withBottomPadding ? 16 : 0)}px 16px;
 `
 
 const Title = styled.h3`
   font-size: 80%;
   font-weight: 500;
-  line-height: 1;
+  line-height: 12px;
   text-transform: uppercase;
 `
 
@@ -76,6 +80,7 @@ const Body = styled.div<{
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  margin-top: ${p => (p.$isCentered ? 0 : 16)}px;
 
   ${p =>
     p.$isCentered &&
