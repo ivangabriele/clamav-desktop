@@ -9,7 +9,7 @@ import { FileExplorer } from '../../components/FileExplorer'
 import { CacheKey } from '../../constants'
 import { Core } from '../../core/types'
 import { Button } from '../../elements/Button'
-import { ScanningSpinner } from '../../elements/ScanningSpinner'
+import { LegacyScanningSpinner } from '../../elements/LegacyScanningSpinner'
 import { useCachedState } from '../../hooks/useCachedState'
 import { ScreenBox } from '../../layouts/ScreenBox'
 
@@ -70,7 +70,7 @@ export function Scanner() {
       {!!state && state.is_running && status && (
         <Box>
           <InnerBox>
-            <ScanningSpinner />
+            <LegacyScanningSpinner />
             <Progress>{numeral(status.progress || 0).format('0.00%')}</Progress>
 
             <Status $isSmall={!!currentFilePath && currentFilePath.length > 0}>
