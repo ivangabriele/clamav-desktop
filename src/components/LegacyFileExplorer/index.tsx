@@ -5,12 +5,12 @@ import { Node } from './Node'
 import type { Promisable } from 'type-fest'
 import type { Core } from '../../core/types'
 
-type FileExplorerProps = {
+type LegacyFileExplorerProps = {
   onCheck: (node: Core.FileExplorerNode) => Promisable<void>
   onExpand: (node: Core.FileExplorerNode) => Promisable<void>
   tree: Core.FileExplorerTree
 }
-export function FileExplorer({ onCheck, onExpand, tree }: FileExplorerProps) {
+export function LegacyFileExplorer({ onCheck, onExpand, tree }: LegacyFileExplorerProps) {
   return (
     <Box>
       {tree.map(node => (
