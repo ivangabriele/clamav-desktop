@@ -9,7 +9,7 @@ import { FileExplorer } from '../../components/FileExplorer'
 import { Button } from '../../elements/Button'
 import { ScanningSpinner } from '../../elements/ScanningSpinner'
 import { useCachedState } from '../../hooks/useCachedState'
-import { Screen } from '../../layouts/Screen'
+import { ScreenBox } from '../../layouts/ScreenBox'
 import { Core, Webview } from '../../types'
 
 export function Scanner() {
@@ -51,7 +51,7 @@ export function Scanner() {
   const currentFilePath = status?.current_file_path
 
   return (
-    <Screen>
+    <ScreenBox>
       {!!state && !state.is_running && (
         <Box>
           <FileExplorer
@@ -86,7 +86,7 @@ export function Scanner() {
           </Button>
         </Box>
       )}
-    </Screen>
+    </ScreenBox>
   )
 }
 

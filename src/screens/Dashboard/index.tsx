@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { Button } from '../../elements/Button'
 import { Logger } from '../../elements/Logger'
 import { useCachedState } from '../../hooks/useCachedState'
-import { Screen } from '../../layouts/Screen'
+import { ScreenBox } from '../../layouts/ScreenBox'
 import { Core, Webview } from '../../types'
 
 export function Dashboard() {
@@ -43,7 +43,7 @@ export function Dashboard() {
   }, [setState])
 
   return (
-    <Screen>
+    <ScreenBox>
       <Logger hasForcedScroll>{logsAsString}</Logger>
 
       {(!state?.is_ready || state.status === Core.DashboardStatus.UNKNOWN) && (
@@ -61,6 +61,6 @@ export function Dashboard() {
           Start Daemon
         </Button>
       )}
-    </Screen>
+    </ScreenBox>
   )
 }
