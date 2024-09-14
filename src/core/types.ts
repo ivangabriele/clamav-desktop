@@ -65,17 +65,15 @@ export namespace Core {
   // ---------------------------------------------------------------------------
   // Scanner
 
-  export type FileExplorerNode = {
+  export interface FileExplorerNode {
     children: FileExplorerTree
     depth: number
-    drive: string
     index_path: string[]
     is_checked: boolean
     is_expanded: boolean
     kind: FileKind
     name: string
     path: string
-    path_components: string[]
   }
   export type FileExplorerTree = FileExplorerNode[]
 
