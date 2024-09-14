@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { Layout } from './Layout'
-import { Page } from './constants'
+import { Screen } from './constants'
 import { Dashboard } from './screens/Dashboard'
 import { LoaderScreen } from './screens/Loader'
 import { Scanner } from './screens/Scanner'
@@ -9,7 +9,7 @@ import { Settings } from './screens/Settings'
 
 export function App() {
   const [isLoading, setIsLoading] = useState(true)
-  const [page, setPage] = useState<Page>(Page.Dashboard)
+  const [screen, setScreen] = useState<Screen>(Screen.Dashboard)
 
   const disableIsLoading = () => setIsLoading(false)
 
@@ -18,10 +18,10 @@ export function App() {
   }
 
   return (
-    <Layout onPageChange={setPage} page={page}>
-      {page === Page.Dashboard && <Dashboard />}
-      {page === Page.Scanner && <Scanner />}
-      {page === Page.Config && <Settings />}
+    <Layout activeScreen={screen} onScreenChange={setScreen}>
+      {screen === Screen.Dashboard && <Dashboard />}
+      {screen === Screen.Scanner && <Scanner />}
+      {screen === Screen.Config && <Settings />}
     </Layout>
   )
 }

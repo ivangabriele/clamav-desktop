@@ -1,23 +1,23 @@
 import { MdLocationSearching, MdOutlineSettings, MdOutlineShield } from 'react-icons/md'
 import styled from 'styled-components'
 
-import { Page } from '../../constants'
+import { Screen } from '../../constants'
 import { Button } from './Button'
 
 type MainMenuProps = {
-  currentPage: Page
-  onChange: (newPage: Page) => void
+  activeScreen: Screen
+  onChange: (nextScreen: Screen) => void
 }
-export function MainMenu({ currentPage, onChange }: MainMenuProps) {
+export function MainMenu({ activeScreen, onChange }: MainMenuProps) {
   return (
     <Box>
-      <Button isActive={currentPage === Page.Dashboard} onClick={() => onChange(Page.Dashboard)}>
+      <Button isActive={activeScreen === Screen.Dashboard} onClick={() => onChange(Screen.Dashboard)}>
         <MdOutlineShield />
       </Button>
-      <Button isActive={currentPage === Page.Scanner} onClick={() => onChange(Page.Scanner)}>
+      <Button isActive={activeScreen === Screen.Scanner} onClick={() => onChange(Screen.Scanner)}>
         <MdLocationSearching />
       </Button>
-      <Button isActive={currentPage === Page.Config} onClick={() => onChange(Page.Config)}>
+      <Button isActive={activeScreen === Screen.Config} onClick={() => onChange(Screen.Config)}>
         <MdOutlineSettings />
       </Button>
     </Box>

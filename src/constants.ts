@@ -3,7 +3,7 @@ export enum FileKind {
   File = 'File',
 }
 
-export enum Page {
+export enum Screen {
   Config = 'Config',
   Dashboard = 'Dashboard',
   Scanner = 'Scanner',
