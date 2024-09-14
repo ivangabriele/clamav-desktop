@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 import type { ReactNode } from 'react'
 
-type ScreenProps = {
+type ScreenBoxProps = {
   children: ReactNode
 }
-export function Screen({ children }: ScreenProps) {
+export function ScreenBox({ children }: ScreenBoxProps) {
   return <Box>{children}</Box>
 }
 

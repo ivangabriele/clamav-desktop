@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import { Button } from '../../elements/Button'
 import { useCachedState } from '../../hooks/useCachedState'
-import { Screen } from '../../layouts/Screen'
+import { ScreenBox } from '../../layouts/ScreenBox'
 import { type Core, Webview } from '../../types'
 import { CODE_MIRROR_OPTIONS, CODE_MIRROR_THEME, INITIAL_SETTINGS_STATE } from './constants'
 
@@ -87,7 +87,7 @@ export function Settings() {
   )
 }
 
-const StyledScreen = styled(Screen)`
+const StyledScreen = styled(ScreenBox)`
   .cm-scroller {
     &::-webkit-scrollbar {
       width: 12px;
