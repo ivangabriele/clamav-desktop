@@ -52,7 +52,7 @@ export function Card({ actions = [], children, gridArea, isCentered = false, isL
 }
 
 const Box = styled.div`
-  background-color: rgba(51, 10, 31, 0.75);
+  background-color: rgba(51, 10, 31, 0.5);
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -106,6 +106,7 @@ const ActionBar = styled.div<{
     cursor: pointer;
     flex-grow: ${p => 1 / p.$actionCount};
     height: 32px;
+    transform: translateY(-2px);
 
     &:disabled {
       cursor: not-allowed;
