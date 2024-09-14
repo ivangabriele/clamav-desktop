@@ -35,7 +35,6 @@ html {
 }
 
 body {
-  background-color: #660033;
   border-radius: 16px;
   color: white;
   display: flex;
@@ -54,6 +53,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 #root {
+  background: linear-gradient(135deg, #660033 0%, #330a1f 100%);
   display: flex;
   flex-direction: column;
   height: 100%;
