@@ -17,13 +17,13 @@ export function Scanner() {
   const [state, setState] = useCachedState<Core.ScannerState | undefined>(CacheKey.ScannerState, undefined)
   const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(CacheKey.ScannerStatus, undefined)
 
-  const handleFileExplorerCheck = useCallback(async (node: Core.FileExplorerNode) => {
+  const handleFileExplorerCheck = useCallback(async (node: Core.LegacyFileExplorerNode) => {
     await invoke('toggle_file_explorer_node_check', {
       indexPath: node.index_path,
     })
   }, [])
 
-  const handleFileExplorerExpansion = useCallback(async (node: Core.FileExplorerNode) => {
+  const handleFileExplorerExpansion = useCallback(async (node: Core.LegacyFileExplorerNode) => {
     await invoke('toggle_file_explorer_node_expansion', {
       indexPath: node.index_path,
     })
