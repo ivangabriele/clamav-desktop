@@ -19,6 +19,12 @@ export namespace Core {
     Unknown = 'Unknown', // => should display a loading spinner in the Webview
   }
 
+  export type Log = {
+    date: string
+    message: string
+    type: 'stderr' | 'stdout'
+  }
+
   // ---------------------------------------------------------------------------
   // Cloud
 
