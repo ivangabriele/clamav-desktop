@@ -2,21 +2,21 @@ import type { ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { Toaster } from './components/Toaster'
-import type { Page } from './constants'
+import type { Screen } from './constants'
 import { MainMenu } from './layouts/MainMenu'
 import { TitleBar } from './layouts/TitleBar'
 
 type LayoutProps = Readonly<{
+  activeScreen: Screen
   children: ReactNode
-  onPageChange: (newPage: Page) => void
-  page: Page
+  onScreenChange: (nextScreen: Screen) => void
 }>
-export function Layout({ children, onPageChange, page }: LayoutProps) {
+export function Layout({ activeScreen, children, onScreenChange: onPageChange }: LayoutProps) {
   return (
     <Box>
       <TitleBar />
       <Content>
-        <MainMenu currentPage={page} onChange={onPageChange} />
+        <MainMenu activeScreen={activeScreen} onChange={onPageChange} />
         <>
           {children}
 
