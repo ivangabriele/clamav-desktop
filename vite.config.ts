@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   build: {
@@ -18,7 +19,7 @@ export default defineConfig({
   // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
   envPrefix: ['VITE_', 'TAURI_'],
 
-  plugins: [react()],
+  plugins: [tsconfigPaths(), react()],
 
   // Tauri expects a fixed port, fail if that port is not available
   server: {
