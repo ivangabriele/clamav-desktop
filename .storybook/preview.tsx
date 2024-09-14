@@ -10,7 +10,7 @@ import '@fontsource/poppins/500.css'
 import '@fontsource/reddit-mono/400.css'
 import '@fontsource/reddit-mono/600.css'
 
-import './screen.css'
+import '../src/global.css'
 import './preview.css'
 
 const preview: Preview = {
