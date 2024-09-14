@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components'
 type ScanningSpinnerProps = Readonly<{
   size?: number
 }>
-export function ScanningSpinner({ size = 120 }: ScanningSpinnerProps) {
+export function LegacyScanningSpinner({ size = 120 }: ScanningSpinnerProps) {
   return (
     <Box $size={size}>
       <OuterFace>
