@@ -4,8 +4,7 @@ export enum FileKind {
 }
 
 export enum Page {
-  Cloud = 0,
-  Config = 1,
-  Dashboard = 2,
-  Scanner = 3,
+  Config = 'Config',
+  Dashboard = 'Dashboard',
+  Scanner = 'Scanner',
 }
