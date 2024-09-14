@@ -6,15 +6,16 @@ import { useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { FileExplorer } from '../../components/FileExplorer'
-import { Core, Webview } from '../../core/types'
+import { CacheKey } from '../../constants'
+import { Core } from '../../core/types'
 import { Button } from '../../elements/Button'
 import { ScanningSpinner } from '../../elements/ScanningSpinner'
 import { useCachedState } from '../../hooks/useCachedState'
 import { ScreenBox } from '../../layouts/ScreenBox'
 
 export function Scanner() {
-  const [state, setState] = useCachedState<Core.ScannerState | undefined>(Webview.CacheKey.ScannerState, undefined)
-  const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(Webview.CacheKey.ScannerStatus, undefined)
+  const [state, setState] = useCachedState<Core.ScannerState | undefined>(CacheKey.ScannerState, undefined)
+  const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(CacheKey.ScannerStatus, undefined)
 
   const handleFileExplorerCheck = useCallback(async (node: Core.FileExplorerNode) => {
     await invoke('toggle_file_explorer_node_check', {

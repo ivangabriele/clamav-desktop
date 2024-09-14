@@ -3,7 +3,8 @@ import { listen } from '@tauri-apps/api/event'
 import { useCallback, useEffect, useRef } from 'react'
 // import { toast } from 'react-hot-toast'
 
-import { Core, Webview } from '../../core/types'
+import { CacheKey } from '../../constants'
+import { Core } from '../../core/types'
 import { Button } from '../../elements/Button'
 import { Logger } from '../../elements/Logger'
 import { useCachedState } from '../../hooks/useCachedState'
@@ -12,7 +13,7 @@ import { ScreenBox } from '../../layouts/ScreenBox'
 export function Dashboard() {
   const timerRef = useRef<number | undefined>(undefined)
 
-  const [state, setState] = useCachedState<Core.DashboardState | undefined>(Webview.CacheKey.DashboardState, undefined)
+  const [state, setState] = useCachedState<Core.DashboardState | undefined>(CacheKey.DashboardState, undefined)
 
   const logsAsString = (state?.logs || []).join('\n')
 
