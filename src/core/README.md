@@ -1,6 +1,4 @@
-# Webview Modules
-
-The `modules/` directory represents the Webview-side interface for communicating with Core modules.
+The `core/` directory represents the Webview-side interface for communicating with Core modules.
 
 In the Core, "modules" refer to individual features that the Webview can interact with through commands and events. This
 directory ensures alignment between the Webview and Core in terms of the structure and content of the messages

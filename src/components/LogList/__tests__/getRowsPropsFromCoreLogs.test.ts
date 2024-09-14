@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import type { Core } from '../../../types'
+import type { Core } from '../../../core/types'
 import { getRowsPropsFromCoreLogs } from '../utils'
 
 jest.mock('../../../constants', () => ({

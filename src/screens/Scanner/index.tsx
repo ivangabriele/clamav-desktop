@@ -6,15 +6,15 @@ import { useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 
 import { FileExplorer } from '../../components/FileExplorer'
+import { Core, Webview } from '../../core/types'
 import { Button } from '../../elements/Button'
 import { ScanningSpinner } from '../../elements/ScanningSpinner'
 import { useCachedState } from '../../hooks/useCachedState'
 import { ScreenBox } from '../../layouts/ScreenBox'
-import { Core, Webview } from '../../types'
 
 export function Scanner() {
-  const [state, setState] = useCachedState<Core.ScannerState | undefined>(Webview.CacheKey.SCANNER_STATE, undefined)
-  const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(Webview.CacheKey.SCANNER_STATUS, undefined)
+  const [state, setState] = useCachedState<Core.ScannerState | undefined>(Webview.CacheKey.ScannerState, undefined)
+  const [status, setStatus] = useCachedState<Core.ScannerStatus | undefined>(Webview.CacheKey.ScannerStatus, undefined)
 
   const handleFileExplorerCheck = useCallback(async (node: Core.FileExplorerNode) => {
     await invoke('toggle_file_explorer_node_check', {
@@ -78,11 +78,11 @@ export function Scanner() {
           </InnerBox>
 
           <Button
-            disabled={[Core.ScannerStatusStep.COUNTING, Core.ScannerStatusStep.STOPPING].includes(status.step)}
+            disabled={[Core.ScannerStatusStep.Counting, Core.ScannerStatusStep.Stopping].includes(status.step)}
             onClick={stopScanner}
             style={{ marginTop: 16 }}
           >
-            {status.step === Core.ScannerStatusStep.STOPPING ? 'Stopping (gracefully)...' : 'Stop Scan'}
+            {status.step === Core.ScannerStatusStep.Stopping ? 'Stopping (gracefully)...' : 'Stop Scan'}
           </Button>
         </Box>
       )}

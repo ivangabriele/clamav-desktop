@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { argsStore } from '../../../.storybook/argsStore'
 import { ArgStoreKey } from '../../../.storybook/argsStore/constants'
 import { useArgsStoreArgs } from '../../../.storybook/argsStore/useArgsStoreArgs'
-import { Copilot } from '../../modules/Copilot/Copilot.types'
+import { Copilot } from '../../core/Copilot/types'
+import { Core } from '../../core/types'
 import { LoaderScreenComponent, type LoaderScreenComponentProps } from '../../screens/Loader/Component'
-import { Core } from '../../types'
 import { waitFor } from '../../utils/waitFor'
 
 const meta = {

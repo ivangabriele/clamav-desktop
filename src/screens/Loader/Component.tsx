@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Copilot } from '../../modules/Copilot/Copilot.types'
+import { Copilot } from '../../core/Copilot/types'
 
 export type LoaderScreenComponentProps = Readonly<{
   copilotState: Copilot.State | undefined

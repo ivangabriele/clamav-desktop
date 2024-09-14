@@ -2,7 +2,7 @@ import { tags as t } from '@lezer/highlight'
 import createTheme from '@uiw/codemirror-themes'
 
 import type { BasicSetupOptions } from '@uiw/react-codemirror'
-import type { Core } from '../../types'
+import type { Core } from '../../core/types'
 
 export const CODE_MIRROR_OPTIONS: BasicSetupOptions = {
   allowMultipleSelections: false,

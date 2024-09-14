@@ -1,6 +1,6 @@
 import styled from 'styled-components'
+import type { Core } from '../../core/types'
 import { useDebouncedMemo } from '../../hooks/useDebouncedMemo'
-import type { Core } from '../../types'
 import { Row } from './Row'
 import { getRowsPropsFromCoreLogs } from './utils'
 

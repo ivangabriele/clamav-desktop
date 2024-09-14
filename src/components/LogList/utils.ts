@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { MAX_LOG_LIST_HISTORY } from '../../constants'
-import type { Core } from '../../types'
+import type { Core } from '../../core/types'
 import type { RowProps } from './Row'
 
 /**

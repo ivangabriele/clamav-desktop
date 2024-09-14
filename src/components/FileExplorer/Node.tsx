@@ -2,7 +2,7 @@ import { MdArrowDropDown, MdArrowRight } from 'react-icons/md'
 import styled from 'styled-components'
 
 import type { Promisable } from 'type-fest'
-import type { Core } from '../../types'
+import type { Core } from '../../core/types'
 
 type NodeProps = {
   node: Core.FileExplorerNode
