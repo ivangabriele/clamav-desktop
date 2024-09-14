@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react'
 // import { toast } from 'react-hot-toast'
 import styled from 'styled-components'
 
-import { FileExplorer } from '../../components/FileExplorer'
+import { LegacyFileExplorer } from '../../components/LegacyFileExplorer'
 import { CacheKey } from '../../constants'
 import { Core } from '../../core/types'
 import { Button } from '../../elements/Button'
@@ -55,7 +55,7 @@ export function Scanner() {
     <ScreenBox>
       {!!state && !state.is_running && (
         <Box>
-          <FileExplorer
+          <LegacyFileExplorer
             onCheck={handleFileExplorerCheck}
             onExpand={handleFileExplorerExpansion}
             tree={state.file_explorer_tree}
