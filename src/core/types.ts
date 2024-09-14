@@ -116,14 +116,3 @@ export namespace Core {
     is_writing: boolean
   }
 }
-
-export namespace Webview {
-  export enum CacheKey {
-    CopilotState = 'CopilotState',
-    CloudState = 'CLOUD_STATE',
-    DashboardState = 'DAEMON_STATE',
-    ScannerState = 'SCANNER_STATE',
-    ScannerStatus = 'SCANNER_STATUS',
-    SettingsState = 'SETTINGS_STATE',
-  }
-}
