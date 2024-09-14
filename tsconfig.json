@@ -1,6 +1,7 @@
 {
   "extends": "@ivangabriele/tsconfig-react",
   "compilerOptions": {
+    "baseUrl": "./src",
     "incremental": true,
     "jsx": "react-jsx",
     "noImplicitAny": false,
@@ -10,6 +11,16 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "paths": {
+      "@core/*": ["core/*"],
+      "@components/*": ["components/*"],
+      "@elements/*": ["elements/*"],
+      "@hooks/*": ["hooks/*"],
+      "@layouts/*": ["layouts/*"],
+      "@libs/*": ["libs/*"],
+      "@screens/*": ["screens/*"],
+      "@utils/*": ["utils/*"]
+    },
     "skipLibCheck": true,
     "strict": true,
     "strictBindCallApply": true,
