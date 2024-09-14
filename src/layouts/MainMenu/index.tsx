@@ -1,4 +1,4 @@
-import { MdLocationSearching, MdOutlineCloudDownload, MdOutlineSettings, MdOutlineShield } from 'react-icons/md'
+import { MdLocationSearching, MdOutlineSettings, MdOutlineShield } from 'react-icons/md'
 import styled from 'styled-components'
 
 import { Page } from '../../constants'
@@ -16,9 +16,6 @@ export function MainMenu({ currentPage, onChange }: MainMenuProps) {
       </Button>
       <Button isActive={currentPage === Page.Scanner} onClick={() => onChange(Page.Scanner)}>
         <MdLocationSearching />
-      </Button>
-      <Button isActive={currentPage === Page.Cloud} onClick={() => onChange(Page.Cloud)}>
-        <MdOutlineCloudDownload />
       </Button>
       <Button isActive={currentPage === Page.Config} onClick={() => onChange(Page.Config)}>
         <MdOutlineSettings />
