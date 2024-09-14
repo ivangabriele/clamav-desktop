@@ -1,17 +1,19 @@
 import { MdCloudDone, MdDeveloperBoard, MdVerifiedUser } from 'react-icons/md'
 import { Card } from '../../components/Card'
 import { KeyValueList } from '../../components/KeyValueList'
-import { Screen } from '../../layouts/Screen'
+import { LogList } from '../../components/LogList'
+import { ScreenBox } from '../../layouts/ScreenBox'
 import type { DaemonClient } from '../../modules/DaemonClient/DaemonClient.types'
 import { Core } from '../../types'
 import { noop } from '../../utils/noop'
 
-export interface DashboardScreenComponentProps {
+export type DashboardScreenComponentProps = Readonly<{
   daemonClientState: DaemonClient.State | undefined
-}
-export function DashboardScreenComponent({ daemonClientState }: DashboardScreenComponentProps) {
+  daemonLogs: Core.Log[] | undefined
+}>
+export function DashboardScreenComponent({ daemonClientState, daemonLogs }: DashboardScreenComponentProps) {
   return (
-    <Screen>
+    <ScreenBox>
       <Card gridArea="1 / 1 / 2 / 2" isCentered title="Health">
         <MdVerifiedUser color="#006633" size={96} />
       </Card>
@@ -57,9 +59,9 @@ export function DashboardScreenComponent({ daemonClientState }: DashboardScreenC
       >
         <MdDeveloperBoard color="gold" size={96} />
       </Card>
-      <Card gridArea="2 / 2 / 3 / 4" title="Logs">
-        asdsad
+      <Card gridArea="2 / 2 / 3 / 4" isLoading={!daemonLogs} title="Daemon Logs">
+        <LogList logs={daemonLogs ?? []} />
       </Card>
-    </Screen>
+    </ScreenBox>
   )
 }
