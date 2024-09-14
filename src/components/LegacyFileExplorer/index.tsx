@@ -6,9 +6,9 @@ import type { Promisable } from 'type-fest'
 import type { Core } from '../../core/types'
 
 type LegacyFileExplorerProps = {
-  onCheck: (node: Core.FileExplorerNode) => Promisable<void>
-  onExpand: (node: Core.FileExplorerNode) => Promisable<void>
-  tree: Core.FileExplorerTree
+  onCheck: (node: Core.LegacyFileExplorerNode) => Promisable<void>
+  onExpand: (node: Core.LegacyFileExplorerNode) => Promisable<void>
+  tree: Core.LegacyFileExplorerTree
 }
 export function LegacyFileExplorer({ onCheck, onExpand, tree }: LegacyFileExplorerProps) {
   return (

@@ -65,8 +65,8 @@ export namespace Core {
   // ---------------------------------------------------------------------------
   // Scanner
 
-  export interface FileExplorerNode {
-    children: FileExplorerTree
+  export interface LegacyFileExplorerNode {
+    children: LegacyFileExplorerTree
     depth: number
     index_path: string[]
     is_checked: boolean
@@ -75,10 +75,10 @@ export namespace Core {
     name: string
     path: string
   }
-  export type FileExplorerTree = FileExplorerNode[]
+  export type LegacyFileExplorerTree = LegacyFileExplorerNode[]
 
   export type ScannerState = {
-    file_explorer_tree: FileExplorerTree
+    file_explorer_tree: LegacyFileExplorerTree
     is_ready: boolean
     is_running: boolean
   }

@@ -5,9 +5,9 @@ import type { Promisable } from 'type-fest'
 import type { Core } from '../../core/types'
 
 type NodeProps = {
-  node: Core.FileExplorerNode
-  onCheck: (node: Core.FileExplorerNode) => Promisable<void>
-  onExpand: (node: Core.FileExplorerNode) => Promisable<void>
+  node: Core.LegacyFileExplorerNode
+  onCheck: (node: Core.LegacyFileExplorerNode) => Promisable<void>
+  onExpand: (node: Core.LegacyFileExplorerNode) => Promisable<void>
   parentIsChecked: boolean
 }
 export function Node({ node, onCheck, onExpand, parentIsChecked }: NodeProps) {
