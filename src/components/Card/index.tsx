@@ -16,27 +16,32 @@ export function Card({ actions = [], children, gridArea, isCentered = false, isL
   const hasActionBar = actions.length > 0
 
   return (
-    <Box
-      style={{
-        gridArea,
-      }}
-    >
+    <Box className="Card" style={{ gridArea }}>
       <Main $withBottomPadding={!hasActionBar}>
         <Title>{title}</Title>
         {isLoading && (
-          <Body $isCentered>
+          <Body $isCentered $withBottomPadding={!hasActionBar}>
             <span>
               <CircularProgress color="rgba(255, 215, 0, 0.5)" size={48} thickness={2} />
             </span>
           </Body>
         )}
-        {!isLoading && <Body $isCentered={isCentered}>{children}</Body>}
+        {!isLoading && (
+          <Body $isCentered={isCentered} $withBottomPadding={!hasActionBar}>
+            {children}
+          </Body>
+        )}
       </Main>
 
       {hasActionBar && (
         <ActionBar $actionCount={actions.length}>
           {actions.map(action => (
-            <button key={action.label} disabled={isLoading} onClick={action.callback} type="button">
+            <button
+              key={action.label}
+              disabled={action.isDisabled || isLoading}
+              onClick={action.callback}
+              type="button"
+            >
               {action.label}
             </button>
           ))}
@@ -59,7 +64,7 @@ const Main = styled.div<{
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 16px 16px ${p => (p.$withBottomPadding ? 16 : 0)}px 16px;
+  padding: 16px 16px 0 16px;
 `
 
 const Title = styled.h3`
@@ -71,11 +76,12 @@ const Title = styled.h3`
 
 const Body = styled.div<{
   $isCentered: boolean
+  $withBottomPadding: boolean
 }>`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  margin-top: ${p => (p.$isCentered ? 0 : 16)}px;
+  padding: 16px 0 ${p => (p.$isCentered ? (p.$withBottomPadding ? 44 : 16) : 16)}px;
 
   ${p =>
     p.$isCentered &&
@@ -101,14 +107,13 @@ const ActionBar = styled.div<{
     cursor: pointer;
     flex-grow: ${p => 1 / p.$actionCount};
     height: 32px;
-    transform: translateY(-2px);
 
     &:disabled {
       cursor: not-allowed;
     }
 
     &:hover:not(:disabled) {
-      background-color: rgba(255, 255, 255, 1);
+      background-color: gold;
     }
   }
 `
