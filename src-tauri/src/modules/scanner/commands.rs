@@ -44,6 +44,7 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
     let args: Vec<String> = vec![
         // "clamscan".to_string(),
         "-rv".to_string(),
+        format!("--database={}", "~/.local/share/com.clamav-desktop.app").to_string(),
         "--follow-dir-symlinks=0".to_string(),
         "--follow-file-symlinks=0".to_string(),
         // "--gen-json=yes".to_string(),
@@ -52,6 +53,7 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
     .into_iter()
     .chain(paths.to_owned().into_iter())
     .collect();
+    println!("{:?}", args);
 
     state::set_public_state(
         &app_handle,
@@ -88,22 +90,6 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
         .spawn()
         .expect("Failed to spawn sidecar");
 
-    // tauri::async_runtime::spawn(async move {
-    //   // read events such as stdout
-    //   while let Some(event) = rx.recv().await {
-    //     if let CommandEvent::Stdout(line) = event {
-    //       window
-    //         .emit("message", Some(format!("'{}'", line)))
-    //         .expect("failed to emit event");
-    //       // write to stdin
-    //       child.write("message from Rust\n".as_bytes()).unwrap();
-    //     }
-    //   }
-    // });
-
-    // let child = libs::cli::run(String::from("clamscan"), args).await;
-    // child.pid();
-
     // Attach child ID to private state
     let mut child_id_mutex_guard = app_handle
         .state::<state::ScannerSharedState>()
@@ -125,17 +111,34 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
         .await;
     *child_mutex_guard = Some(child);
 
-    let app_handle_clone_for_log = app_handle.clone();
-    // tokio::spawn(utils::handle_scanner_output(app_handle_clone_for_log, total_file_count));
+    let app_handle_traveller = app_handle.clone();
+    // tokio::spawn(utils::handle_scanner_output(app_handle_traveller, total_file_count));
     tauri::async_runtime::spawn(async move {
         let mut file_index: usize = 0;
         while let Some(event) = rx.recv().await {
-            if let CommandEvent::Stdout(line) = event {
-                debug!("handle_scanner_output()", "Output: `{}`.", line);
+            if let CommandEvent::Stdout(ref line) = event {
+                #[cfg(debug_assertions)]
+                {
+                    println!("[CommandEvent::Stdout] {}", line);
+                }
 
                 if utils::filter_log(line.to_owned()) {
                     let next_public_state = utils::get_status_from_log(line.to_owned(), file_index, total_file_count);
-                    state::set_public_state(&app_handle_clone_for_log, next_public_state).await;
+                    state::set_public_state(&app_handle_traveller, next_public_state).await;
+
+                    file_index += 1;
+                }
+            }
+
+            if let CommandEvent::Stderr(ref line) = event {
+                #[cfg(debug_assertions)]
+                {
+                    println!("[CommandEvent::Stderr] {}", line);
+                }
+
+                if utils::filter_log(line.to_owned()) {
+                    let next_public_state = utils::get_status_from_log(line.to_owned(), file_index, total_file_count);
+                    state::set_public_state(&app_handle_traveller, next_public_state).await;
 
                     file_index += 1;
                 }

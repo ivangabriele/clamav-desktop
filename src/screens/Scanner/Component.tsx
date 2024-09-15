@@ -2,8 +2,7 @@ import { Card } from '@components/Card'
 import type { CardAction } from '@components/Card/types'
 import { FileExplorer } from '@components/FileExplorer'
 import type { FileManager } from '@core/FileManager/types'
-import type { Scanner } from '@core/Scanner/types'
-import { Core } from '@core/types'
+import { Scanner } from '@core/Scanner/types'
 import { ScanningSpinner } from '@elements/ScanningSpinner'
 import { ScreenBox } from '@layouts/ScreenBox'
 import { MdClose, MdVerifiedUser } from 'react-icons/md'
@@ -28,7 +27,10 @@ export function ScannerScreenComponent({
   onScanStop,
   scannerState,
 }: ScannerScreenComponentProps) {
-  if (scannerState?.module_status === Core.ModuleStatus.Running) {
+  if (
+    scannerState &&
+    [Scanner.ScannerStatusStep.Counting, Scanner.ScannerStatusStep.Running].includes(scannerState.step)
+  ) {
     return (
       <ScreenBox isCentered>
         <ScanningCancelButton onClick={onScanStop}>
@@ -37,7 +39,7 @@ export function ScannerScreenComponent({
 
         <ScanningSpinner size={128} />
         <ScanningStepText>Scanning files...</ScanningStepText>
-        <ScanningTargetText>{scannerState.currently_scanned_file_path}</ScanningTargetText>
+        <ScanningTargetText>{scannerState.current_path}</ScanningTargetText>
       </ScreenBox>
     )
   }

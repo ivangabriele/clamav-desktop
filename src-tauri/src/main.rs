@@ -47,17 +47,17 @@ fn main() {
                     let config_binding = app_handle.config();
                     let config = config_binding.as_ref();
 
-                    // let app_cache_dir = api::path::app_cache_dir(config).expect("Could not get cache directory.");
-                    // println!("Cache directory: {:?}", app_cache_dir);
-                    // let app_config_dir = api::path::app_config_dir(config).expect("Could not get config directory.");
-                    // println!("Config directory: {:?}", app_config_dir);
-                    // let app_data_dir = api::path::app_data_dir(config).expect("Could not get data directory.");
-                    // println!("Data directory: {:?}", app_data_dir);
-                    // let app_local_data_dir =
-                    //     api::path::app_local_data_dir(config).expect("Could not get local data directory.");
-                    // println!("Local data directory: {:?}", app_local_data_dir);
-                    // let app_log_dir = api::path::app_log_dir(config).expect("Could not get log directory.");
-                    // println!("Log directory: {:?}", app_log_dir);
+                    let app_cache_dir = api::path::app_cache_dir(config).expect("Could not get cache directory.");
+                    println!("Cache directory: {:?}", app_cache_dir);
+                    let app_config_dir = api::path::app_config_dir(config).expect("Could not get config directory.");
+                    println!("Config directory: {:?}", app_config_dir);
+                    let app_data_dir = api::path::app_data_dir(config).expect("Could not get data directory.");
+                    println!("Data directory: {:?}", app_data_dir);
+                    let app_local_data_dir =
+                        api::path::app_local_data_dir(config).expect("Could not get local data directory.");
+                    println!("Local data directory: {:?}", app_local_data_dir);
+                    let app_log_dir = api::path::app_log_dir(config).expect("Could not get log directory.");
+                    println!("Log directory: {:?}", app_log_dir);
 
                     let mut config_directory_path = globals::CONFIG_DIRECTORY_PATH.lock().await;
                     *config_directory_path =
