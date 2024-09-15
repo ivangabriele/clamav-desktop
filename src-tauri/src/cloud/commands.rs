@@ -1,4 +1,4 @@
-use std::{process::Stdio, str};
+use std::{process, str};
 use tauri::{AppHandle, Emitter, Manager, State};
 use tauri_plugin_shell::{process::CommandEvent, ShellExt};
 use tokio::process::Command as TokioCommand;
@@ -99,8 +99,8 @@ pub fn start_cloud_daemon() -> () {
 
     TokioCommand::new("systemctl")
         .args(["start", "clamav-freshclam"])
-        .stderr(Stdio::piped())
-        .stdout(Stdio::piped())
+        .stderr(process::Stdio::piped())
+        .stdout(process::Stdio::piped())
         .spawn()
         .expect("Failed to run `systemctl stop freshclam`");
 }
@@ -112,8 +112,8 @@ pub fn stop_cloud_daemon() -> () {
 
     TokioCommand::new("systemctl")
         .args(["stop", "clamav-freshclam"])
-        .stderr(Stdio::piped())
-        .stdout(Stdio::piped())
+        .stderr(process::Stdio::piped())
+        .stdout(process::Stdio::piped())
         .spawn()
         .expect("Failed to run `systemctl stop freshclam`");
 }
