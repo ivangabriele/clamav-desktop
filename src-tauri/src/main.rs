@@ -79,6 +79,7 @@ fn main() {
         .manage(cloud::state::CloudSharedState(Default::default()))
         .manage(copilot::state::CopilotSharedState(Default::default()))
         .manage(dashboard::state::DashboardSharedState(Default::default()))
+        .manage(modules::scanner::state::ScannerSharedState(Default::default()))
         .manage(settings::state::SharedSettingsState(Default::default()))
         .invoke_handler(tauri::generate_handler![
             cloud::commands::get_cloud_state,
@@ -91,6 +92,9 @@ fn main() {
             dashboard::commands::start_daemon,
             dashboard::commands::stop_daemon,
             modules::file_manager::commands::get_directory_file_paths,
+            modules::scanner::commands::get_scanner_state,
+            modules::scanner::commands::start_scanner,
+            modules::scanner::commands::stop_scanner,
             settings::commands::get_settings_state,
             settings::commands::load_settings_state,
             settings::commands::update_clamd_conf_file_source,
