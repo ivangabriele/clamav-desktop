@@ -6,6 +6,7 @@ mod copilot;
 mod dashboard;
 mod globals;
 mod libs;
+mod modules;
 mod scanner;
 mod settings;
 mod system;
@@ -40,6 +41,7 @@ pub fn run() {
             dashboard::commands::get_dashboard_state,
             dashboard::commands::start_daemon,
             dashboard::commands::stop_daemon,
+            modules::file_manager::commands::get_directory_file_paths,
             scanner::commands::get_scanner_state,
             scanner::commands::load_scanner_state,
             scanner::commands::start_scanner,
@@ -74,6 +76,7 @@ pub fn run() {
                             .expect("Could not set window size.");
                         window.set_always_on_top(false).expect("Could not set always on top.");
                         window.set_resizable(true).expect("Could not set resizable.");
+
                         window.webviews().first().unwrap().open_devtools();
                     }
 
