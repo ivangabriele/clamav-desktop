@@ -1,12 +1,12 @@
+import { useCoreStateHub } from '@libs/CoreStateHub/useCoreStateHub'
+import { Dashboard } from '@screens/Dashboard'
+import { LoaderScreen } from '@screens/Loader'
+import { Scanner } from '@screens/Scanner'
+import { Settings } from '@screens/Settings'
 import { useState } from 'react'
 
 import { Layout } from './Layout'
 import { Screen } from './constants'
-import { Dashboard } from './screens/Dashboard'
-import { LoaderScreen } from './screens/Loader'
-import { Scanner } from './screens/Scanner'
-import { Settings } from './screens/Settings'
-import { useCoreStateHub } from '@libs/CoreStateHub/useCoreStateHub'
 
 export function App() {
   const [isCoreReady, setIsCoreReady] = useState(true)
