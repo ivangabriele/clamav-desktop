@@ -1,14 +1,14 @@
-import type { Core } from '@core/types'
+import type { FileManager } from '@core/FileManager/types'
+import { pipe } from 'ramda'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import type { Promisable } from 'type-fest'
 
-import { pipe } from 'ramda'
 import { Node } from './Node'
 import { TreeNodeCheckState } from './constants'
 import type { TreeNode } from './types'
 import {
-  getNodeFromCorePath,
+  getNodeFromFilePath,
   getSelectedPathsFromTree,
   getTreeNodeAtIndexPath,
   patchTreeNodeAtIndexPath,
@@ -18,11 +18,11 @@ import {
 
 type FileExplorerProps = {
   onChange: (nextSelectedFilePath: string[]) => Promisable<void>
-  onExpand: (expandedPath: string) => Promise<Core.Path[]>
-  rootPaths: Core.Path[]
+  onExpand: (expandedPath: string) => Promise<FileManager.FilePath[]>
+  rootPaths: FileManager.FilePath[]
 }
 export function FileExplorer({ onChange, onExpand, rootPaths }: FileExplorerProps) {
-  const [tree, setTree] = useState(rootPaths.map(getNodeFromCorePath))
+  const [tree, setTree] = useState(rootPaths.map(getNodeFromFilePath))
 
   const expand = useCallback(
     async (expandedTreeNode: TreeNode, indexPath: number[]) => {
@@ -37,7 +37,7 @@ export function FileExplorer({ onChange, onExpand, rootPaths }: FileExplorerProp
       }
 
       const expandedPathChildrenAsCorePaths = await onExpand(expandedTreeNode.path)
-      const expandedPathChildrenAsTreeNodes = expandedPathChildrenAsCorePaths.map(getNodeFromCorePath)
+      const expandedPathChildrenAsTreeNodes = expandedPathChildrenAsCorePaths.map(getNodeFromFilePath)
 
       const nextTree = patchTreeNodeAtIndexPath(tree, indexPath, {
         isExpanded: true,
@@ -76,7 +76,7 @@ export function FileExplorer({ onChange, onExpand, rootPaths }: FileExplorerProp
   return (
     <Box className="FileExplorer">
       {tree.map((treeNode, index) => (
-        <Node key={treeNode.path} indexPath={[index]} node={treeNode} onSelect={select} onExpand={expand} />
+        <Node key={treeNode.path} indexPath={[index]} treeNode={treeNode} onSelect={select} onExpand={expand} />
       ))}
     </Box>
   )
