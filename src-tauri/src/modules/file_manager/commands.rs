@@ -12,8 +12,22 @@ use crate::debug;
 pub async fn get_directory_file_paths(path: Option<String>) -> Result<Vec<filer::types::FilePath>, ()> {
     debug!("list_file_paths_at_path()", "Command call.");
 
-    let file_paths =
-        filer::file_list::list::<String>(false, path, Some(filer::types::FileKind::Directory)).into_file_paths();
+    let controlled_path = match path {
+        Some(p) => Some(p),
+        None => {
+            #[cfg(target_os = "windows")]
+            {
+                None
+            }
+            #[cfg(not(target_os = "windows"))]
+            {
+                Some("/".to_string())
+            }
+        }
+    };
+
+    let file_paths = filer::file_list::list::<String>(false, controlled_path, Some(filer::types::FileKind::Directory))
+        .into_file_paths();
 
     Ok(file_paths)
 }
