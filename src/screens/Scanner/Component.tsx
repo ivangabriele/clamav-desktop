@@ -1,6 +1,7 @@
 import { Card } from '@components/Card'
 import type { CardAction } from '@components/Card/types'
 import { FileExplorer } from '@components/FileExplorer'
+import type { FileManager } from '@core/FileManager/types'
 import type { Scanner } from '@core/Scanner/types'
 import { Core } from '@core/types'
 import { ScanningSpinner } from '@elements/ScanningSpinner'
@@ -11,9 +12,9 @@ import type { Promisable } from 'type-fest'
 
 export type ScannerScreenComponentProps = Readonly<{
   canScan: boolean
-  fileExplorerRootPaths: Core.Path[] | undefined
+  fileExplorerRootPaths: FileManager.FilePath[] | undefined
   onFileExporerChange: (selectedPaths: string[]) => Promisable<void>
-  onFileExporerExpand: (expandedPath: string) => Promise<Core.Path[]>
+  onFileExporerExpand: (expandedPath: string) => Promise<FileManager.FilePath[]>
   onScanStart: () => Promisable<void>
   onScanStop: () => Promisable<void>
   scannerState: Scanner.State | undefined

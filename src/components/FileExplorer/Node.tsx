@@ -1,24 +1,23 @@
-import styled, { css } from 'styled-components'
-
-import { Core } from '@core/types'
+import { FileManager } from '@core/FileManager/types'
 import { useCallback } from 'react'
+import styled, { css } from 'styled-components'
 import { Checkbox } from './Checkbox'
-import { Expander } from './Expander'
+import { ExpandButton } from './ExpandButton'
 import type { TreeNode } from './types'
 
 type NodeProps = {
   indexPath: number[]
-  node: TreeNode
+  treeNode: TreeNode
   onExpand: (expandedTreeNode: TreeNode, indexPath: number[]) => Promise<void>
   onSelect: (indexPath: number[]) => void
 }
-export function Node({ indexPath, node, onExpand, onSelect }: NodeProps) {
+export function Node({ indexPath, treeNode, onExpand, onSelect }: NodeProps) {
   const depth = indexPath.length - 1
-  const isExpandable = node.kind === Core.FileKind.Directory
+  const isExpandable = treeNode.kind === FileManager.FileKind.Directory
 
   const expand = useCallback(() => {
-    onExpand(node, indexPath)
-  }, [indexPath, onExpand, node])
+    onExpand(treeNode, indexPath)
+  }, [indexPath, onExpand, treeNode])
 
   const select = useCallback(() => {
     onSelect(indexPath)
@@ -27,20 +26,20 @@ export function Node({ indexPath, node, onExpand, onSelect }: NodeProps) {
   return (
     <Box>
       <Row $isClickable={isExpandable} onClick={isExpandable ? expand : undefined}>
-        <Checkbox onToggle={select} state={node.checkState} />
+        <Checkbox onToggle={select} state={treeNode.checkState} />
 
         <RowPath $depth={depth}>
-          <Expander isExpanded={node.isExpanded} isVisible={isExpandable} />
-          <NameText>{node.name}</NameText>
+          <ExpandButton isExpanded={treeNode.isExpanded} isVisible={isExpandable} />
+          <NameText>{treeNode.name}</NameText>
         </RowPath>
       </Row>
 
-      {node.isExpanded &&
-        node.children.map((nodeChild, index) => (
+      {treeNode.isExpanded &&
+        treeNode.children.map((treeNodeChild, index) => (
           <Node
-            key={nodeChild.path}
+            key={treeNodeChild.path}
             indexPath={[...indexPath, index]}
-            node={nodeChild}
+            treeNode={treeNodeChild}
             onSelect={onSelect}
             onExpand={onExpand}
           />
