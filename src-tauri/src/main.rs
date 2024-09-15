@@ -13,6 +13,7 @@ mod copilot;
 mod dashboard;
 mod globals;
 mod libs;
+mod modules;
 mod scanner;
 mod settings;
 mod system;
@@ -91,6 +92,7 @@ fn main() {
             dashboard::commands::get_dashboard_state,
             dashboard::commands::start_daemon,
             dashboard::commands::stop_daemon,
+            modules::file_manager::commands::get_directory_file_paths,
             scanner::commands::get_scanner_state,
             scanner::commands::load_scanner_state,
             scanner::commands::start_scanner,
