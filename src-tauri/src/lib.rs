@@ -68,11 +68,12 @@ pub fn run() {
 
                         window
                             .set_size(LogicalSize::<u32> {
-                                height: 900,
+                                height: 800,
                                 width: 1024,
                             })
                             .expect("Could not set window size.");
                         window.set_always_on_top(false).expect("Could not set always on top.");
+                        window.set_resizable(true).expect("Could not set resizable.");
                         window.webviews().first().unwrap().open_devtools();
                     }
 
