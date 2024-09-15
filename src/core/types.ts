@@ -2,6 +2,12 @@ export namespace Core {
   // ---------------------------------------------------------------------------
   // Global
 
+  export interface Path {
+    kind: FileKind
+    name: string
+    path: string
+  }
+
   export interface Log {
     date: string
     message: string
