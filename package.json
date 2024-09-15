@@ -11,7 +11,7 @@
     "prebuild": "yarn clean && yarn build:webview && node ./scripts/build/prepare_core_build.js",
     "build": "cd ./src-tauri && cargo build",
     "build:daemon": "cd ./daemon && cargo build",
-    "build:webview": "tsc -p ./tsconfig.build.json && vite build",
+    "build:webview": "vite build",
     "bundle:bin": "tauri build -b none",
     "bundle:deb": "tauri build -b deb",
     "bundle:deb:x32": "TARGET=i686-unknown-linux-gnu yarn bundle:deb --target i686-unknown-linux-gnu",
