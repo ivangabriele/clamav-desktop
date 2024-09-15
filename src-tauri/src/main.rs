@@ -14,7 +14,6 @@ mod dashboard;
 mod globals;
 mod libs;
 mod modules;
-mod scanner;
 mod settings;
 mod system;
 
@@ -80,7 +79,6 @@ fn main() {
         .manage(cloud::state::CloudSharedState(Default::default()))
         .manage(copilot::state::CopilotSharedState(Default::default()))
         .manage(dashboard::state::DashboardSharedState(Default::default()))
-        .manage(scanner::state::SharedScannerState(Default::default()))
         .manage(settings::state::SharedSettingsState(Default::default()))
         .invoke_handler(tauri::generate_handler![
             cloud::commands::get_cloud_state,
@@ -93,12 +91,6 @@ fn main() {
             dashboard::commands::start_daemon,
             dashboard::commands::stop_daemon,
             modules::file_manager::commands::get_directory_file_paths,
-            scanner::commands::get_scanner_state,
-            scanner::commands::load_scanner_state,
-            scanner::commands::start_scanner,
-            scanner::commands::stop_scanner,
-            scanner::commands::toggle_file_explorer_node_check,
-            scanner::commands::toggle_file_explorer_node_expansion,
             settings::commands::get_settings_state,
             settings::commands::load_settings_state,
             settings::commands::update_clamd_conf_file_source,
