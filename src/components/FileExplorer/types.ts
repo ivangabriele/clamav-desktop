@@ -1,8 +1,8 @@
-import type { Core } from '@core/types'
+import type { FileManager } from '@core/FileManager/types'
 
 import type { TreeNodeCheckState } from './constants'
 
-export interface TreeNode extends Core.Path {
+export interface TreeNode extends FileManager.FilePath {
   checkState: TreeNodeCheckState
   children: TreeNode[]
   isExpanded: boolean
