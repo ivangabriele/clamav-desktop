@@ -1,12 +1,8 @@
+import type { FileManager } from './FileManager/types'
+
 export namespace Core {
   // ---------------------------------------------------------------------------
   // Global
-
-  export interface Path {
-    kind: FileKind
-    name: string
-    path: string
-  }
 
   export interface Log {
     date: string
@@ -30,11 +26,6 @@ export namespace Core {
     Running = 'Running',
     Stopped = 'Stopped',
     Unknown = 'Unknown', // => should display a loading spinner in the Webview
-  }
-
-  export enum FileKind {
-    Directory = 'Directory',
-    File = 'File',
   }
 
   // ---------------------------------------------------------------------------
@@ -77,7 +68,7 @@ export namespace Core {
     index_path: string[]
     is_checked: boolean
     is_expanded: boolean
-    kind: FileKind
+    kind: FileManager.FileKind
     name: string
     path: string
   }
