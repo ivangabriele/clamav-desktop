@@ -20,6 +20,7 @@ const Box = styled.div.attrs({ className: 'Screen' })<{
   $isGrid: boolean
 }>`
   flex-grow: 1;
+  position: relative;
 
   ${p =>
     !p.$isGrid &&
