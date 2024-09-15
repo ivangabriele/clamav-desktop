@@ -6,14 +6,19 @@ import { Dashboard } from './screens/Dashboard'
 import { LoaderScreen } from './screens/Loader'
 import { Scanner } from './screens/Scanner'
 import { Settings } from './screens/Settings'
+import { useCoreStateHub } from '@libs/CoreStateHub/useCoreStateHub'
 
 export function App() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isCoreReady, setIsCoreReady] = useState(true)
   const [screen, setScreen] = useState<Screen>(Screen.Dashboard)
 
-  const disableIsLoading = () => setIsLoading(false)
+  useCoreStateHub(isCoreReady)
 
-  if (isLoading) {
+  const disableIsLoading = () => {
+    setIsCoreReady(false)
+  }
+
+  if (isCoreReady) {
     return <LoaderScreen onReady={disableIsLoading} />
   }
 
