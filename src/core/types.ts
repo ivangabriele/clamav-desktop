@@ -1,5 +1,3 @@
-import type { FileManager } from './FileManager/types'
-
 export namespace Core {
   // ---------------------------------------------------------------------------
   // Global
@@ -62,20 +60,9 @@ export namespace Core {
   // ---------------------------------------------------------------------------
   // Scanner
 
-  export interface LegacyFileExplorerNode {
-    children: LegacyFileExplorerTree
-    depth: number
-    index_path: string[]
-    is_checked: boolean
-    is_expanded: boolean
-    kind: FileManager.FileKind
-    name: string
-    path: string
-  }
-  export type LegacyFileExplorerTree = LegacyFileExplorerNode[]
-
   export type ScannerState = {
-    file_explorer_tree: LegacyFileExplorerTree
+    // biome-ignore lint/suspicious/noExplicitAny: Legacy.
+    file_explorer_tree: any
     is_ready: boolean
     is_running: boolean
   }
