@@ -13,14 +13,14 @@ mod copilot;
 mod dashboard;
 mod globals;
 mod libs;
-mod modules;
 mod scanner;
 mod settings;
+mod system;
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
     let context = tauri::generate_context!();
-    let system_tray = modules::tray::new();
+    let system_tray = system::tray::new();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -113,9 +113,9 @@ fn main() {
         .on_system_tray_event(|app_handle, event| match event {
             SystemTrayEvent::LeftClick {
                 position: _, size: _, ..
-            } => modules::window::toggle(app_handle),
+            } => system::window::toggle(app_handle),
             SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-                "toggle" => modules::window::toggle(app_handle),
+                "toggle" => system::window::toggle(app_handle),
                 "quit" => {
                     std::process::exit(0);
                 }
@@ -128,7 +128,7 @@ fn main() {
                 api.prevent_close();
 
                 let app_handle = event.window().app_handle();
-                modules::window::toggle(&app_handle);
+                system::window::toggle(&app_handle);
             }
             _ => {}
         })
