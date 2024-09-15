@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/core'
 import { listen } from '@tauri-apps/api/event'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect } from 'react'
 // import { toast } from 'react-hot-toast'
 
 import { CacheKey } from '../../constants'
@@ -11,8 +11,6 @@ import { useCachedState } from '../../hooks/useCachedState'
 import { ScreenBox } from '../../layouts/ScreenBox'
 
 export function Dashboard() {
-  const timerRef = useRef<number | undefined>(undefined)
-
   const [state, setState] = useCachedState<Core.DashboardState | undefined>(CacheKey.DashboardState, undefined)
 
   const logsAsString = (state?.logs || []).join('\n')
@@ -31,16 +29,6 @@ export function Dashboard() {
     listen<Core.DashboardState>('dashboard:state', event => {
       setState(event.payload)
     })
-
-    timerRef.current = window.setInterval(() => {
-      invoke('get_dashboard_state')
-    }, 500)
-
-    return () => {
-      if (timerRef.current) {
-        window.clearInterval(timerRef.current)
-      }
-    }
   }, [setState])
 
   return (
