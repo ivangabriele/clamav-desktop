@@ -14,13 +14,13 @@ mod dashboard;
 mod globals;
 mod libs;
 mod modules;
-mod scanner;
 mod settings;
+mod system;
 
 #[cfg(not(tarpaulin_include))]
 fn main() {
     let context = tauri::generate_context!();
-    let system_tray = modules::tray::new();
+    let system_tray = system::tray::new();
 
     tauri::Builder::default()
         .setup(
@@ -33,11 +33,12 @@ fn main() {
                         let window = app_handle.get_window("main").expect("Could not get window.");
                         window
                             .set_size(LogicalSize::<u32> {
-                                height: 900,
+                                height: 800,
                                 width: 1024,
                             })
                             .expect("Could not set window size.");
                         window.set_always_on_top(false).expect("Could not set always on top.");
+                        window.set_resizable(true).expect("Could not set resizable.");
 
                         window.open_devtools();
                     }
@@ -46,17 +47,17 @@ fn main() {
                     let config_binding = app_handle.config();
                     let config = config_binding.as_ref();
 
-                    // let app_cache_dir = api::path::app_cache_dir(config).expect("Could not get cache directory.");
-                    // println!("Cache directory: {:?}", app_cache_dir);
-                    // let app_config_dir = api::path::app_config_dir(config).expect("Could not get config directory.");
-                    // println!("Config directory: {:?}", app_config_dir);
-                    // let app_data_dir = api::path::app_data_dir(config).expect("Could not get data directory.");
-                    // println!("Data directory: {:?}", app_data_dir);
-                    // let app_local_data_dir =
-                    //     api::path::app_local_data_dir(config).expect("Could not get local data directory.");
-                    // println!("Local data directory: {:?}", app_local_data_dir);
-                    // let app_log_dir = api::path::app_log_dir(config).expect("Could not get log directory.");
-                    // println!("Log directory: {:?}", app_log_dir);
+                    let app_cache_dir = api::path::app_cache_dir(config).expect("Could not get cache directory.");
+                    println!("Cache directory: {:?}", app_cache_dir);
+                    let app_config_dir = api::path::app_config_dir(config).expect("Could not get config directory.");
+                    println!("Config directory: {:?}", app_config_dir);
+                    let app_data_dir = api::path::app_data_dir(config).expect("Could not get data directory.");
+                    println!("Data directory: {:?}", app_data_dir);
+                    let app_local_data_dir =
+                        api::path::app_local_data_dir(config).expect("Could not get local data directory.");
+                    println!("Local data directory: {:?}", app_local_data_dir);
+                    let app_log_dir = api::path::app_log_dir(config).expect("Could not get log directory.");
+                    println!("Log directory: {:?}", app_log_dir);
 
                     let mut config_directory_path = globals::CONFIG_DIRECTORY_PATH.lock().await;
                     *config_directory_path =
@@ -78,7 +79,7 @@ fn main() {
         .manage(cloud::state::CloudSharedState(Default::default()))
         .manage(copilot::state::CopilotSharedState(Default::default()))
         .manage(dashboard::state::DashboardSharedState(Default::default()))
-        .manage(scanner::state::SharedScannerState(Default::default()))
+        .manage(modules::scanner::state::ScannerSharedState(Default::default()))
         .manage(settings::state::SharedSettingsState(Default::default()))
         .invoke_handler(tauri::generate_handler![
             cloud::commands::get_cloud_state,
@@ -90,12 +91,10 @@ fn main() {
             dashboard::commands::get_dashboard_state,
             dashboard::commands::start_daemon,
             dashboard::commands::stop_daemon,
-            scanner::commands::get_scanner_state,
-            scanner::commands::load_scanner_state,
-            scanner::commands::start_scanner,
-            scanner::commands::stop_scanner,
-            scanner::commands::toggle_file_explorer_node_check,
-            scanner::commands::toggle_file_explorer_node_expansion,
+            modules::file_manager::commands::get_directory_file_paths,
+            modules::scanner::commands::get_scanner_state,
+            modules::scanner::commands::start_scanner,
+            modules::scanner::commands::stop_scanner,
             settings::commands::get_settings_state,
             settings::commands::load_settings_state,
             settings::commands::update_clamd_conf_file_source,
@@ -104,9 +103,9 @@ fn main() {
         .on_system_tray_event(|app_handle, event| match event {
             SystemTrayEvent::LeftClick {
                 position: _, size: _, ..
-            } => modules::window::toggle(app_handle),
+            } => system::window::toggle(app_handle),
             SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-                "toggle" => modules::window::toggle(app_handle),
+                "toggle" => system::window::toggle(app_handle),
                 "quit" => {
                     std::process::exit(0);
                 }
@@ -119,7 +118,7 @@ fn main() {
                 api.prevent_close();
 
                 let app_handle = event.window().app_handle();
-                modules::window::toggle(&app_handle);
+                system::window::toggle(&app_handle);
             }
             _ => {}
         })

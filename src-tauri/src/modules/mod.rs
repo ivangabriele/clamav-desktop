@@ -1,2 +1,2 @@
-pub mod tray;
-pub mod window;
+pub mod file_manager;
+pub mod scanner;

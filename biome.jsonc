@@ -2,7 +2,21 @@
   "$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
   "extends": ["@ivangabriele/biome-config"],
   "files": {
-    "ignore": ["./.vscode-test/*", "./.yarn/*", "./e2e/*", "./node_modules/*", "./package.json"]
+    "ignore": [
+      "./.dev/*",
+      "./.vscode/*",
+      "./.vscode-test/*",
+      "./.yarn/*",
+      "./assets/*",
+      "./daemon/*",
+      "./dist/*",
+      "./e2e/*",
+      "./node_modules/*",
+      "./public/*",
+      "./sidecars/*",
+      "./src-tauri/*",
+      "./package.json"
+    ]
   },
   "javascript": {
     "globals": ["afterAll", "afterEach", "beforeAll", "beforeEach", "describe", "expect", "it", "test"]

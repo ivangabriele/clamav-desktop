@@ -7,6 +7,7 @@ use tokio::process::{Child, Command};
 // }
 
 #[cfg(not(tarpaulin_include))]
+#[allow(dead_code)]
 pub async fn run(binary_path: String, args: Vec<String>) -> Child {
     Command::new(binary_path)
         .args(args)

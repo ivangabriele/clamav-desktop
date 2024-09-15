@@ -1,3 +1,4 @@
+import type { FileManager } from '@core/FileManager/types'
 import { Core } from '@core/types'
 import { faker } from '@faker-js/faker'
 import type { Meta, StoryObj } from '@storybook/react'
@@ -12,7 +13,7 @@ import { waitFor } from '../../utils/waitFor'
 import { FAKE_ROOT_CORE_PATHS, listPathsAtFakePath } from './fakers'
 import { goToScreen } from './utils'
 
-const fakePaths = (): Promise<Core.Path[]> => {
+const fakePaths = (): Promise<FileManager.FilePath[]> => {
   return Promise.resolve([])
 }
 
