@@ -8,8 +8,8 @@ import { Layout } from '../../Layout'
 import { Screen } from '../../constants'
 import { Core } from '../../core/types'
 import { DashboardScreenComponent, type DashboardScreenComponentProps } from '../../screens/Dashboard/Component'
-import { noop } from '../../utils/noop'
 import { waitFor } from '../../utils/waitFor'
+import { goToScreen } from './utils'
 
 const FAKE_DAEMON_LOGS: Core.Log[] = Array.from({ length: 100 }, () => ({
   date: faker.date.recent().toISOString(),
@@ -55,7 +55,7 @@ export const Default: Story = {
     })
 
     return (
-      <Layout onScreenChange={noop} activeScreen={Screen.Dashboard}>
+      <Layout onScreenChange={goToScreen} activeScreen={Screen.Dashboard}>
         <DashboardScreenComponent {...args} />
       </Layout>
     )
