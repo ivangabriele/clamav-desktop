@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 use tokio::sync::Mutex;
 
 use crate::{debug, globals};
@@ -35,7 +35,7 @@ pub async fn broadcast_state(app_handle: &AppHandle) {
     let public_state_mutex_guard = app_handle.state::<CopilotSharedState>().inner().0.public.lock().await;
 
     app_handle
-        .emit_all("copilot:state", public_state_mutex_guard.clone())
+        .emit("copilot:state", public_state_mutex_guard.clone())
         .unwrap();
 }
 

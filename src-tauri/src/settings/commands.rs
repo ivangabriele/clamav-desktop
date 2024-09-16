@@ -1,4 +1,4 @@
-use tauri::{AppHandle, Manager, State};
+use tauri::{AppHandle, Emitter, State};
 use tokio::fs;
 
 use crate::debug;
@@ -16,7 +16,7 @@ pub async fn get_settings_state(
 
     let public_state_mutex_guard = shared_state.0.public.lock().await;
     app_handle
-        .emit_all("settings:state", &public_state_mutex_guard.clone())
+        .emit("settings:state", &public_state_mutex_guard.clone())
         .unwrap();
 
     Ok(())

@@ -1,6 +1,6 @@
 use filer;
 use std::sync::atomic::Ordering;
-use tauri::{AppHandle, Manager, State};
+use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::debug;
 use crate::libs;
@@ -18,7 +18,7 @@ pub async fn get_scanner_state(
 
     let public_state_mutex_guard = shared_state.0.public.lock().await;
     app_handle
-        .emit_all("scanner:state", &public_state_mutex_guard.clone())
+        .emit("scanner:state", &public_state_mutex_guard.clone())
         .unwrap();
 
     Ok(())
@@ -163,7 +163,7 @@ pub async fn toggle_file_explorer_node_check(
     next_file_explorer.toggle_is_checked(index_path);
     public_state_mutex_guard.file_explorer_tree = next_file_explorer.into_tree().to_owned();
     app_handle
-        .emit_all("scanner:state", &public_state_mutex_guard.clone())
+        .emit("scanner:state", &public_state_mutex_guard.clone())
         .unwrap();
 
     Ok(())
@@ -184,7 +184,7 @@ pub async fn toggle_file_explorer_node_expansion(
     next_file_explorer.toggle_is_expanded(index_path);
     public_state_mutex_guard.file_explorer_tree = next_file_explorer.into_tree().to_owned();
     app_handle
-        .emit_all("scanner:state", &public_state_mutex_guard.clone())
+        .emit("scanner:state", &public_state_mutex_guard.clone())
         .unwrap();
 
     Ok(())

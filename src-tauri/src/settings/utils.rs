@@ -1,5 +1,5 @@
 use std::path::{Path, PathBuf};
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 use tokio::fs;
 use walkdir::WalkDir;
 
@@ -107,6 +107,6 @@ pub async fn update_public_state(
     }
 
     app_handle
-        .emit_all("settings:state", public_state_mutex_guard.clone())
+        .emit("settings:state", public_state_mutex_guard.clone())
         .expect("Failed to emit `settings:state` event.");
 }

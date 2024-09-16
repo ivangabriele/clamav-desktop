@@ -6,7 +6,7 @@
 
 #[allow(unused_imports)]
 use tauri::LogicalSize;
-use tauri::{api, Manager, SystemTrayEvent};
+use tauri::Manager;
 
 mod cloud;
 mod copilot;
@@ -20,23 +20,28 @@ mod system;
 #[cfg(not(tarpaulin_include))]
 fn main() {
     let context = tauri::generate_context!();
-    let system_tray = system::tray::new();
+    // let system_tray = system::tray::new();
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_clipboard_manager::init())
-        .plugin(tauri_plugin_notification::init())
-        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
-        .plugin(tauri_plugin_process::init())
-        .plugin(tauri_plugin_os::init())
-        .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_shell::init())
         .setup(
             #[allow(unused_variables)]
             |app: &mut tauri::App| {
                 let app_handle = app.handle();
                 tauri::async_runtime::block_on(async move {
+                    #[cfg(all(desktop))]
+                    {
+                        system::tray::new(app_handle).expect("Could not create system tray.");
+                    }
+
                     #[cfg(debug_assertions)]
                     {
                         let window = app_handle.get_window("main").expect("Could not get window.");
@@ -48,12 +53,8 @@ fn main() {
                             .expect("Could not set window size.");
                         window.set_always_on_top(false).expect("Could not set always on top.");
 
-                        window.open_devtools();
+                        // window.open_devtools();
                     }
-
-                    // Store config in a variable to extend its lifetime
-                    let config_binding = app_handle.config();
-                    let config = config_binding.as_ref();
 
                     // let app_cache_dir = api::path::app_cache_dir(config).expect("Could not get cache directory.");
                     // println!("Cache directory: {:?}", app_cache_dir);
@@ -68,14 +69,20 @@ fn main() {
                     // println!("Log directory: {:?}", app_log_dir);
 
                     let mut config_directory_path = globals::CONFIG_DIRECTORY_PATH.lock().await;
-                    *config_directory_path =
-                        api::path::app_config_dir(config).expect("Could not get app config directory path.");
+                    *config_directory_path = app_handle
+                        .path()
+                        .app_config_dir()
+                        .expect("Could not get app config directory path.");
                     let mut local_data_directory_path = globals::LOCAL_DATA_DIRECTORY_PATH.lock().await;
-                    *local_data_directory_path =
-                        api::path::app_local_data_dir(config).expect("Could not get local data directory path.");
+                    *local_data_directory_path = app_handle
+                        .path()
+                        .app_local_data_dir()
+                        .expect("Could not get local data directory path.");
                     let mut log_directory_path = globals::LOG_DIRECTORY_PATH.lock().await;
-                    *log_directory_path =
-                        api::path::app_log_dir(config).expect("Could not get app log directory path.");
+                    *log_directory_path = app_handle
+                        .path()
+                        .app_log_dir()
+                        .expect("Could not get app log directory path.");
 
                     debug!("main()", "App started.");
                 });
@@ -109,39 +116,38 @@ fn main() {
             settings::commands::load_settings_state,
             settings::commands::update_clamd_conf_file_source,
         ])
-        .system_tray(system_tray)
-        .on_system_tray_event(|app_handle, event| match event {
-            SystemTrayEvent::LeftClick {
-                position: _, size: _, ..
-            } => system::window::toggle(app_handle),
-            SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-                "toggle" => system::window::toggle(app_handle),
-                "quit" => {
-                    std::process::exit(0);
-                }
-                _ => {}
-            },
-            _ => {}
-        })
-        .on_window_event(|event| match event.event() {
-            tauri::WindowEvent::CloseRequested { api, .. } => {
-                api.prevent_close();
-
-                let app_handle = event.window().app_handle();
-                system::window::toggle(&app_handle);
-            }
-            _ => {}
-        })
+        // .system_tray(system_tray)
+        // .on_system_tray_event(|app_handle, event| match event {
+        //     SystemTrayEvent::LeftClick {
+        //         position: _, size: _, ..
+        //     } => system::window::toggle(app_handle),
+        //     SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+        //         "toggle" => system::window::toggle(app_handle),
+        //         "quit" => {
+        //             std::process::exit(0);
+        //         }
+        //         _ => {}
+        //     },
+        //     _ => {}
+        // })
+        // .on_window_event(|event| match event.event() {
+        //     tauri::WindowEvent::CloseRequested { api, .. } => {
+        //         api.prevent_close();
+        //         let app_handle = event.window().app_handle();
+        //         system::window::toggle(&app_handle);
+        //     }
+        //     _ => {}
+        // })
         .build(context)
         .expect("An error happened while building ClamAV Desktop.")
-        .run(|app_handle, event| match event {
+        .run(|_app_handle, event| match event {
             tauri::RunEvent::ExitRequested { api, .. } => {
                 println!("Exit requested!!!");
 
                 api.prevent_exit();
 
-                let item_handle = app_handle.tray_handle().get_item("toggle");
-                item_handle.set_title("Show").unwrap();
+                // let item_handle = app_handle.tray_handle().get_item("toggle");
+                // item_handle.set_title("Show").unwrap();
             }
             _ => {}
         });
