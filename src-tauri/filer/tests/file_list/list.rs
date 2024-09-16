@@ -7,13 +7,9 @@ fn list_as_file_explorer_returns_the_expected_file_paths_tree() {
     let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = Some(filer::types::FileKind::Directory);
 
-    let result = filer::file_list::list(
-        is_recursive,
-        Some(directory_absolute_path_option),
-        file_kind_option,
-    )
-    .into_file_explorer()
-    .into_tree();
+    let result = filer::file_list::list(is_recursive, Some(directory_absolute_path_option), file_kind_option)
+        .into_file_explorer()
+        .into_tree();
 
     assert_eq!(result.len(), 2);
 
@@ -42,12 +38,8 @@ fn list_into_strings_returns_the_expected_file_paths_list() {
     let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = None;
 
-    let result = filer::file_list::list(
-        is_recursive,
-        Some(directory_absolute_path_option),
-        file_kind_option,
-    )
-    .into_strings();
+    let result =
+        filer::file_list::list(is_recursive, Some(directory_absolute_path_option), file_kind_option).into_strings();
 
     assert_eq!(result.len(), 5);
 
@@ -71,12 +63,8 @@ fn list_into_strings_returns_the_expected_recursive_file_paths_list() {
     let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = None;
 
-    let result = filer::file_list::list(
-        is_recursive,
-        Some(directory_absolute_path_option),
-        file_kind_option,
-    )
-    .into_strings();
+    let result =
+        filer::file_list::list(is_recursive, Some(directory_absolute_path_option), file_kind_option).into_strings();
 
     assert_eq!(result.len(), 12);
 
@@ -115,12 +103,8 @@ fn list_into_strings_returns_the_expected_directory_paths_list() {
     let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = Some(filer::types::FileKind::Directory);
 
-    let result = filer::file_list::list(
-        is_recursive,
-        Some(directory_absolute_path_option),
-        file_kind_option,
-    )
-    .into_strings();
+    let result =
+        filer::file_list::list(is_recursive, Some(directory_absolute_path_option), file_kind_option).into_strings();
 
     assert_eq!(result.len(), 2);
 
@@ -139,12 +123,8 @@ fn list_into_strings_returns_the_expected_recursive_directory_paths_list() {
     let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = Some(filer::types::FileKind::Directory);
 
-    let result = filer::file_list::list(
-        is_recursive,
-        Some(directory_absolute_path_option),
-        file_kind_option,
-    )
-    .into_strings();
+    let result =
+        filer::file_list::list(is_recursive, Some(directory_absolute_path_option), file_kind_option).into_strings();
 
     assert_eq!(result.len(), 3);
 
@@ -165,12 +145,8 @@ fn list_into_strings_returns_the_expected_non_directory_file_paths_list() {
     let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = Some(filer::types::FileKind::File);
 
-    let result = filer::file_list::list(
-        is_recursive,
-        Some(directory_absolute_path_option),
-        file_kind_option,
-    )
-    .into_strings();
+    let result =
+        filer::file_list::list(is_recursive, Some(directory_absolute_path_option), file_kind_option).into_strings();
 
     assert_eq!(result.len(), 3);
 
@@ -191,12 +167,8 @@ fn list_into_strings_returns_the_expected_recursive_non_directory_file_paths_lis
     let directory_absolute_path_option = dev::get_sample_directory_path();
     let file_kind_option = Some(filer::types::FileKind::File);
 
-    let result = filer::file_list::list(
-        is_recursive,
-        Some(directory_absolute_path_option),
-        file_kind_option,
-    )
-    .into_strings();
+    let result =
+        filer::file_list::list(is_recursive, Some(directory_absolute_path_option), file_kind_option).into_strings();
 
     assert_eq!(result.len(), 9);
 

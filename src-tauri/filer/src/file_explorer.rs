@@ -66,35 +66,28 @@ impl FileExplorer {
             is_checked: true,
             ..targeted_node.to_owned()
         };
-        let updated_tree =
-            self.replace_node(targeted_node.to_owned().index_path, updated_node, None);
+        let updated_tree = self.replace_node(targeted_node.to_owned().index_path, updated_node, None);
 
         self.tree = updated_tree;
     }
 
     fn expand_node(&mut self, index_path: Vec<usize>) -> () {
         let current_node = self.find_node(index_path.clone(), None);
-        let directory_absolute_path_option = Some(utils::normalize_path(
-            current_node.path_components.join("/"),
-        ));
-        let next_children = file_list::list(
-            false,
-            directory_absolute_path_option,
-            Some(types::FileKind::Directory),
-        )
-        .into_file_explorer()
-        .into_tree()
-        .into_iter()
-        .map(|node| FileExplorerNode {
-            index_path: current_node
-                .index_path
-                .to_owned()
-                .into_iter()
-                .chain(node.index_path.into_iter())
-                .collect(),
-            ..node
-        })
-        .collect();
+        let directory_absolute_path_option = Some(utils::normalize_path(current_node.path_components.join("/")));
+        let next_children = file_list::list(false, directory_absolute_path_option, Some(types::FileKind::Directory))
+            .into_file_explorer()
+            .into_tree()
+            .into_iter()
+            .map(|node| FileExplorerNode {
+                index_path: current_node
+                    .index_path
+                    .to_owned()
+                    .into_iter()
+                    .chain(node.index_path.into_iter())
+                    .collect(),
+                ..node
+            })
+            .collect();
         let updated_node = FileExplorerNode {
             children: next_children,
             is_expanded: true,
@@ -105,20 +98,14 @@ impl FileExplorer {
         self.tree = updated_tree;
     }
 
-    fn find_checked_nodes(
-        &self,
-        in_node_option: Option<FileExplorerNode>,
-    ) -> Vec<FileExplorerNode> {
+    fn find_checked_nodes(&self, in_node_option: Option<FileExplorerNode>) -> Vec<FileExplorerNode> {
         let nodes = match in_node_option {
             Some(node) => node.children,
             None => self.tree.to_owned(),
         };
 
-        let checked_nodes: Vec<FileExplorerNode> = nodes
-            .to_owned()
-            .into_iter()
-            .filter(|node| node.is_checked)
-            .collect();
+        let checked_nodes: Vec<FileExplorerNode> =
+            nodes.to_owned().into_iter().filter(|node| node.is_checked).collect();
 
         let children_checked_nodes: Vec<FileExplorerNode> = nodes
             .to_owned()
@@ -134,11 +121,7 @@ impl FileExplorer {
             .collect();
     }
 
-    fn find_node(
-        &self,
-        index_path: Vec<usize>,
-        in_node_option: Option<FileExplorerNode>,
-    ) -> FileExplorerNode {
+    fn find_node(&self, index_path: Vec<usize>, in_node_option: Option<FileExplorerNode>) -> FileExplorerNode {
         let index = index_path.get(0).unwrap().to_owned();
 
         let next_node = match in_node_option {
@@ -200,8 +183,7 @@ impl FileExplorer {
             is_checked: false,
             ..targeted_node.to_owned()
         };
-        let updated_tree =
-            self.replace_node(targeted_node.to_owned().index_path, updated_node, None);
+        let updated_tree = self.replace_node(targeted_node.to_owned().index_path, updated_node, None);
 
         self.tree = updated_tree;
     }

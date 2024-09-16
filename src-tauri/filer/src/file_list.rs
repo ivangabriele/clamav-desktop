@@ -25,33 +25,31 @@ impl FileList {
             .to_owned()
             .into_iter()
             .enumerate()
-            .filter_map(
-                |(index, pathbuf)| -> Option<file_explorer::FileExplorerNode> {
-                    let path_components: Vec<String> = pathbuf
-                        .components()
-                        .filter_map(|component| Some(component.as_os_str().to_str()?.to_string()))
-                        .collect();
+            .filter_map(|(index, pathbuf)| -> Option<file_explorer::FileExplorerNode> {
+                let path_components: Vec<String> = pathbuf
+                    .components()
+                    .filter_map(|component| Some(component.as_os_str().to_str()?.to_string()))
+                    .collect();
 
-                    // TODO Check for number errors.
-                    let depth = path_components.len() - 1;
-                    let drive = common::ok_or_return_none!(path_components.get(0)).to_owned();
-                    let name = common::ok_or_return_none!(path_components.last()).to_owned();
-                    let path = utils::normalize_path(path_components.join("/"));
+                // TODO Check for number errors.
+                let depth = path_components.len() - 1;
+                let drive = common::ok_or_return_none!(path_components.get(0)).to_owned();
+                let name = common::ok_or_return_none!(path_components.last()).to_owned();
+                let path = utils::normalize_path(path_components.join("/"));
 
-                    Some(file_explorer::FileExplorerNode {
-                        index_path: vec![index],
-                        children: file_explorer::FileExplorerTree::new(),
-                        depth,
-                        drive,
-                        is_checked: false,
-                        is_expanded: false,
-                        kind: self.get_file_kind_from_pathbuf(pathbuf),
-                        name,
-                        path,
-                        path_components,
-                    })
-                },
-            )
+                Some(file_explorer::FileExplorerNode {
+                    index_path: vec![index],
+                    children: file_explorer::FileExplorerTree::new(),
+                    depth,
+                    drive,
+                    is_checked: false,
+                    is_expanded: false,
+                    kind: self.get_file_kind_from_pathbuf(pathbuf),
+                    name,
+                    path,
+                    path_components,
+                })
+            })
             .collect();
 
         file_explorer::FileExplorer::new(tree)
@@ -121,16 +119,13 @@ where
                 true => "/**/*",
                 false => "/*",
             };
-            let pattern =
-                utils::normalize_path(format!("{}{}", directory_absolute_path, pattern_suffix));
+            let pattern = utils::normalize_path(format!("{}{}", directory_absolute_path, pattern_suffix));
 
             // https://github.com/rust-lang/glob is kind of a dead or dormant repository.
             // It doesn't give the option to avoid following synbolic links which may heavily impact this function performance
             // and forces us to deduplicate path strings.
             match glob(&*pattern) {
-                Ok(paths) => paths
-                    .filter_map(|pathbuf_result| pathbuf_result.ok())
-                    .collect(),
+                Ok(paths) => paths.filter_map(|pathbuf_result| pathbuf_result.ok()).collect(),
                 Err(..) => vec![],
             }
         }
@@ -186,11 +181,7 @@ where
     FileList::new(filtered_pathbufs)
 }
 
-pub fn count<S>(
-    is_recursive: bool,
-    maybe_directory_path: Option<S>,
-    maybe_file_kind: Option<types::FileKind>,
-) -> usize
+pub fn count<S>(is_recursive: bool, maybe_directory_path: Option<S>, maybe_file_kind: Option<types::FileKind>) -> usize
 where
     S: AsRef<str> + Display,
 {

@@ -7,16 +7,10 @@ use crate::debug;
 use super::*;
 
 fn filter_log(log: String) -> bool {
-    log.starts_with("Scanning ")
-        || log.ends_with(": Empty file")
-        || log.ends_with(": Access denied")
+    log.starts_with("Scanning ") || log.ends_with(": Empty file") || log.ends_with(": Access denied")
 }
 
-fn get_status_from_log(
-    log: String,
-    file_index: usize,
-    total_files_length: usize,
-) -> state::ScannerStatus {
+fn get_status_from_log(log: String, file_index: usize, total_files_length: usize) -> state::ScannerStatus {
     let progress = (file_index as f64 + f64::from(1)) / total_files_length as f64;
     let current_file_path: String;
     if log.starts_with("Scanning ") {
@@ -77,8 +71,7 @@ pub async fn handle_scanner_output(app_handle: AppHandle, total_files_length: us
             debug!("handle_scanner_output()", "Output: `{}`.", line);
 
             if filter_log(line.to_owned()) {
-                let next_status =
-                    get_status_from_log(line.to_owned(), file_index, total_files_length);
+                let next_status = get_status_from_log(line.to_owned(), file_index, total_files_length);
                 app_handle.emit_all("scanner:status", next_status).unwrap();
 
                 file_index += 1;

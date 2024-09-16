@@ -73,12 +73,7 @@ pub fn is_installed(program_name: String) -> bool {
     exec(command.to_string(), args).is_ok()
 }
 
-pub fn run<C, A, CB1, CB2>(
-    command: C,
-    args: Vec<A>,
-    stdout_callback: CB1,
-    stderr_callback: CB2,
-) -> ()
+pub fn run<C, A, CB1, CB2>(command: C, args: Vec<A>, stdout_callback: CB1, stderr_callback: CB2) -> ()
 where
     C: AsRef<str>,
     A: AsRef<str>,
@@ -126,12 +121,7 @@ where
             move |line| {
                 #[cfg(debug_assertions)]
                 {
-                    println!(
-                        "{} {} {}",
-                        "[DEBUG]".cyan(),
-                        "[cli::run()]".cyan(),
-                        line.underline()
-                    );
+                    println!("{} {} {}", "[DEBUG]".cyan(), "[cli::run()]".cyan(), line.underline());
                 }
 
                 stdout_callback(line_index, line);
@@ -171,12 +161,7 @@ where
 }
 
 #[cfg(not(tarpaulin_include))]
-pub fn run_in_thread<C, A, CB1, CB2>(
-    command: C,
-    args: Vec<A>,
-    stdout_callback: CB1,
-    stderr_callback: CB2,
-) -> ()
+pub fn run_in_thread<C, A, CB1, CB2>(command: C, args: Vec<A>, stdout_callback: CB1, stderr_callback: CB2) -> ()
 where
     C: AsRef<str> + 'static + std::marker::Send,
     A: AsRef<str> + 'static + std::marker::Send,

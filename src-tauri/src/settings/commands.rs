@@ -37,10 +37,7 @@ pub async fn load_settings_state(app_handle: AppHandle) -> Result<(), ()> {
         Some(clamd_conf_file_path) => match fs::read_to_string(clamd_conf_file_path).await {
             Ok(clamd_conf_file_source) => Some(clamd_conf_file_source),
             Err(_) => {
-                error!(
-                    "load_settings_state()",
-                    "Could not read `{}`.", clamd_conf_file_path
-                );
+                error!("load_settings_state()", "Could not read `{}`.", clamd_conf_file_path);
 
                 None
             }
