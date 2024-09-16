@@ -1,5 +1,5 @@
 use std::sync::atomic::Ordering;
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 use tokio::io::{AsyncBufReadExt, BufReader};
 
 use crate::debug;
@@ -72,7 +72,7 @@ pub async fn handle_scanner_output(app_handle: AppHandle, total_files_length: us
 
             if filter_log(line.to_owned()) {
                 let next_status = get_status_from_log(line.to_owned(), file_index, total_files_length);
-                app_handle.emit_all("scanner:status", next_status).unwrap();
+                app_handle.emit("scanner:status", next_status).unwrap();
 
                 file_index += 1;
             }
@@ -85,7 +85,7 @@ pub async fn handle_scanner_output(app_handle: AppHandle, total_files_length: us
 #[cfg(not(tarpaulin_include))]
 pub fn reset_status(app_handle: &AppHandle) -> () {
     app_handle
-        .emit_all("scanner:status", state::ScannerStatus::default())
+        .emit("scanner:status", state::ScannerStatus::default())
         .expect("Failed to emit `scanner:status` event.");
 }
 
@@ -112,7 +112,7 @@ pub async fn update_public_state(
     }
 
     app_handle
-        .emit_all("scanner:state", public_state_mutex_guard.clone())
+        .emit("scanner:state", public_state_mutex_guard.clone())
         .expect("Failed to emit `scanner:state` event.");
 }
 
@@ -130,6 +130,6 @@ pub async fn update_status(
     };
 
     app_handle
-        .emit_all("scanner:status", next_status)
+        .emit("scanner:status", next_status)
         .expect("Failed to emit `scanner:status` event.");
 }
