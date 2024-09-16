@@ -43,26 +43,17 @@ apt-get update
 
 ################################################################################
 # Install Tauri build dependencies
-# https://tauri.app/v1/guides/getting-started/prerequisites#setting-up-linux
+# https://v2.tauri.app/start/prerequisites/#linux
 apt install -y \
-    build-essential \
-    curl \
-    wget \
-    file \
-    libssl-dev \
-    libgtk-3-dev \
-    libayatana-appindicator3-dev \
-    librsvg2-dev
-
-if [[ "${OS_VERSION%%.*}" -ge 24 ]]; then
-    echo "deb http://archive.ubuntu.com/ubuntu jammy main" | tee /etc/apt/sources.list.d/jammy.list
-    apt-get update
-    apt-get install -y libwebkit2gtk-4.0-dev
-    rm /etc/apt/sources.list.d/jammy.list
-    apt-get update
-else
-    apt install -y libwebkit2gtk-4.0-dev
-fi
+  build-essential \
+  curl \
+  file \
+  libayatana-appindicator3-dev \
+  librsvg2-dev \
+  libssl-dev \
+  libwebkit2gtk-4.1-dev \
+  libxdo-dev \
+  wget
 
 ################################################################################
 # Install ClamAV build dependencies
