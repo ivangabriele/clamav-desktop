@@ -1,4 +1,5 @@
-use tauri::{api::process::Command, AppHandle};
+use tauri::AppHandle;
+use tauri_plugin_shell::ShellExt;
 
 use crate::{debug, error, globals};
 
@@ -32,7 +33,7 @@ pub async fn start_copilot_checklist(app_handle: AppHandle) -> Result<(), ()> {
                 state::set_public_state_current_checklist_progress(&app_handle, next_checklist_progress, false).await;
                 state::set_public_state_current_checklist_item(&app_handle, Some(checklist_item), true).await;
 
-                let result = check_sidecar("clamscan").await;
+                let result = check_sidecar(&app_handle, "clamscan").await;
                 match result {
                     Ok(_) => (),
                     Err(error_message) => {
@@ -53,7 +54,7 @@ pub async fn start_copilot_checklist(app_handle: AppHandle) -> Result<(), ()> {
                 state::set_public_state_current_checklist_progress(&app_handle, next_checklist_progress, false).await;
                 state::set_public_state_current_checklist_item(&app_handle, Some(checklist_item), true).await;
 
-                let result = check_sidecar("freshclam").await;
+                let result = check_sidecar(&app_handle, "freshclam").await;
                 match result {
                     Ok(_) => (),
                     Err(error_message) => {
@@ -95,10 +96,10 @@ pub async fn start_copilot_checklist(app_handle: AppHandle) -> Result<(), ()> {
     Ok(())
 }
 
-async fn check_sidecar(sidecar: &str) -> Result<(), String> {
+async fn check_sidecar(app_handle: &AppHandle, sidecar: &str) -> Result<(), String> {
     debug!("check_sidecar()", "Function call.");
 
-    let result = Command::new_sidecar(sidecar);
+    let result = app_handle.shell().sidecar(sidecar);
     match result {
         Ok(command) => {
             let result = command.args(["--help"]).spawn();

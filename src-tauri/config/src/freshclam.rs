@@ -132,25 +132,27 @@ impl Config {
 
                 // Include an optional signature database.
                 "ExtraDatabase" => {
-                    let entry = config.config_map.entry(key.clone()).or_insert_with(|| {
-                        constants::ConfigValue::StringListVal(Vec::new())
-                    });
+                    let entry = config
+                        .config_map
+                        .entry(key.clone())
+                        .or_insert_with(|| constants::ConfigValue::StringListVal(Vec::new()));
                     if let constants::ConfigValue::StringListVal(vals) = entry {
                         vals.push(value.to_string());
                     }
                     continue;
-                },
+                }
 
                 // Exclude a standard signature database.
                 "ExcludeDatabase" => {
-                    let entry = config.config_map.entry(key.clone()).or_insert_with(|| {
-                        constants::ConfigValue::StringListVal(Vec::new())
-                    });
+                    let entry = config
+                        .config_map
+                        .entry(key.clone())
+                        .or_insert_with(|| constants::ConfigValue::StringListVal(Vec::new()));
                     if let constants::ConfigValue::StringListVal(vals) = entry {
                         vals.push(value.to_string());
                     }
                     continue;
-                },
+                }
 
                 _ => constants::ConfigValue::StringVal(value.to_string()),
             };
@@ -184,7 +186,7 @@ impl Config {
                     for val in vals {
                         writeln!(file, "{} \"{}\"", key, val)?;
                     }
-                },
+                }
                 _ => {
                     writeln!(file, "{} {}", key, value.to_string())?;
                 }

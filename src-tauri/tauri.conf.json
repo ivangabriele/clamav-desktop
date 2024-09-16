@@ -1,101 +1,75 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeBuildCommand": "yarn prebuild",
     "beforeDevCommand": "yarn predev",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": false
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "ClamAV Desktop",
-    "version": "0.3.24"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": true,
-      "shell": {
-        "sidecar": true,
-        "scope": [
-          {
-            "name": "../sidecars/target/release/clamd",
-            "sidecar": true,
-            "args": true
-          },
-          {
-            "name": "../sidecars/target/release/clamscan",
-            "sidecar": true,
-            "args": true
-          },
-          {
-            "name": "../sidecars/target/release/freshclam",
-            "sidecar": true,
-            "args": true
-          }
-        ]
-      }
+  "bundle": {
+    "active": true,
+    "category": "Utility",
+    "copyright": "© 2022-present Ivan Gabriele",
+    "targets": "all",
+    "externalBin": ["sidecars/clamd", "sidecars/clamscan", "sidecars/freshclam"],
+    "icon": [
+      "../assets/icons/32x32.png",
+      "../assets/icons/128x128.png",
+      "../assets/icons/128x128@2x.png",
+      "../assets/icons/icon.icns",
+      "../assets/icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     },
-    "bundle": {
-      "active": true,
-      "category": "Utility",
-      "copyright": "© 2022-present Ivan Gabriele",
+    "longDescription": "ClamAV Desktop is a free and open-source GUI for ClamAV antivirus.\n\nPlease file your bugs (and only your bugs!) at: https://github.com/ivangabriele/clamav-desktop/issues.\n\nFor your questions and suggestions: https://github.com/ivangabriele/clamav-desktop/discussions.\n\nBe aware that ClamAV Desktop is neither endorsed nor part of official Cisco-Talos projects.",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "publisher": "Ivan Gabriele",
+    "resources": ["resources/*"],
+    "shortDescription": "ClamAV Desktop",
+    "linux": {
       "deb": {
         "depends": ["pkexec", "policykit-1"],
         "desktopTemplate": "./embeds/deb/template.desktop",
         "files": {
           "/usr/share/polkit-1/actions/com.clamav-desktop.app.policy": "./embeds/deb/com.clamav-desktop.app.policy"
         }
-      },
-      "externalBin": ["sidecars/clamd", "sidecars/clamscan", "sidecars/freshclam"],
-      "icon": [
-        "../assets/icons/32x32.png",
-        "../assets/icons/128x128.png",
-        "../assets/icons/128x128@2x.png",
-        "../assets/icons/icon.icns",
-        "../assets/icons/icon.ico"
-      ],
-      "identifier": "com.clamav-desktop.app",
-      "longDescription": "ClamAV Desktop is a free and open-source GUI for ClamAV antivirus.\n\nPlease file your bugs (and only your bugs!) at: https://github.com/ivangabriele/clamav-desktop/issues.\n\nFor your questions and suggestions: https://github.com/ivangabriele/clamav-desktop/discussions.\n\nBe aware that ClamAV Desktop is neither endorsed nor part of official Cisco-Talos projects.",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "publisher": "Ivan Gabriele",
-      "resources": ["resources/*"],
-      "shortDescription": "ClamAV Desktop",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
       }
-    },
-    "pattern": {
-      "use": "brownfield"
-    },
-    "security": {
-      "csp": null
-    },
-    "systemTray": {
+    }
+  },
+  "productName": "ClamAV Desktop",
+  "mainBinaryName": "ClamAV Desktop",
+  "version": "0.3.24",
+  "identifier": "com.clamav-desktop.app",
+  "plugins": {},
+  "app": {
+    "withGlobalTauri": false,
+    "trayIcon": {
       "iconPath": "../assets/icons/icon.png",
       "iconAsTemplate": true
-    },
-    "updater": {
-      "active": false
     },
     "windows": [
       {
         "decorations": false,
-        "fileDropEnabled": false,
         "height": 496,
         "label": "main",
         "resizable": false,
         "title": "ClamAV Desktop",
         "width": 800
       }
-    ]
+    ],
+    "security": {
+      "csp": null,
+      "pattern": {
+        "use": "brownfield"
+      }
+    }
   }
 }

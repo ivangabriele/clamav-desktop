@@ -1,6 +1,6 @@
 use futures_util::{SinkExt, StreamExt};
 use std::process::Stdio;
-use tauri::{AppHandle, Manager, State};
+use tauri::{AppHandle, State};
 use tokio::process::Command;
 use tokio_tungstenite::{
     connect_async,
@@ -17,6 +17,8 @@ pub async fn get_dashboard_state(
     app_handle: AppHandle,
     shared_state: State<'_, state::DashboardSharedState>,
 ) -> Result<(), ()> {
+    use tauri::Emitter;
+
     debug!("get_dashboard_state()", "Command call.");
 
     let url = Uri::from_static("ws://127.0.0.1:7878");
@@ -53,7 +55,7 @@ pub async fn get_dashboard_state(
                 status,
             };
             *public_state_mutex_guard = next_public_state.clone();
-            app_handle.emit_all("dashboard:state", &next_public_state).unwrap();
+            app_handle.emit("dashboard:state", &next_public_state).unwrap();
 
             return Ok(());
         }

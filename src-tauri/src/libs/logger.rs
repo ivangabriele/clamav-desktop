@@ -24,14 +24,7 @@ pub async fn write_log_message(log_file_name: &str, scope: &str, message: &str) 
         .append(true)
         .open(log_file_path_as_str)
         .expect(format!("Failed to open `{}` file.", log_file_path_as_str).as_str());
-    writeln!(
-        log_file,
-        "{},{},{}",
-        Utc::now().to_rfc3339(),
-        scope,
-        message
-    )
-    .expect("Failed to write to log file.");
+    writeln!(log_file, "{},{},{}", Utc::now().to_rfc3339(), scope, message).expect("Failed to write to log file.");
 }
 
 /// Log a debug message.

@@ -37,7 +37,7 @@ jobs:
     name: Test Core (debian-latest)
     runs-on: ubuntu-latest
     container:
-      image: ivangabriele/tauri:debian-bookworm-18
+      image: ivangabriele/tauri:debian-bookworm-22
       options: --security-opt seccomp=unconfined
     env:
       PROJECT_ROOT_PATH: /__w/clamav-desktop/clamav-desktop
