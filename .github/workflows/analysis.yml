@@ -52,7 +52,7 @@ jobs:
     name: Cargo Audit
     runs-on: 'ubuntu-latest'
     container:
-      image: ivangabriele/tauri:debian-bookworm-18
+      image: ivangabriele/tauri:debian-bookworm-22
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
