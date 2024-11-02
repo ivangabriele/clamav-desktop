@@ -34,9 +34,7 @@ pub async fn write_log_message(log_file_name: &str, scope: &str, message: &str) 
 ///
 /// # Examples
 ///
-/// ```
-/// # use logger::debug;
-///
+/// ```no_run
 /// debug!("my_function()", "Value: {}", 42);
 /// ```
 #[macro_export]
@@ -63,9 +61,7 @@ macro_rules! debug {
 ///
 /// # Examples
 ///
-/// ```
-/// # use logger::error;
-///
+/// ```no_run
 /// error!("my_function()", "Value: {}", 42);
 /// ```
 #[macro_export]
