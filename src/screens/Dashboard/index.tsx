@@ -24,7 +24,7 @@ export function Dashboard() {
   }, [])
 
   useEffect(() => {
-    invoke('get_dashboard_state')
+    // invoke('get_dashboard_state')
 
     listen<Core.DashboardState>('dashboard:state', event => {
       setState(event.payload)
