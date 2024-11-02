@@ -3,6 +3,9 @@ use std::{path::PathBuf, sync::LazyLock};
 use serde::{Deserialize, Serialize};
 use tokio::sync::Mutex;
 
+pub const MAIN_WINDOW_LABEL: &str = "main";
+pub const MAIN_TRAY_ICON_ID: &str = "MAIN_TRAY_ICON";
+
 pub static CONFIG_DIRECTORY_PATH: LazyLock<Mutex<PathBuf>> = LazyLock::new(|| Mutex::new(PathBuf::new()));
 pub static LOCAL_DATA_DIRECTORY_PATH: LazyLock<Mutex<PathBuf>> = LazyLock::new(|| Mutex::new(PathBuf::new()));
 pub static LOG_DIRECTORY_PATH: LazyLock<Mutex<PathBuf>> = LazyLock::new(|| Mutex::new(PathBuf::new()));
