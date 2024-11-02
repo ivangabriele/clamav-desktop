@@ -37,7 +37,7 @@ function getRelativePathToRoot(filePath) {
  * @param {string} expectedPermission
  */
 async function checkPermission(filePath, expectedPermission) {
-  B.log('[lint_permissions]', `Checking permissions for \`${filePath}\`...`)
+  B.log('[lint_permissions.js]', `Checking permissions for \`${filePath}\`...`)
 
   const stats = await stat(filePath)
   const currentPermission = (stats.mode & 0o777).toString(8) // Extract the permission part
@@ -77,16 +77,16 @@ async function checkDirectories() {
 }
 
 async function checkPermissions() {
-  B.log('[lint_permissions]', 'Checking executable files...')
+  B.log('[lint_permissions.js]', 'Checking executable files...')
   await checkFiles(EXECUTABLE_FILE_PATHS, EXECUTABLE_FILE_PERMISSION)
 
-  B.log('[lint_permissions]', 'Checking sensitive files...')
+  B.log('[lint_permissions.js]', 'Checking sensitive files...')
   await checkFiles(SENSITIVE_FILE_PATHS, SENSITIVE_FILE_PERMISSION)
 
-  B.log('[lint_permissions]', 'Checking temporary files...')
+  B.log('[lint_permissions.js]', 'Checking temporary files...')
   await checkFiles(TEMPORARY_FILE_PATHS, TEMPORARY_FILE_PERMISSION)
 
-  B.log('[lint_permissions]', 'Checking normal files...')
+  B.log('[lint_permissions.js]', 'Checking normal files...')
   const allFiles = await globby(['**/*'], {
     gitignore: true,
     ignore: [...EXECUTABLE_FILE_PATHS, ...SENSITIVE_FILE_PATHS, ...TEMPORARY_FILE_PATHS, ...IGNORED_FILE_PATHS],
@@ -97,10 +97,10 @@ async function checkPermissions() {
     await checkPermission(filePath, DEFAULT_FILE_PERMISSION)
   }
 
-  B.log('[lint_permissions]', 'Checking directories...')
+  B.log('[lint_permissions.js]', 'Checking directories...')
   await checkDirectories()
 
-  B.info('[lint_permissions]', 'Permission check completed.')
+  B.info('[lint_permissions.js]', 'Permission check completed.')
 }
 
 /**
@@ -109,18 +109,18 @@ async function checkPermissions() {
  */
 function printWrongPermissions(wrongPermissionRecordsByPath, shouldFix) {
   if (WRONG_PERMISSION_RECORDS.length === 0) {
-    B.success('[lint_permissions]', 'All files have correct permissions.')
+    B.success('[lint_permissions.js]', 'All files have correct permissions.')
 
     return
   }
 
-  B.error('[lint_permissions]', 'Some files have wrong permissions:')
+  B.error('[lint_permissions.js]', 'Some files have wrong permissions:')
   console.info()
   console.table(wrongPermissionRecordsByPath, ['currentPermission', 'expectedPermission', 'relativePath'])
   console.info()
 
   if (!shouldFix) {
-    B.info('[lint_permissions]', 'Run "yarn test:perms --fix" to automatically fix these permissions.')
+    B.info('[lint_permissions.js]', 'Run "yarn test:perms --fix" to automatically fix these permissions.')
   }
 }
 
@@ -129,21 +129,21 @@ function printWrongPermissions(wrongPermissionRecordsByPath, shouldFix) {
  */
 async function fixPermissions(wrongPermissionRecordsByPath) {
   if (WRONG_PERMISSION_RECORDS.length === 0) {
-    B.info('[lint_permissions]', 'Nothing to fix. All files have correct permissions.')
+    B.info('[lint_permissions.js]', 'Nothing to fix. All files have correct permissions.')
 
     return
   }
 
-  B.info('[lint_permissions]', 'Fixing permissions...')
+  B.info('[lint_permissions.js]', 'Fixing permissions...')
   for (const { absolutePath, currentPermission, expectedPermission, relativePath } of wrongPermissionRecordsByPath) {
     B.info(
-      '[lint_permissions]',
+      '[lint_permissions.js]',
       `Fixing permissions from \`${currentPermission}\` to \`${expectedPermission}\` for \`${relativePath}\`...`,
     )
     await chmod(absolutePath, expectedPermission)
   }
 
-  B.success('[lint_permissions]', 'Permissions successfully fixed.')
+  B.success('[lint_permissions.js]', 'Permissions successfully fixed.')
 }
 
 const shouldFix = process.argv.includes('--fix')

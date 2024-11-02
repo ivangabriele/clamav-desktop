@@ -5636,6 +5636,7 @@ __metadata:
     decompress: "npm:4.2.1"
     del: "npm:8.0.0"
     download: "npm:8.0.0"
+    env-paths: "npm:3.0.0"
     esm-path: "npm:1.0.1"
     execa: "npm:9.5.3"
     fs-extra: "npm:11.3.0"
@@ -6691,6 +6692,13 @@ __metadata:
   version: 4.5.0
   resolution: "entities@npm:4.5.0"
   checksum: 10/ede2a35c9bce1aeccd055a1b445d41c75a14a2bb1cd22e242f20cf04d236cdcd7f9c859eb83f76885327bfae0c25bf03303665ee1ce3d47c5927b98b0e3e3d48
+  languageName: node
+  linkType: hard
+
+"env-paths@npm:3.0.0":
+  version: 3.0.0
+  resolution: "env-paths@npm:3.0.0"
+  checksum: 10/b2b0a0d0d9931a13d279c22ed94d78648a1cc5f408f05d47ff3e0c1616f0aa0c38fb33deec5e5be50497225d500607d57f9c8652c4d39c2f2b7608cd45768128
   languageName: node
   linkType: hard
 
