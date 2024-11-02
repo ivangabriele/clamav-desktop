@@ -2,14 +2,14 @@ import { B } from 'bhala'
 import { $ } from 'execa'
 import which from 'which'
 
-B.log('[Post Install Script] Checking required dependencies...')
+B.log('[post_install.js] Checking required dependencies...')
 try {
   which.sync('ggshield')
 } catch (_err) {
   B.warn(
-    '[Post Install Script] ggshield is not installed, please install it: https://github.com/GitGuardian/ggshield#installation.',
+    '[post_install.js] ggshield is not installed, please install it: https://github.com/GitGuardian/ggshield#installation.',
   )
 }
 
-B.log('[Post Install Script] Installing Git hooks (husky)...')
+B.log('[post_install.js] Installing Git hooks (husky)...')
 $`yarn husky`
