@@ -2,20 +2,21 @@
 
 - [Personal Note](#personal-note)
 - [Getting started](#getting-started)
-  - [Requirements](#requirements)
+  - [Mandatory Requirements](#mandatory-requirements)
+  - [Optional Requirements](#optional-requirements)
+    - [Debian-based OS](#debian-based-os)
   - [First setup](#first-setup)
     - [1. Git (with submodules)](#1-git-with-submodules)
-    - [2. Webview with Yarn v3](#2-webview-with-yarn-v3)
-    - [3. Core with Tauri \& tauri-driver](#3-core-with-tauri--tauri-driver)
-    - [4. Final Check](#4-final-check)
-    - [5. Optional requirements](#5-optional-requirements)
-      - [Debian-based OS](#debian-based-os)
+    - [2. Webview](#2-webview)
+    - [3. Core](#3-core)
+    - [4. Run Check](#4-run-check)
+    - [5. Core \& E2E Testing](#5-core--e2e-testing)
   - [Local development](#local-development)
 - [Build a release](#build-a-release)
   - [Binary (standalone)](#binary-standalone)
   - [Debian-based OS (deb)](#debian-based-os-deb)
   - [macOS (dmg)](#macos-dmg)
-  - [Windows 8+ (msi)](#windows-8-msi)
+  - [Windows 10+ (msi)](#windows-10-msi)
 - [Tests](#tests)
   - [Core unit tests](#core-unit-tests)
   - [Webview unit tests](#webview-unit-tests)
@@ -52,14 +53,28 @@ installation.
 
 ## Getting started
 
-### Requirements
+### Mandatory Requirements
 
-- [Node.js](https://nodejs.org) or [nvm](https://github.com/nvm-sh/nvm#installing-and-updating): v18
-- [Yarn](https://yarnpkg.com/getting-started/install): v1  
-  _(we actually use Yarn v4 but it's bundled in all the latest Yarn v1 releases)_
-- [Rust](https://www.rust-lang.org/tools/install): v1
-- [clamav](https://github.com/Cisco-Talos/clamav): binaries must be available as global commands (PATH)
-- make: v4
+- [Node.js v22](https://nodejs.org) or [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- [Yarn](https://yarnpkg.com/getting-started/install)
+- [Rust](https://www.rust-lang.org/tools/install)
+- [Tauri v2 Prerequisities](https://v2.tauri.app/start/prerequisites/)
+- make v4
+
+### Optional Requirements
+
+- [cargo-deb](https://github.com/kornelski/cargo-deb#installation) for debian bundle packaging.
+- [cargo-edit](https://github.com/killercup/cargo-edit). for `cargo upgrade`-related commands (i.e.: `make upgrade`)
+- [cargo-watch](https://github.com/watchexec/cargo-watch#install)
+  for `cargo watch`-related commands (i.e.: `make test-*-watch`).
+- [ggshield](https://github.com/GitGuardian/ggshield#installation) for `yarn test:sec` command.
+
+#### Debian-based OS
+
+- [nsis](https://nsis.sourceforge.io/Main_Page):
+  ```sh
+  sudo apt-get install nsis
+  ```
 
 ### First setup
 
@@ -73,77 +88,68 @@ Then run:
 ```sh
 git clone https://github.com/ivangabriele/clamav-desktop.git # or your fork
 cd ./clamav-desktop
-yarn setup # to init, install and update Husky hooks / Git submodules
 ```
 
-#### 2. Webview with Yarn v3
-
-You may need to intall SDKs for your IDE/editor to handle Yarn v3: https://yarnpkg.com/getting-started/editor-sdks
-(i.e.: `yarn dlx @yarnpkg/sdks vscode` if you're using VSCode).
-
-Once you're ready, you can run:
+#### 2. Webview
 
 ```sh
-cd .. # if you are still in `./src-tauri` directory
 yarn
 ```
 
-#### 3. Core with Tauri & tauri-driver
+#### 3. Core
 
-To check the requirements related to Tauri, WebKitWebDriver (Linux) amd tauri-driver installations, please check:
+You will to not only have to build ClamAV Desktop itself but also ClamAV binaries as well as the ClamAV Desktop Daemon.
 
-- [Tauri Installation Guide](https://tauri.app/v1/guides/getting-started/prerequisites/#installing)
-- [Tauri WebDriver System Dependencies](https://tauri.app/v1/guides/testing/webdriver/introduction/#system-dependencies)
-- [Tauri WebDriver CI Guide](https://tauri.app/v1/guides/testing/webdriver/ci/)
+I tried to simplify all these processes with automated command that will hopefully work as is:
 
-> [!WARNING]  
-> If you're under Ubuntu v24, there is a [known issue](<[libwebkit2gtk-4.0-dev](https://github.com/tauri-apps/tauri/issues/9662)>) with `libwebkit2gtk-4.0-dev`.
-> You can follow this workaround in the meantime:
->
-> ```sh
-> echo "deb http://archive.ubuntu.com/ubuntu jammy main" | sudo tee /etc/apt/sources.list.d/jammy.list
-> sudo apt update
-> sudo apt install libwebkit2gtk-4.0-dev
-> sudo rm /etc/apt/sources.list.d/jammy.list
-> sudo apt update
-> ```
->
-> It's not ideal but seem acceptable **only** for development purposes.
+- **Debian:**
+  - Setup automated ClamAV binaries build: `sudo make setup-debian`
+  - Uninstall if exists, build, install and start ClamAV Desktop Daemon service: `yarn dev:daemon:linux`
+- **macOS:**
+  - Setup automated ClamAV binaries build: `sudo make setup-macos`
+  - Uninstall if exists, build, install and start ClamAV Desktop Daemon service: `yarn dev:daemon:macos`
+- **Windows:**
+  - No need to setup ClamAV binaries build on Windows for now
+    since their official standalone bundles are directly downloaded from their Github repository.
+  - Uninstall if exists, build, install and start ClamAV Desktop Daemon service: `yarn dev:daemon:windows`
 
-Once you're ready, you can run:
+Once you're ready, you can copy the custom Core dev config file:
 
 ```sh
-cargo install tauri-driver
-cd ./src-tauri
-cp ./.cargo/config.toml.example ./.cargo/config.toml # and customize the content to match your local environment
-cargo build
+cp ./src-tauri/.cargo/config.toml.example ./src-tauri/.cargo/config.toml
 ```
 
-#### 4. Final Check
+and customize the content to match your local environment.
+
+> [!TIP]  
+> If you want to check that your Core builds separately from the webview,
+> you can just run `cd ./src-tauri && cargo build`.
+
+#### 4. Run Check
 
 You should now be able to run `yarn dev` which will launch the application (serving first the Webview on port 1420 and
 then launching the Core desktop app embedding this Webview).
 
-#### 5. Optional requirements
+#### 5. Core & E2E Testing
 
-- [cargo-deb](https://github.com/kornelski/cargo-deb#installation) for debian bundle packaging.
-- [cargo-edit](https://github.com/killercup/cargo-edit). for `cargo upgrade`-related commands (i.e.: `make upgrade`)
-- [cargo-watch](https://github.com/watchexec/cargo-watch#install) for `cargo watch`-related commands (i.e.:
-  `make test-*-watch`).
-- [ggshield](https://github.com/GitGuardian/ggshield#installation) for `yarn test:sec` command.
+First check and install the requirements related to WebDriver:
 
-##### Debian-based OS
+- [Tauri WebDriver Documentation](https://v2.tauri.app/develop/tests/webdriver/)
+- [Tauri WebDriver Documentation for CI](https://v2.tauri.app/develop/tests/webdriver/ci/)
 
-- [nsis](https://nsis.sourceforge.io/Main_Page):
-  ```sh
-  sudo apt-get install nsis
-  ```
+Once you're ready, you can check core & e2e tests by running:
+
+```sh
+yarn test:unit:core # or `make test`
+yarn test:e2e
+```
 
 ### Local development
 
 This will watch for file changes and automatically re-hydrate the webapp on the go:
 
 ```sh
+yarn dev:daemon:[linux|macos|windows] # if updated
 yarn dev
 ```
 
@@ -171,7 +177,7 @@ yarn bundle:deb
 yarn bundle:dmg
 ```
 
-### Windows 8+ (msi)
+### Windows 10+ (msi)
 
 ```sh
 yarn bundle:msi:arch64
