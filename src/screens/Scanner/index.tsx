@@ -1,10 +1,13 @@
 import { FileManagerModule } from '@core/FileManager'
 import type { FileManager } from '@core/FileManager/types'
-import { noop } from '@utils/noop'
+import { ScannerModule } from '@core/Scanner'
+import { useCoreStateHub } from '@libs/CoreStateHub/useCoreStateHub'
 import { useCallback, useEffect, useState } from 'react'
 import { ScannerScreenComponent } from './Component'
 
 export function Scanner() {
+  const scannerState = useCoreStateHub('scanner')
+
   const [fileExplorerRootFilePaths, setFileExplorerRootFilePaths] = useState<FileManager.FilePath[] | undefined>(
     undefined,
   )
@@ -20,6 +23,14 @@ export function Scanner() {
     setFileExplorerRootFilePaths(coreFilePaths)
   }, [getDirectoryFilePaths])
 
+  const startScanner = useCallback(() => {
+    ScannerModule.startScanner(fileExplorerSelectedPaths)
+  }, [fileExplorerSelectedPaths])
+
+  const stopScanner = useCallback(() => {
+    ScannerModule.stopScanner()
+  }, [])
+
   useEffect(() => {
     initialize()
   }, [initialize])
@@ -30,9 +41,9 @@ export function Scanner() {
       fileExplorerRootPaths={fileExplorerRootFilePaths}
       onFileExporerChange={setFileExplorerSelectedPaths}
       onFileExporerExpand={getDirectoryFilePaths}
-      onScanStart={noop}
-      onScanStop={noop}
-      scannerState={undefined}
+      onScanStart={startScanner}
+      onScanStop={stopScanner}
+      scannerState={scannerState}
     />
   )
 }

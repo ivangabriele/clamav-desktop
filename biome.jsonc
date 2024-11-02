@@ -33,6 +33,26 @@
   },
   "overrides": [
     {
+      "include": ["./src/core/**/types.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["./*.ts", "./configs/**/*.js"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
       "include": ["./.storybook/**/*.ts", "./.storybook/**/*.tsx", "./src/stories/**/*.ts", "./src/stories/**/*.tsx"],
       "linter": {
         "rules": {
