@@ -12,7 +12,7 @@
     "build": "cd ./src-tauri && cargo build",
     "build:daemon": "cd ./daemon && cargo build",
     "build:webview": "vite build",
-    "bundle:bin": "tauri build -b none",
+    "bundle:bin": "tauri build --no-bundle",
     "bundle:deb": "tauri build -b deb",
     "bundle:deb:x32": "TARGET=i686-unknown-linux-gnu yarn bundle:deb --target i686-unknown-linux-gnu",
     "bundle:deb:x64": "TARGET=x86_64-unknown-linux-gnu yarn bundle:deb --target x86_64-unknown-linux-gnu",
