@@ -31,8 +31,8 @@ pub fn new_tray_icon<R: Runtime>(app_handle: &AppHandle<R>) -> tauri::Result<()>
             {
                 let window = tray
                     .app_handle()
-                    .get_window(globals::MAIN_TRAY_ICON_ID)
-                    .expect("Could not get window.");
+                    .get_window(globals::MAIN_WINDOW_LABEL)
+                    .expect(format!("Could not get window with label `{}`.", globals::MAIN_WINDOW_LABEL).as_str());
 
                 let _ = window.show();
                 let _ = window.set_focus();
