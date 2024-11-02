@@ -1,4 +1,4 @@
-import { invoke } from '@tauri-apps/api'
+import { invoke } from '@tauri-apps/api/core'
 import { listen } from '@tauri-apps/api/event'
 import { langs } from '@uiw/codemirror-extensions-langs'
 import CodeMirror from '@uiw/react-codemirror'
