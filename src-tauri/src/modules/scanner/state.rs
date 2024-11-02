@@ -27,6 +27,7 @@ pub struct ScannerPublicState {
     pub step: ScannerStatusStep,
 }
 impl ScannerPublicState {
+    #[allow(dead_code)]
     pub fn patch(&mut self, patch: ScannerPublicStatePatch) {
         if let Some(current_path) = patch.current_path {
             self.current_path = current_path;
@@ -77,6 +78,7 @@ pub async fn broadcast_state(app_handle: &AppHandle) {
         .unwrap();
 }
 
+#[allow(dead_code)]
 pub async fn patch_public_state(app_handle: &AppHandle, patch: ScannerPublicStatePatch) {
     let mut public_state_mutex_guard = app_handle.state::<ScannerSharedState>().inner().0.public.lock().await;
 
