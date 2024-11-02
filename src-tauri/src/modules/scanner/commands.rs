@@ -1,8 +1,10 @@
 use filer;
 use std::{str, sync};
 use tauri::{AppHandle, Emitter, Manager, State};
+use tauri_plugin_shell::{process::CommandEvent, ShellExt};
 
 use crate::debug;
+use crate::globals;
 
 use super::*;
 
@@ -26,8 +28,6 @@ pub async fn get_scanner_state(
 #[cfg(not(tarpaulin_include))]
 #[tauri::command]
 pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<(), ()> {
-    use tauri_plugin_shell::{process::CommandEvent, ShellExt};
-
     debug!("start_scanner()", "Command call.");
 
     state::set_public_state(
@@ -40,10 +40,17 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
     )
     .await;
 
+    let config_directory_path_mutex_guard = globals::CONFIG_DIRECTORY_PATH.lock().await;
+    let config_directory_path = config_directory_path_mutex_guard.clone();
+    let config_directory_path_as_str = config_directory_path
+        .to_str()
+        .expect("Could not convert `config_directory_path` to string.");
+
     debug!("start_scanner()", "Recursively listing files in {:?}...", paths);
     let args: Vec<String> = vec![
         // "clamscan".to_string(),
         "-rv".to_string(),
+        format!("--database={}", config_directory_path_as_str).to_string(),
         "--follow-dir-symlinks=0".to_string(),
         "--follow-file-symlinks=0".to_string(),
         // "--gen-json=yes".to_string(),
@@ -52,6 +59,7 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
     .into_iter()
     .chain(paths.to_owned().into_iter())
     .collect();
+    println!("{:?}", args);
 
     state::set_public_state(
         &app_handle,
@@ -111,22 +119,33 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
         .await;
     *child_mutex_guard = Some(child);
 
-    let app_handle_clone_for_log = app_handle.clone();
+    let app_handle_traveller = app_handle.clone();
     tauri::async_runtime::spawn(async move {
         let mut file_index: usize = 0;
         while let Some(event) = rx.recv().await {
-            if let CommandEvent::Stdout(line) = event {
+            if let CommandEvent::Stdout(ref line) = event {
                 let line_as_str = str::from_utf8(&line).expect("Failed to convert `line` to string.");
 
-                #[cfg(debug_assertions)]
-                {
-                    debug!("handle_scanner_output()", "Output: `{}`.", line_as_str);
-                }
+                debug!("CommandEvent::Stdout", "{}", line_as_str);
 
                 if utils::filter_log(line_as_str.to_owned()) {
                     let next_public_state =
                         utils::get_status_from_log(line_as_str.to_owned(), file_index, total_file_count);
-                    state::set_public_state(&app_handle_clone_for_log, next_public_state).await;
+                    state::set_public_state(&app_handle_traveller, next_public_state).await;
+
+                    file_index += 1;
+                }
+            }
+
+            if let CommandEvent::Stderr(ref line) = event {
+                let line_as_str = str::from_utf8(&line).expect("Failed to convert `line` to string.");
+
+                debug!("CommandEvent::Stderr", "{}", line_as_str);
+
+                if utils::filter_log(line_as_str.to_owned()) {
+                    let next_public_state =
+                        utils::get_status_from_log(line_as_str.to_owned(), file_index, total_file_count);
+                    state::set_public_state(&app_handle_traveller, next_public_state).await;
 
                     file_index += 1;
                 }
