@@ -71,8 +71,12 @@ export const CODE_MIRROR_THEME = createTheme({
 })
 
 export const INITIAL_SETTINGS_STATE: Core.SettingsState = {
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   clamd_conf_file_path: null,
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   clamd_conf_file_source: null,
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   is_ready: false,
+  // biome-ignore lint/style/useNamingConvention: <explanation>
   is_writing: false,
 }

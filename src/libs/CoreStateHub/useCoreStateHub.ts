@@ -1,18 +1,16 @@
-import { useEffect, useRef } from 'react'
-import { CoreStateHub } from '.'
+import { useEffect, useState } from 'react'
+import { coreStateHub } from '.'
+import type { CoreStateStore, CoreStateStoreKey } from './types'
 
 /**
  * Hook to initialize the CoreStateHub once the Core is ready.
  */
-export function useCoreStateHub(isCoreReady: boolean): void {
-  const coreStateHubRef = useRef<CoreStateHub | undefined>(undefined)
+export function useCoreStateHub<K extends CoreStateStoreKey>(key: K): CoreStateStore[K]['state'] {
+  const [state, setState] = useState<CoreStateStore[K]['state']>(undefined)
 
   useEffect(() => {
-    if (!isCoreReady || coreStateHubRef.current) {
-      return
-    }
+    coreStateHub.addListener<K>(key, setState)
+  }, [key])
 
-    coreStateHubRef.current = new CoreStateHub()
-    coreStateHubRef.current.init()
-  }, [isCoreReady])
+  return state
 }
