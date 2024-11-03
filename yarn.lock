@@ -3850,12 +3850,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.17.5":
-  version: 20.17.5
-  resolution: "@types/node@npm:20.17.5"
+"@types/node@npm:22.8.7":
+  version: 22.8.7
+  resolution: "@types/node@npm:22.8.7"
   dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10/2096b78696bab7d8e410609bbfdf0cad67dd02460bee98f457e0265c97e1587852ee0d17d806a9cfbff7b9183a3e9c2f95d6df0a18c56e708a36790d1d89084b
+    undici-types: "npm:~6.19.8"
+  checksum: 10/9c73d4cbcbf9773a5986421025c26d6139d8ab960317b3062fbb449c00dbe8197230334be550ffcdb6059bd25f4cb903546bace905155628537283a80c2075d5
   languageName: node
   linkType: hard
 
@@ -5507,7 +5507,7 @@ __metadata:
     "@types/fs-extra": "npm:11"
     "@types/jest": "npm:29.5.14"
     "@types/lodash.debounce": "npm:4.0.9"
-    "@types/node": "npm:20.17.5"
+    "@types/node": "npm:22.8.7"
     "@types/numeral": "npm:2.0.5"
     "@types/ramda": "npm:0.30.2"
     "@types/react": "npm:18.3.12"
@@ -12736,7 +12736,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.19.2":
+"undici-types@npm:~6.19.2, undici-types@npm:~6.19.8":
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
   checksum: 10/cf0b48ed4fc99baf56584afa91aaffa5010c268b8842f62e02f752df209e3dea138b372a60a963b3b2576ed932f32329ce7ddb9cb5f27a6c83040d8cd74b7a70
