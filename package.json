@@ -132,7 +132,7 @@
     "bhala": "3.0.4",
     "cross-env": "7.0.3",
     "decompress": "4.2.1",
-    "del": "7.1.0",
+    "del": "8.0.0",
     "download": "8.0.0",
     "esm-path": "1.0.1",
     "execa": "9.5.1",
