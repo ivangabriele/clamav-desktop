@@ -55,6 +55,29 @@ impl FileList {
         file_explorer::FileExplorer::new(tree)
     }
 
+    pub fn into_file_paths(&self) -> Vec<types::FilePath> {
+        self.pathbufs
+            .to_owned()
+            .into_iter()
+            .enumerate()
+            .filter_map(|(_index, pathbuf)| -> Option<types::FilePath> {
+                let path_components: Vec<String> = pathbuf
+                    .components()
+                    .filter_map(|component| Some(component.as_os_str().to_str()?.to_string()))
+                    .collect();
+
+                let name = common::ok_or_return_none!(path_components.last()).to_owned();
+                let path = utils::normalize_path(path_components.join("/"));
+
+                Some(types::FilePath {
+                    kind: self.get_file_kind_from_pathbuf(pathbuf),
+                    name,
+                    path,
+                })
+            })
+            .collect()
+    }
+
     pub fn into_strings(&self) -> Vec<String> {
         self.pathbufs
             .to_owned()
