@@ -7,7 +7,7 @@ publish = false
 [dependencies]
 colored = "2.1.0"
 common = { path = "../common" }
-tokio = { version = "1.40.0", features = ["full"] }
+tokio = { version = "1.41.0", features = ["full"] }
 
 [dev-dependencies]
 dev = { path = "../dev" }
