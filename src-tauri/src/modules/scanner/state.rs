@@ -20,14 +20,13 @@ pub struct ScannerPrivateState {
     pub should_stop: Arc<AtomicBool>,
 }
 
-#[derive(Clone, Debug, Default, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct ScannerPublicState {
     pub current_path: Option<String>,
     pub progress: Option<f64>,
     pub step: ScannerStatusStep,
 }
 impl ScannerPublicState {
-    #[allow(dead_code)]
     pub fn patch(&mut self, patch: ScannerPublicStatePatch) {
         if let Some(current_path) = patch.current_path {
             self.current_path = current_path;
@@ -63,7 +62,7 @@ pub enum ScannerStatusStep {
 // -----------------------------------------------------------------------------
 // Setters
 
-#[derive(Clone, Debug, Default, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct ScannerPublicStatePatch {
     pub current_path: Option<Option<String>>,
     pub progress: Option<Option<f64>>,

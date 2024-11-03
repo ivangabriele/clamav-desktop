@@ -4,6 +4,7 @@ use tauri::{AppHandle, Emitter, Manager, State};
 use tauri_plugin_shell::{process::CommandEvent, ShellExt};
 
 use crate::debug;
+use crate::error;
 use crate::globals;
 
 use super::*;
@@ -40,17 +41,17 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
     )
     .await;
 
-    let config_directory_path_mutex_guard = globals::CONFIG_DIRECTORY_PATH.lock().await;
-    let config_directory_path = config_directory_path_mutex_guard.clone();
-    let config_directory_path_as_str = config_directory_path
+    let local_data_directory_path_mutex_guard = globals::LOCAL_DATA_DIRECTORY_PATH.lock().await;
+    let local_data_directory_path = local_data_directory_path_mutex_guard.clone();
+    let local_data_directory_path_as_str = local_data_directory_path
         .to_str()
-        .expect("Could not convert `config_directory_path` to string.");
+        .expect("Could not convert `local_data_directory_path` to string.");
 
     debug!("start_scanner()", "Recursively listing files in {:?}...", paths);
     let args: Vec<String> = vec![
         // "clamscan".to_string(),
         "-rv".to_string(),
-        format!("--database={}", config_directory_path_as_str).to_string(),
+        format!("--database={}", local_data_directory_path_as_str).to_string(),
         "--follow-dir-symlinks=0".to_string(),
         "--follow-file-symlinks=0".to_string(),
         // "--gen-json=yes".to_string(),
@@ -126,7 +127,7 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
             if let CommandEvent::Stdout(ref line) = event {
                 let line_as_str = str::from_utf8(&line).expect("Failed to convert `line` to string.");
 
-                debug!("CommandEvent::Stdout", "{}", line_as_str);
+                debug!("start_scanner()", "{}", line_as_str);
 
                 if utils::filter_log(line_as_str.to_owned()) {
                     let next_public_state =
@@ -140,7 +141,7 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
             if let CommandEvent::Stderr(ref line) = event {
                 let line_as_str = str::from_utf8(&line).expect("Failed to convert `line` to string.");
 
-                debug!("CommandEvent::Stderr", "{}", line_as_str);
+                error!("start_scanner()", "{}", line_as_str);
 
                 if utils::filter_log(line_as_str.to_owned()) {
                     let next_public_state =
