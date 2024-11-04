@@ -27,9 +27,7 @@ export function Scanner() {
     ScannerModule.startScanner(fileExplorerSelectedPaths)
   }, [fileExplorerSelectedPaths])
 
-  const stopScanner = useCallback(() => {
-    ScannerModule.stopScanner()
-  }, [])
+  const stopScanner = useCallback(ScannerModule.stopScanner, [])
 
   useEffect(() => {
     initialize()

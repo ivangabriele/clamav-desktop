@@ -19,4 +19,12 @@ export namespace Scanner {
     /** Stopping (= has called `clamscan` CLI command). */
     Stopping = 'Stopping',
   }
+  export const SCANNER_STATUS_STEP_LABEL: Record<ScannerStatusStep, string> = {
+    [ScannerStatusStep.Counting]: 'Counting files...',
+    [ScannerStatusStep.Idle]: 'Idle',
+    [ScannerStatusStep.Listing]: 'Listing files...',
+    [ScannerStatusStep.Running]: 'Scanning files...',
+    [ScannerStatusStep.Starting]: 'Starting (it may be slow)...',
+    [ScannerStatusStep.Stopping]: 'Stopping...',
+  }
 }
