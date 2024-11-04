@@ -5,9 +5,11 @@ import type { FileManager } from '@core/FileManager/types'
 import { Scanner } from '@core/Scanner/types'
 import { ScanningSpinner } from '@elements/ScanningSpinner'
 import { ScreenBox } from '@layouts/ScreenBox'
+import numeral from 'numeral'
 import { MdClose, MdVerifiedUser } from 'react-icons/md'
 import styled from 'styled-components'
 import type { Promisable } from 'type-fest'
+import { shrinkPath } from './utils'
 
 export type ScannerScreenComponentProps = Readonly<{
   canScan: boolean
@@ -27,10 +29,7 @@ export function ScannerScreenComponent({
   onScanStop,
   scannerState,
 }: ScannerScreenComponentProps) {
-  if (
-    scannerState &&
-    [Scanner.ScannerStatusStep.Counting, Scanner.ScannerStatusStep.Running].includes(scannerState.step)
-  ) {
+  if (scannerState && scannerState.step !== Scanner.ScannerStatusStep.Idle) {
     return (
       <ScreenBox isCentered>
         <ScanningCancelButton onClick={onScanStop}>
@@ -38,8 +37,12 @@ export function ScannerScreenComponent({
         </ScanningCancelButton>
 
         <ScanningSpinner size={128} />
-        <ScanningStepText>Scanning files...</ScanningStepText>
-        <ScanningTargetText>{scannerState.current_path}</ScanningTargetText>
+        <ScanningStepText>
+          {Scanner.SCANNER_STATUS_STEP_LABEL[scannerState.step]}
+
+          {scannerState.progress && <> ({numeral(scannerState.progress).format('0.00%')})</>}
+        </ScanningStepText>
+        {scannerState.current_path && <ScanningTargetText>{shrinkPath(scannerState.current_path)}</ScanningTargetText>}
       </ScreenBox>
     )
   }
