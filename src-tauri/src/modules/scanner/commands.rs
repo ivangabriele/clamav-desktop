@@ -34,46 +34,13 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
     state::set_public_state(
         &app_handle,
         state::ScannerPublicState {
-            current_path: None,
-            progress: None,
             step: state::ScannerStatusStep::Listing,
-        },
-    )
-    .await;
-
-    let local_data_directory_path_mutex_guard = globals::LOCAL_DATA_DIRECTORY_PATH.lock().await;
-    let local_data_directory_path = local_data_directory_path_mutex_guard.clone();
-    let local_data_directory_path_as_str = local_data_directory_path
-        .to_str()
-        .expect("Could not convert `local_data_directory_path` to string.");
-
-    debug!("start_scanner()", "Recursively listing files in {:?}...", paths);
-    let args: Vec<String> = vec![
-        // "clamscan".to_string(),
-        "-rv".to_string(),
-        format!("--database={}", local_data_directory_path_as_str).to_string(),
-        "--follow-dir-symlinks=0".to_string(),
-        "--follow-file-symlinks=0".to_string(),
-        // "--gen-json=yes".to_string(),
-        // "--leave-temps".to_string(),
-    ]
-    .into_iter()
-    .chain(paths.to_owned().into_iter())
-    .collect();
-    println!("{:?}", args);
-
-    state::set_public_state(
-        &app_handle,
-        state::ScannerPublicState {
-            current_path: None,
-            progress: None,
-            step: state::ScannerStatusStep::Counting,
+            ..Default::default()
         },
     )
     .await;
 
     // Recursively count all the non-directory files within the selected paths
-    debug!("start_scanner()", "Recursively listing files in {:?}...", paths);
     let total_file_count = paths
         .to_owned()
         .into_iter()
@@ -91,6 +58,24 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
     )
     .await;
 
+    let local_data_directory_path_mutex_guard = globals::LOCAL_DATA_DIRECTORY_PATH.lock().await;
+    let local_data_directory_path = local_data_directory_path_mutex_guard.clone();
+    let local_data_directory_path_as_str = local_data_directory_path
+        .to_str()
+        .expect("Could not convert `local_data_directory_path` to string.");
+
+    let args: Vec<String> = vec![
+        // "clamscan".to_string(),
+        "-rv".to_string(),
+        format!("--database={}", local_data_directory_path_as_str).to_string(),
+        "--follow-dir-symlinks=0".to_string(),
+        "--follow-file-symlinks=0".to_string(),
+        // "--gen-json=yes".to_string(),
+        // "--leave-temps".to_string(),
+    ]
+    .into_iter()
+    .chain(paths.to_owned().into_iter())
+    .collect();
     let (mut rx, child) = app_handle
         .shell()
         .sidecar("clamscan")
@@ -152,6 +137,8 @@ pub async fn start_scanner(app_handle: AppHandle, paths: Vec<String>) -> Result<
                 }
             }
         }
+
+        state::set_public_state(&app_handle_traveller, state::ScannerPublicState::default()).await;
     });
 
     Ok(())
