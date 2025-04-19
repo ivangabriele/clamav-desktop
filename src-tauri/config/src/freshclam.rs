@@ -192,7 +192,7 @@ impl Config {
                     }
                 }
                 _ => {
-                    writeln!(file, "{} {}", key, value.to_string())?;
+                    writeln!(file, "{} {}", key, value.to_conf_string())?;
                 }
             }
         }
