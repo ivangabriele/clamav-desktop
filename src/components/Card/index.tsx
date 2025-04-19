@@ -106,7 +106,9 @@ const ActionBar = styled.div<{
     border-top-right-radius: 0;
     cursor: pointer;
     flex-grow: ${p => 1 / p.$actionCount};
+    font-weight: 500;
     height: 32px;
+    text-transform: uppercase;
 
     &:disabled {
       cursor: not-allowed;

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "jsc": {
+    "baseUrl": "./src",
+    "externalHelpers": false,
+    "keepClassNames": true,
+    "loose": false,
+    "target": "es2022",
+    "paths": {
+      "@core/*": ["core/*"],
+      "@components/*": ["components/*"],
+      "@elements/*": ["elements/*"],
+      "@hooks/*": ["hooks/*"],
+      "@layouts/*": ["layouts/*"],
+      "@libs/*": ["libs/*"],
+      "@screens/*": ["screens/*"],
+      "@utils/*": ["utils/*"]
+    },
+    "parser": {
+      "decorators": true,
+      "decoratorsBeforeExport": true,
+      "dynamicImport": true,
+      "exportDefaultFrom": true,
+      "exportNamespaceFrom": true,
+      "functionBind": true,
+      "importMeta": true,
+      "jsx": true,
+      "privateMethod": true,
+      "syntax": "typescript",
+      "topLevelAwait": true,
+      "tsx": true
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic"
+      }
+    }
+  },
+  "minify": false
+}
