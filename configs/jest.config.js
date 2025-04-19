@@ -17,18 +17,7 @@ const jestConfig = {
     '<rootDir>/src-tauri/*',
   ],
   transform: {
-    '.*\\.(j|t)sx?$': [
-      '@swc/jest',
-      {
-        jsc: {
-          transform: {
-            react: {
-              runtime: 'automatic',
-            },
-          },
-        },
-      },
-    ],
+    '.*\\.(j|t)sx?$': ['@swc/jest'],
   },
   transformIgnorePatterns: [],
 }

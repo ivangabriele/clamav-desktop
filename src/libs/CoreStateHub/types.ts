@@ -1,12 +1,18 @@
+import type { Cloud } from '@core/Cloud/types'
 import type { Scanner } from '@core/Scanner/types'
 
-export interface CoreStateStore {
-  scanner: {
-    listeners: Array<(nextState: Scanner.State) => void>
-    state: Scanner.State | undefined
+type CoreState = {
+  cloud: Cloud.State
+  scanner: Scanner.State
+}
+
+export type CoreStateStore = {
+  [K in keyof CoreState]: {
+    listeners: CoreStateListener<K>[]
+    state: CoreState[K] | undefined
   }
 }
 
 export type CoreStateStoreKey = keyof CoreStateStore
 
-export type CoreStateListener<K extends CoreStateStoreKey> = (nextState: CoreStateStore[K]['state']) => void
+export type CoreStateListener<K extends CoreStateStoreKey> = (nextState: CoreState[K]) => void

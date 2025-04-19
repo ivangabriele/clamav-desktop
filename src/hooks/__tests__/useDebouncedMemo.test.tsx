@@ -1,12 +1,15 @@
-import { render, screen } from '@testing-library/react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act, render, renderHook, screen } from '@testing-library/react'
 import { useDebouncedMemo } from '../useDebouncedMemo'
 
-describe('hooks/useDebouncedMemo()', () => {
+describe('@hooks/useDebouncedMemo()', () => {
   const factory = jest.fn((input: number) => input + 1)
 
-  beforeEach(() => {
+  beforeAll(() => {
     jest.useFakeTimers()
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
   })
 
   it('should debounce the input and update the output after debounce delay', async () => {

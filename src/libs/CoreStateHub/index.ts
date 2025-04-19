@@ -1,3 +1,4 @@
+import type { Cloud } from '@core/Cloud/types'
 import { invoke } from '@tauri-apps/api/core'
 import { type Event, listen } from '@tauri-apps/api/event'
 import type { Scanner } from '../../core/Scanner/types'
@@ -11,6 +12,10 @@ export class CoreStateHub {
 
   constructor() {
     this.#store = {
+      cloud: {
+        listeners: [],
+        state: undefined,
+      },
       scanner: {
         listeners: [],
         state: undefined,
@@ -25,7 +30,7 @@ export class CoreStateHub {
   }
 
   addListener<K extends CoreStateStoreKey>(key: K, callback: CoreStateListener<K>) {
-    this.#store[key].listeners.push(callback)
+    this.#store[key].listeners = [...this.#store[key].listeners, callback]
   }
 
   removeListener<K extends CoreStateStoreKey>(key: K, callback: CoreStateListener<K>) {
@@ -33,9 +38,19 @@ export class CoreStateHub {
   }
 
   #init() {
+    listen<Cloud.State>('cloud:state', this.#initCloudState.bind(this))
     listen<Scanner.State>('scanner:state', this.#initScannerState.bind(this))
 
+    invoke('get_cloud_state')
     invoke('get_scanner_state')
+  }
+
+  #initCloudState(event: Event<Cloud.State>) {
+    this.#store.cloud.state = event.payload
+
+    for (const listener of this.#store.cloud.listeners) {
+      listener(event.payload)
+    }
   }
 
   #initScannerState(event: Event<Scanner.State>) {
