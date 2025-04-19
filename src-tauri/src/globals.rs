@@ -3,6 +3,11 @@ use std::{path::PathBuf, sync::LazyLock};
 use serde::{Deserialize, Serialize};
 use tokio::sync::Mutex;
 
+pub const CLAMAV_DESKTOP_USER: &str = "clamav-desktop";
+
+pub const DEFAULT_FRESHCLAM_DATABASE_MIRROR: &str = "database.clamav.net";
+pub const DEFAULT_FRESHCLAM_DNS_DATABASE_INFO: &str = "current.cvd.clamav.net";
+
 pub const MAIN_WINDOW_LABEL: &str = "main";
 pub const MAIN_TRAY_ICON_ID: &str = "MAIN_TRAY_ICON";
 
