@@ -112,6 +112,7 @@ async fn check_sidecar(app_handle: &AppHandle, sidecar: &str) -> Result<(), Stri
     }
 }
 
+// TODO Move magic string values into `globals` constants.
 async fn check_freshclam_config(app_handle: &AppHandle) -> Result<(), String> {
     debug!("check_freshclam_config()", "Function call.");
 
@@ -136,11 +137,33 @@ async fn check_freshclam_config(app_handle: &AppHandle) -> Result<(), String> {
             );
         }
         if freshclam_config.get_value("DatabaseMirror")
-            != Some(&config::ConfigValue::StringVal("database.clamav.net".to_string()))
+            != Some(&config::ConfigValue::StringVal(
+                globals::DEFAULT_FRESHCLAM_DATABASE_MIRROR.to_string(),
+            ))
         {
             freshclam_config.set_value(
                 "DatabaseMirror",
-                config::ConfigValue::StringVal("database.clamav.net".to_string()),
+                config::ConfigValue::StringVal(globals::DEFAULT_FRESHCLAM_DATABASE_MIRROR.to_string()),
+            );
+        }
+        if freshclam_config.get_value("DatabaseOwner")
+            != Some(&config::ConfigValue::StringVal(
+                globals::CLAMAV_DESKTOP_USER.to_string(),
+            ))
+        {
+            freshclam_config.set_value(
+                "DatabaseOwner",
+                config::ConfigValue::StringVal(globals::CLAMAV_DESKTOP_USER.to_string()),
+            );
+        }
+        if freshclam_config.get_value("DNSDatabaseInfo")
+            != Some(&config::ConfigValue::StringVal(
+                globals::DEFAULT_FRESHCLAM_DNS_DATABASE_INFO.to_string(),
+            ))
+        {
+            freshclam_config.set_value(
+                "DNSDatabaseInfo",
+                config::ConfigValue::StringVal(globals::DEFAULT_FRESHCLAM_DNS_DATABASE_INFO.to_string()),
             );
         }
 

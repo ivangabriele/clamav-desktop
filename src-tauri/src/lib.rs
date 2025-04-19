@@ -1,7 +1,6 @@
 use tauri::LogicalSize;
 use tauri::Manager;
 
-mod cloud;
 mod copilot;
 mod dashboard;
 mod globals;
@@ -25,21 +24,20 @@ pub fn run() {
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_shell::init())
         // https://github.com/tauri-apps/tauri/blob/dev/examples/state/main.rs
-        .manage(cloud::state::CloudSharedState(Default::default()))
         .manage(copilot::state::CopilotSharedState(Default::default()))
         .manage(dashboard::state::DashboardSharedState(Default::default()))
+        .manage(modules::cloud::state::CloudSharedState(Default::default()))
         .manage(modules::scanner::state::ScannerSharedState(Default::default()))
         .manage(settings::state::SharedSettingsState(Default::default()))
         .invoke_handler(tauri::generate_handler![
-            cloud::commands::get_cloud_state,
-            cloud::commands::start_cloud_daemon,
-            cloud::commands::start_cloud_update,
-            cloud::commands::stop_cloud_daemon,
             copilot::commands::get_copilot_state,
             copilot::commands::start_copilot_checklist,
             dashboard::commands::get_dashboard_state,
             dashboard::commands::start_daemon,
             dashboard::commands::stop_daemon,
+            modules::cloud::commands::check_cloud_update,
+            modules::cloud::commands::get_cloud_state,
+            modules::cloud::commands::start_cloud_update,
             modules::file_manager::commands::get_directory_file_paths,
             modules::scanner::commands::get_scanner_state,
             modules::scanner::commands::start_scanner,

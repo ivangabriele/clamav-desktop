@@ -35,13 +35,38 @@ pub enum ConfigValue {
     SizedStringVal(String),     // For strings with size suffixes like M or K
 }
 impl ConfigValue {
-    pub fn to_string(&self) -> String {
+    pub fn to_bool(&self) -> Option<bool> {
+        match self {
+            ConfigValue::YesNoVal(YesNo::Yes) => Some(true),
+            ConfigValue::YesNoVal(YesNo::No) => Some(false),
+            _ => None,
+        }
+    }
+
+    pub fn to_conf_string(&self) -> String {
         match self {
             ConfigValue::StringVal(val) => format!("\"{}\"", val),
             ConfigValue::U32Val(val) => val.to_string(),
             ConfigValue::YesNoVal(val) => val.to_string(),
             ConfigValue::StringListVal(vals) => vals.join(","),
             ConfigValue::SizedStringVal(val) => val.to_string(),
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ConfigValue::StringVal(val) => val.to_string(),
+            ConfigValue::U32Val(val) => val.to_string(),
+            ConfigValue::YesNoVal(val) => val.to_string(),
+            ConfigValue::StringListVal(vals) => vals.join(","),
+            ConfigValue::SizedStringVal(val) => val.to_string(),
+        }
+    }
+
+    pub fn to_vec(&self) -> Option<Vec<String>> {
+        match self {
+            ConfigValue::StringListVal(vals) => Some(vals.clone()),
+            _ => None,
         }
     }
 }
