@@ -5,7 +5,7 @@ import { useCallback, useRef } from 'react'
 import { useForceUpdate } from '../useForceUpdate'
 
 // TODO Since it's just a bootstrap, only the most basic tests are implemented but we need more.
-describe('hooks/useForceUpdate()', () => {
+describe('@hooks/useForceUpdate()', () => {
   it('should rerender with the expected value', async () => {
     function TestComponent() {
       const countRef = useRef(0)

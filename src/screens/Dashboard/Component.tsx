@@ -1,4 +1,7 @@
-import { MdCloudDone, MdDeveloperBoard, MdVerifiedUser } from 'react-icons/md'
+import type { CardAction } from '@components/Card/types'
+import type { Cloud } from '@core/Cloud/types'
+import { MdCloudDone, MdCloudOff, MdDeveloperBoard, MdVerifiedUser } from 'react-icons/md'
+import type { Promisable } from 'type-fest'
 import { Card } from '../../components/Card'
 import { KeyValueList } from '../../components/KeyValueList'
 import { LogList } from '../../components/LogList'
@@ -6,19 +9,46 @@ import type { DaemonClient } from '../../core/DaemonClient/types'
 import { Core } from '../../core/types'
 import { ScreenBox } from '../../layouts/ScreenBox'
 import { noop } from '../../utils/noop'
+import { getCloudActionLabel } from './helpers'
 
 export type DashboardScreenComponentProps = Readonly<{
+  cloudState: Cloud.State | undefined
+  onStartCloudUpdate: () => Promisable<void>
   daemonClientState: DaemonClient.State | undefined
   daemonLogs: Core.Log[] | undefined
 }>
-export function DashboardScreenComponent({ daemonClientState, daemonLogs }: DashboardScreenComponentProps) {
+export function DashboardScreenComponent({
+  cloudState,
+  daemonClientState,
+  daemonLogs,
+  onStartCloudUpdate,
+}: DashboardScreenComponentProps) {
+  const cloudActions: CardAction[] = [
+    {
+      callback: onStartCloudUpdate,
+      // `true` when `isLoading` is `true`, no need to add `isLoading` conditions
+      isDisabled: cloudState?.is_up_to_date === true,
+      label: getCloudActionLabel(cloudState),
+    },
+  ]
+
   return (
     <ScreenBox isGrid>
       <Card gridArea="1 / 1 / 2 / 2" isCentered title="Health">
         <MdVerifiedUser color="#006633" size={96} />
       </Card>
-      <Card gridArea="1 / 2 / 2 / 3" isCentered title="Cloud">
-        <MdCloudDone color="#006633" size={96} />
+      <Card
+        actions={cloudActions}
+        gridArea="1 / 2 / 2 / 3"
+        isCentered
+        isLoading={!cloudState || cloudState.is_up_to_date === null || cloudState.status === Core.ModuleStatus.Running}
+        title="Cloud"
+      >
+        {cloudState?.is_up_to_date ? (
+          <MdCloudDone color="#006633" size={96} />
+        ) : (
+          <MdCloudOff color="#660033" size={96} />
+        )}
       </Card>
       <Card gridArea="1 / 3 / 2 / 4" title="System">
         <KeyValueList>

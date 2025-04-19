@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { noop } from '@utils/noop'
 import { argsStore } from '../../../.storybook/argsStore'
 import { ArgStoreKey } from '../../../.storybook/argsStore/constants'
 import { useArgsStoreArgs } from '../../../.storybook/argsStore/useArgsStoreArgs'
@@ -35,8 +36,10 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
+    cloudState: undefined,
     daemonClientState: undefined,
     daemonLogs: undefined,
+    onStartCloudUpdate: noop,
   },
   play: async () => {
     await waitFor(1000)
@@ -50,8 +53,10 @@ export const Default: Story = {
   },
   render: () => {
     const [args] = useArgsStoreArgs<DashboardScreenComponentProps>(ArgStoreKey.DashboardScreenComponent, {
+      cloudState: undefined,
       daemonClientState: undefined,
       daemonLogs: undefined,
+      onStartCloudUpdate: noop,
     })
 
     return (
