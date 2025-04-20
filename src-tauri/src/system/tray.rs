@@ -15,8 +15,10 @@ pub fn new_tray_icon<R: Runtime>(app_handle: &AppHandle<R>) -> tauri::Result<()>
     let _ = TrayIconBuilder::with_id(globals::MAIN_TRAY_ICON_ID)
         .icon(app_handle.default_window_icon().unwrap().clone())
         .menu(&menu)
-        .menu_on_left_click(false)
+        // Unsuported on Linux
+        .show_menu_on_left_click(false)
         .on_menu_event(move |app_handle, event| match event.id.as_ref() {
+            // `window::show()` also focuses the window
             "show" => window::show(app_handle),
             "hide" => window::hide(app_handle),
             "quit" => app_handle.exit(0),
