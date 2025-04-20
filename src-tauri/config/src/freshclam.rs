@@ -164,6 +164,10 @@ impl Config {
     }
 
     pub fn to_file(&self, path: &Path) -> io::Result<()> {
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent)?;
+        }
+
         let mut file = fs::File::create(path)?;
 
         // Write the initial comments and warnings
@@ -188,7 +192,7 @@ impl Config {
                     }
                 }
                 _ => {
-                    writeln!(file, "{} {}", key, value.to_string())?;
+                    writeln!(file, "{} {}", key, value.to_conf_string())?;
                 }
             }
         }

@@ -1,3 +1,4 @@
+import type { FileManager } from '@core/FileManager/types'
 import { Core } from '@core/types'
 import { faker } from '@faker-js/faker'
 import type { Meta, StoryObj } from '@storybook/react'
@@ -12,7 +13,7 @@ import { waitFor } from '../../utils/waitFor'
 import { FAKE_ROOT_CORE_PATHS, listPathsAtFakePath } from './fakers'
 import { goToScreen } from './utils'
 
-const fakePaths = (): Promise<Core.Path[]> => {
+const fakePaths = (): Promise<FileManager.FilePath[]> => {
   return Promise.resolve([])
 }
 
@@ -62,11 +63,13 @@ export const Default: Story = {
 export const Scanning: Story = {
   args: undefined,
   play: async () => {
-    while (true) {
+    let progress = 0
+    while (progress <= 100) {
       argsStore.updateArgs<ScannerScreenComponentProps>(ArgStoreKey.ScannerScreenComponent, {
         scannerState: {
-          currently_scanned_file_path: faker.system.filePath(),
-          module_status: Core.ModuleStatus.Running,
+          current_path: faker.system.filePath(),
+          progress,
+          step: Core.ScannerStatusStep.Running,
         },
       })
 
@@ -75,6 +78,8 @@ export const Scanning: Story = {
           ? faker.number.int({ min: 0, max: 49 })
           : faker.number.int({ min: 50, max: 150 }),
       )
+
+      progress += 0.01
     }
   },
   render: () => {
@@ -86,8 +91,9 @@ export const Scanning: Story = {
       onScanStart: noop,
       onScanStop: () => goToScreen(Screen.Scanner),
       scannerState: {
-        currently_scanned_file_path: '/a/super/long/.../path/to/a/file.txt',
-        module_status: Core.ModuleStatus.Running,
+        current_path: null,
+        progress: null,
+        step: Core.ScannerStatusStep.Idle,
       },
     })
 

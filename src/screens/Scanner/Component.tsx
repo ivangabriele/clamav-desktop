@@ -1,19 +1,21 @@
 import { Card } from '@components/Card'
 import type { CardAction } from '@components/Card/types'
 import { FileExplorer } from '@components/FileExplorer'
-import type { Scanner } from '@core/Scanner/types'
-import { Core } from '@core/types'
+import type { FileManager } from '@core/FileManager/types'
+import { Scanner } from '@core/Scanner/types'
 import { ScanningSpinner } from '@elements/ScanningSpinner'
 import { ScreenBox } from '@layouts/ScreenBox'
+import numeral from 'numeral'
 import { MdClose, MdVerifiedUser } from 'react-icons/md'
 import styled from 'styled-components'
 import type { Promisable } from 'type-fest'
+import { shrinkPath } from './utils'
 
 export type ScannerScreenComponentProps = Readonly<{
   canScan: boolean
-  fileExplorerRootPaths: Core.Path[] | undefined
+  fileExplorerRootPaths: FileManager.FilePath[] | undefined
   onFileExporerChange: (selectedPaths: string[]) => Promisable<void>
-  onFileExporerExpand: (expandedPath: string) => Promise<Core.Path[]>
+  onFileExporerExpand: (expandedPath: string) => Promise<FileManager.FilePath[]>
   onScanStart: () => Promisable<void>
   onScanStop: () => Promisable<void>
   scannerState: Scanner.State | undefined
@@ -27,7 +29,7 @@ export function ScannerScreenComponent({
   onScanStop,
   scannerState,
 }: ScannerScreenComponentProps) {
-  if (scannerState?.module_status === Core.ModuleStatus.Running) {
+  if (scannerState && scannerState.step !== Scanner.ScannerStatusStep.Idle) {
     return (
       <ScreenBox isCentered>
         <ScanningCancelButton onClick={onScanStop}>
@@ -35,8 +37,12 @@ export function ScannerScreenComponent({
         </ScanningCancelButton>
 
         <ScanningSpinner size={128} />
-        <ScanningStepText>Scanning files...</ScanningStepText>
-        <ScanningTargetText>{scannerState.currently_scanned_file_path}</ScanningTargetText>
+        <ScanningStepText>
+          {Scanner.SCANNER_STATUS_STEP_LABEL[scannerState.step]}
+
+          {scannerState.progress && <> ({numeral(scannerState.progress).format('0.00%')})</>}
+        </ScanningStepText>
+        {scannerState.current_path && <ScanningTargetText>{shrinkPath(scannerState.current_path)}</ScanningTargetText>}
       </ScreenBox>
     )
   }

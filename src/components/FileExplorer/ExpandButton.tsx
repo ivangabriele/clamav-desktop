@@ -1,11 +1,11 @@
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import styled from 'styled-components'
 
-interface ExpanderProps {
+interface ExpandButtonProps {
   isExpanded: boolean
   isVisible: boolean
 }
-export function Expander({ isExpanded, isVisible }: Readonly<ExpanderProps>) {
+export function ExpandButton({ isExpanded, isVisible }: Readonly<ExpandButtonProps>) {
   return <Box $isVisible={isVisible}>{isExpanded ? <MdExpandLess size={26} /> : <MdExpandMore size={26} />}</Box>
 }
 

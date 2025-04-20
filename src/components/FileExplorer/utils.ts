@@ -1,12 +1,12 @@
-import type { Core } from '@core/types'
 import { path, assocPath } from 'ramda'
 
+import type { FileManager } from '@core/FileManager/types'
 import { TreeNodeCheckState } from './constants'
 import type { TreeNode } from './types'
 
-export function getNodeFromCorePath(corePath: Core.Path): TreeNode {
+export function getNodeFromFilePath(filePath: FileManager.FilePath): TreeNode {
   return {
-    ...corePath,
+    ...filePath,
     checkState: TreeNodeCheckState.Unchecked,
     children: [],
     isExpanded: false,
