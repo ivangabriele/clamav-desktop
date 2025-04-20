@@ -32,7 +32,7 @@ pub async fn get_dashboard_state(
     };
     let client_message_as_string = serde_json::to_string(&client_message).unwrap();
     write
-        .send(Message::Text(client_message_as_string))
+        .send(Message::Text(client_message_as_string.into()))
         .await
         .expect("Failed to send status command");
 
