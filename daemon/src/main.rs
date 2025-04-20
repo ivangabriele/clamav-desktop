@@ -51,7 +51,7 @@ async fn process_client_message(
     let mut outgoing_mutex_guard = outgoing.lock().await;
     outgoing_mutex_guard
         .send(Message::Text(
-            serde_json::to_string(&server_response).unwrap(),
+            serde_json::to_string(&server_response).unwrap().into(),
         ))
         .await
         .expect("Failed to send server response");
@@ -316,7 +316,7 @@ mod tests {
         };
         let client_message_as_string = serde_json::to_string(&client_message).unwrap();
         write
-            .send(Message::Text(client_message_as_string))
+            .send(Message::Text(client_message_as_string.into()))
             .await
             .expect("Failed to send status command");
 
