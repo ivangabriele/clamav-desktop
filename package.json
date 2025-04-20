@@ -142,7 +142,7 @@
     "jest-environment-jsdom": "29.7.0",
     "lint-staged": "15.5.1",
     "make-dir-cli": "4.0.0",
-    "openpgp": "5.11.2",
+    "openpgp": "6.1.0",
     "ora": "8.2.0",
     "react-test-renderer": "18.3.1",
     "shelljs": "0.9.2",
