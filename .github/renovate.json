@@ -4,9 +4,9 @@
   "labels": ["internal"],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@wdio/"],
       "groupName": "WebdriverIO Dependencies",
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": ["/^@wdio//"]
     }
   ]
 }
