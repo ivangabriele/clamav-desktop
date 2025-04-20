@@ -5,7 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-colored = "2.1.0"
+colored = "3.0.0"
 common = { path = "../common" }
 tokio = { version = "1.41.0", features = ["full"] }
 
