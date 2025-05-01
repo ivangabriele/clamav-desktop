@@ -161,7 +161,7 @@ jobs:
 
   core_test_windows:
     name: Test Core (windows-2022)
-    runs-on: windows-2022
+    runs-on: windows-2025
     env:
       PROJECT_ROOT_PATH: 'D:\a\clamav-desktop\clamav-desktop'
       RUST_BACKTRACE: 1
