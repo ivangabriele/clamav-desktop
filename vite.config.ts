@@ -25,5 +25,8 @@ export default defineConfig({
   server: {
     port: 1420,
     strictPort: true,
+    watch: {
+      ignored: ['**/node_modules/**', '**/target/**'],
+    },
   },
 })
