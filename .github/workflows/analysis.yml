@@ -58,6 +58,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Install cargo-audit
         run: cargo install cargo-audit
-      - name: Run
+      - name: Run (Core)
         run: cargo audit
         working-directory: ./src-tauri
+      - name: Run (Daemon)
+        run: cargo audit
+        working-directory: ./daemon
