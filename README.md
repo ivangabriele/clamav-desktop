@@ -51,7 +51,8 @@
 
 ### Scanner Preview
 
-![ClamAV Desktop Scanner](/docs/screenshot-scanner.png)
+![ClamAV Desktop Scanner (file explorer)](/docs/screenshot-scanner-1.png)
+![ClamAV Desktop Scanner (in progress)](/docs/screenshot-scanner-2.png)
 
 ## Roadmap
 
