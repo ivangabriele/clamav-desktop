@@ -38,7 +38,7 @@ jobs:
           components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
           rustflags: ''
           target: ${{ matrix.target }}
-          toolchain: '1.86'
+          toolchain: '1.87'
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -75,7 +75,7 @@ jobs:
           components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
           target: ${{ matrix.target }}
           rustflags: ''
-          toolchain: '1.86'
+          toolchain: '1.87'
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -110,7 +110,7 @@ jobs:
           components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
           rustflags: ''
           target: ${{ matrix.target }}
-          toolchain: '1.86'
+          toolchain: '1.87'
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
