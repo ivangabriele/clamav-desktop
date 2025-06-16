@@ -6,8 +6,8 @@ version = "0.3.24"
 publish = false
 
 default-run = "clamav-desktop"
-edition = "2021"
-rust-version = "1.86"
+edition = "2024"
+rust-version = "1.87"
 
 authors = ["Ivan Gabriele"]
 homepage = "https://github.com/ivangabriele/clamav-desktop"
