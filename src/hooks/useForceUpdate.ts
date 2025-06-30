@@ -1,7 +1,6 @@
 import debounce from 'lodash.debounce'
-import { useMemo, useReducer } from 'react'
-
 import type { DispatchWithoutAction } from 'react'
+import { useMemo, useReducer } from 'react'
 
 /**
  * Force component re-rendering

@@ -3,9 +3,8 @@ import { pipe } from 'ramda'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import type { Promisable } from 'type-fest'
-
-import { Node } from './Node'
 import { TreeNodeCheckState } from './constants'
+import { Node } from './Node'
 import type { TreeNode } from './types'
 import {
   getNodeFromFilePath,
@@ -40,8 +39,8 @@ export function FileExplorer({ onChange, onExpand, rootPaths }: FileExplorerProp
       const expandedPathChildrenAsTreeNodes = expandedPathChildrenAsCorePaths.map(getNodeFromFilePath)
 
       const nextTree = patchTreeNodeAtIndexPath(tree, indexPath, {
-        isExpanded: true,
         children: expandedPathChildrenAsTreeNodes,
+        isExpanded: true,
       })
 
       setTree(nextTree)
@@ -76,7 +75,7 @@ export function FileExplorer({ onChange, onExpand, rootPaths }: FileExplorerProp
   return (
     <Box>
       {tree.map((treeNode, index) => (
-        <Node key={treeNode.path} indexPath={[index]} treeNode={treeNode} onSelect={select} onExpand={expand} />
+        <Node indexPath={[index]} key={treeNode.path} onExpand={expand} onSelect={select} treeNode={treeNode} />
       ))}
     </Box>
   )

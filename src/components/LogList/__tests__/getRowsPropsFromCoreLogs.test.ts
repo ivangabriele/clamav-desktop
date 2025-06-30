@@ -20,21 +20,21 @@ describe('components/LogList/utils/getRowsPropsFromCoreLogs()', () => {
 
     expect(result).toEqual([
       {
-        key: '2024-09-14T11:25:45Z-Log 2',
         date: dayjs('2024-09-14T11:25:45Z').format('YYYY-MM-DD HH:mm:ss'),
         isError: true,
+        key: '2024-09-14T11:25:45Z-Log 2',
         message: 'Log 2',
       },
       {
-        key: '2024-09-14T12:30:50Z-Log 3',
         date: dayjs('2024-09-14T12:30:50Z').format('YYYY-MM-DD HH:mm:ss'),
         isError: false,
+        key: '2024-09-14T12:30:50Z-Log 3',
         message: 'Log 3',
       },
       {
-        key: '2024-09-14T13:35:55Z-Log 4',
         date: dayjs('2024-09-14T13:35:55Z').format('YYYY-MM-DD HH:mm:ss'),
         isError: true,
+        key: '2024-09-14T13:35:55Z-Log 4',
         message: 'Log 4',
       },
     ])
@@ -47,9 +47,9 @@ describe('components/LogList/utils/getRowsPropsFromCoreLogs()', () => {
 
     expect(result).toEqual([
       {
-        key: '2024-09-14T10:20:30Z-Only log',
         date: dayjs('2024-09-14T10:20:30Z').format('YYYY-MM-DD HH:mm:ss'),
         isError: false,
+        key: '2024-09-14T10:20:30Z-Only log',
         message: 'Only log',
       },
     ])

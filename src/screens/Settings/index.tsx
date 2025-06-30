@@ -35,7 +35,6 @@ export function Settings() {
 
     updateState(prevState => ({
       ...prevState,
-      // biome-ignore lint/style/useNamingConvention: <explanation>
       is_writing: true,
     }))
 

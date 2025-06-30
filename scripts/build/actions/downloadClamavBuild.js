@@ -1,4 +1,4 @@
-import { promises as fs, existsSync } from 'node:fs'
+import { existsSync, promises as fs } from 'node:fs'
 import { join } from 'node:path'
 import { B } from 'bhala'
 import decompress from 'decompress'
@@ -70,15 +70,15 @@ export async function downloadClamavBuild(target, rootPath) {
   const publicKey = await readKey({ armoredKey: publicKeyArmored })
   const signature = await readSignature({ armoredSignature: signatureArmored })
   const verificationResult = await verify({
-    message: await createMessage({ binary: zipFile }),
-    signature: signature,
-    verificationKeys: publicKey,
     config: {
       // Seems to be hashed with SHA1
       // (to avoid: `Error: Insecure message hash algorithm: SHA1`)
       // https://github.com/openpgpjs/openpgpjs/blob/main/src/config/config.js#L241
       rejectMessageHashAlgorithms: new Set([enums.hash.md5, enums.hash.ripemd]),
     },
+    message: await createMessage({ binary: zipFile }),
+    signature: signature,
+    verificationKeys: publicKey,
   })
 
   try {

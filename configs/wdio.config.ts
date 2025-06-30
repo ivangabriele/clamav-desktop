@@ -1,6 +1,5 @@
-import { spawn } from 'node:child_process'
-
 import type { ChildProcessByStdio } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import type { Writable } from 'node:stream'
 import type { Options } from '@wdio/types'
 

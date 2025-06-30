@@ -32,11 +32,11 @@ export function CircularProgress({
     <CircularProgressRoot $size={size} role="progressbar">
       <CircularProgressSvg viewBox={`${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}`}>
         <CircularProgressCircle
+          $color={color}
+          $thickness={thickness}
           cx={SIZE}
           cy={SIZE}
           r={(SIZE - thickness) / 2}
-          $thickness={thickness}
-          $color={color}
           style={circleStyle}
         />
       </CircularProgressSvg>

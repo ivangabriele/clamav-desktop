@@ -37,11 +37,11 @@ export function Node({ indexPath, treeNode, onExpand, onSelect }: NodeProps) {
       {treeNode.isExpanded &&
         treeNode.children.map((treeNodeChild, index) => (
           <Node
-            key={treeNodeChild.path}
             indexPath={[...indexPath, index]}
-            treeNode={treeNodeChild}
-            onSelect={onSelect}
+            key={treeNodeChild.path}
             onExpand={onExpand}
+            onSelect={onSelect}
+            treeNode={treeNodeChild}
           />
         ))}
     </Box>

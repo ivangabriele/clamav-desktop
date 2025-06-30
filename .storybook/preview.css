@@ -2,9 +2,9 @@ html {
   height: 100%;
 }
 body {
+  height: 100%;
   background-color: #0d1117;
   border-radius: unset;
-  height: 100%;
 }
 
 #storybook-root {

@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
   "exclude": [".yarn", "build/*", "clamav/*", "e2e/*", "node_modules/*", "src-tauri/*"],
+  "extends": "./tsconfig.json",
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
 }

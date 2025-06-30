@@ -5,9 +5,9 @@ import { noop } from '@utils/noop'
 import { argsStore } from '../../../.storybook/argsStore'
 import { ArgStoreKey } from '../../../.storybook/argsStore/constants'
 import { useArgsStoreArgs } from '../../../.storybook/argsStore/useArgsStoreArgs'
-import { Layout } from '../../Layout'
 import { Screen } from '../../constants'
 import { Core } from '../../core/types'
+import { Layout } from '../../Layout'
 import { DashboardScreenComponent, type DashboardScreenComponentProps } from '../../screens/Dashboard/Component'
 import { waitFor } from '../../utils/waitFor'
 import { goToScreen } from './utils'
@@ -19,7 +19,6 @@ const FAKE_DAEMON_LOGS: Core.Log[] = Array.from({ length: 100 }, () => ({
 })).sort((a, b) => +new Date(a.date) - +new Date(b.date))
 
 const meta = {
-  title: 'Screens/Dashboard',
   component: DashboardScreenComponent,
   parameters: {
     actions: { disable: true },
@@ -29,6 +28,7 @@ const meta = {
     type: 'screen',
   },
   tags: ['dev'],
+  title: 'Screens/Dashboard',
 } satisfies Meta<DashboardScreenComponentProps>
 
 export default meta
@@ -60,7 +60,7 @@ export const Default: Story = {
     })
 
     return (
-      <Layout onScreenChange={goToScreen} activeScreen={Screen.Dashboard}>
+      <Layout activeScreen={Screen.Dashboard} onScreenChange={goToScreen}>
         <DashboardScreenComponent {...args} />
       </Layout>
     )

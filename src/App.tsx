@@ -3,9 +3,8 @@ import { LoaderScreen } from '@screens/Loader'
 import { Scanner } from '@screens/Scanner'
 import { Settings } from '@screens/Settings'
 import { useState } from 'react'
-
-import { Layout } from './Layout'
 import { Screen } from './constants'
+import { Layout } from './Layout'
 
 export function App() {
   const [isCoreReady, setIsCoreReady] = useState(true)

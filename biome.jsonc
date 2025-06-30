@@ -1,25 +1,36 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
   "extends": ["@ivangabriele/biome-config"],
   "files": {
-    "ignore": [
-      "./.dev/*",
-      "./.vscode/*",
-      "./.vscode-test/*",
-      "./.yarn/*",
-      "./assets/*",
-      "./daemon/*",
-      "./dist/*",
-      "./e2e/*",
-      "./node_modules/*",
-      "./public/*",
-      "./sidecars/*",
-      "./src-tauri/*",
-      "./package.json"
+    "includes": [
+      "!.dev/**/*",
+      "!.vscode/**/*",
+      "!.vscode-test/**/*",
+      "!.yarn/**/*",
+      "!assets/**/*",
+      "!daemon/**/*",
+      "!dist/**/*",
+      "!e2e/**/*",
+      "!node_modules/**/*",
+      "!public/**/*",
+      "!sidecars/**/*",
+      "!src-tauri/**/*",
+      "!package.json"
     ]
   },
   "javascript": {
     "globals": ["afterAll", "afterEach", "beforeAll", "beforeEach", "describe", "expect", "it", "test"]
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedInterfaceMembers": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    }
   },
   "linter": {
     "rules": {
@@ -29,23 +40,26 @@
         "useImportExtensions": "off"
       },
       "style": {
-        "noNamespace": "off"
+        "noNamespace": "off",
+        "useNamingConvention": {
+          "level": "error",
+          "options": {
+            "conventions": [
+              {
+                "selector": {
+                  "kind": "objectLiteralProperty"
+                },
+                "formats": ["camelCase", "PascalCase", "snake_case"]
+              }
+            ]
+          }
+        }
       }
     }
   },
   "overrides": [
     {
-      "include": ["./src/core/**/types.ts"],
-      "linter": {
-        "rules": {
-          "style": {
-            "useNamingConvention": "off"
-          }
-        }
-      }
-    },
-    {
-      "include": ["./*.ts", "./configs/**/*.js", "./scripts/**/*.js", "./scripts/**/*.ts"],
+      "includes": ["**/*.ts", "configs/**/*.js", "scripts/**/*.js"],
       "linter": {
         "rules": {
           "style": {
@@ -58,7 +72,7 @@
       }
     },
     {
-      "include": ["./.storybook/**/*.ts", "./.storybook/**/*.tsx", "./src/stories/**/*.ts", "./src/stories/**/*.tsx"],
+      "includes": [".storybook/**/*.ts", ".storybook/**/*.tsx", "src/stories/**/*.ts", "src/stories/**/*.tsx"],
       "linter": {
         "rules": {
           "style": {

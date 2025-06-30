@@ -1,6 +1,5 @@
-import styled from 'styled-components'
-
 import type { ButtonHTMLAttributes } from 'react'
+import styled from 'styled-components'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {}
 export function Button({ ...nativeProps }: ButtonProps) {
