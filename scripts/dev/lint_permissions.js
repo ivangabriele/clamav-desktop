@@ -46,9 +46,9 @@ async function checkPermission(filePath, expectedPermission) {
   if (currentPermission !== expectedPermission) {
     WRONG_PERMISSION_RECORDS.push({
       absolutePath: filePath,
-      relativePath,
       currentPermission,
       expectedPermission,
+      relativePath,
     })
   }
 }
@@ -88,10 +88,10 @@ async function checkPermissions() {
 
   B.log('[lint_permissions.js]', 'Checking normal files...')
   const allFiles = await globby(['**/*'], {
+    cwd: ROOT_PATH,
     gitignore: true,
     ignore: [...EXECUTABLE_FILE_PATHS, ...SENSITIVE_FILE_PATHS, ...TEMPORARY_FILE_PATHS, ...IGNORED_FILE_PATHS],
     onlyFiles: true,
-    cwd: ROOT_PATH,
   })
   for (const filePath of allFiles) {
     await checkPermission(filePath, DEFAULT_FILE_PERMISSION)

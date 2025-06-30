@@ -1,6 +1,5 @@
-import { path, assocPath } from 'ramda'
-
 import type { FileManager } from '@core/FileManager/types'
+import { assocPath, path } from 'ramda'
 import { TreeNodeCheckState } from './constants'
 import type { TreeNode } from './types'
 

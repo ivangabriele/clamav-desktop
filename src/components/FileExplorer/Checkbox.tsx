@@ -1,7 +1,6 @@
-import styled from 'styled-components'
-
 import { type MouseEvent, useCallback } from 'react'
 import { MdAdd, MdCheck, MdRemove } from 'react-icons/md'
+import styled from 'styled-components'
 import { TreeNodeCheckState } from './constants'
 
 interface CheckboxProps {

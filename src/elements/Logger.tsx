@@ -1,7 +1,6 @@
+import type { CSSProperties, DOMAttributes } from 'react'
 import { memo, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-
-import type { CSSProperties, DOMAttributes } from 'react'
 
 export type LoggerProps = Omit<DOMAttributes<HTMLPreElement>, 'children'> & {
   children: string
@@ -16,7 +15,7 @@ function UnmemoizedLogger({ children, hasForcedScroll, ...nativeProps }: LoggerP
     style.maxWidth = `${maxWidth}px`
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We must scroll to the bottom when `children` changes.
   useEffect(() => {
     if (!preElementRef.current) {
       return

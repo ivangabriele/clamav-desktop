@@ -91,11 +91,11 @@
     "typescript": "5.9.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.4.4",
     "@commitlint/cli": "20.4.2",
     "@commitlint/config-conventional": "20.4.2",
     "@faker-js/faker": "10.3.0",
-    "@ivangabriele/biome-config": "1.5.1",
+    "@ivangabriele/biome-config": "2.0.0",
     "@ivangabriele/commitlint-config": "2.0.3",
     "@ivangabriele/tsconfig-react": "2.0.0",
     "@storybook/addon-links": "10.2.10",

@@ -1,10 +1,9 @@
 {
-  "extends": "@ivangabriele/tsconfig-react",
   "compilerOptions": {
     "baseUrl": "./src",
     "incremental": true,
-    "moduleResolution": "Bundler",
     "jsx": "react-jsx",
+    "moduleResolution": "Bundler",
     "noImplicitAny": false,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
@@ -13,8 +12,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@core/*": ["core/*"],
       "@components/*": ["components/*"],
+      "@core/*": ["core/*"],
       "@elements/*": ["elements/*"],
       "@hooks/*": ["hooks/*"],
       "@layouts/*": ["layouts/*"],
@@ -34,6 +33,7 @@
     "verbatimModuleSyntax": true
   },
   "exclude": [".yarn/*", "build/*", "clamav/*", "node_modules/*", "src-tauri/*"],
+  "extends": "@ivangabriele/tsconfig-react",
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", ".storybook/**/*.ts", ".storybook/**/*.tsx"],
   "references": [
     {

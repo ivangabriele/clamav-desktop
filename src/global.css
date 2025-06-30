@@ -1,8 +1,8 @@
 * {
   box-sizing: border-box;
   cursor: default;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 
   &:focus-visible {
     outline: none;
@@ -21,31 +21,31 @@
   }
 
   &::-webkit-scrollbar-thumb {
+    outline: 0;
     background-color: #99004d;
     border-radius: 2px;
-    outline: 0;
   }
 }
 
 html {
   display: flex;
+  width: 100%;
   height: 100%;
   overflow: hidden;
-  width: 100%;
 }
 
 body {
-  border-radius: 16px;
-  color: white;
   display: flex;
   flex-grow: 1;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
   font-family: "Poppins", sans-serif;
   font-size: 100%;
   font-weight: 300;
-  height: 100%;
   line-height: 1.5;
-  margin: 0;
-  overflow: hidden;
+  color: white;
+  border-radius: 16px;
 }
 
 h1,
@@ -59,16 +59,16 @@ p {
 }
 
 ul {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 #root {
-  background: linear-gradient(135deg, #660033 0%, #330a1f 100%);
   display: flex;
-  flex-direction: column;
-  height: 100%;
   flex-grow: 1;
-  overflow: hidden;
+  flex-direction: column;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #660033 0%, #330a1f 100%);
 }

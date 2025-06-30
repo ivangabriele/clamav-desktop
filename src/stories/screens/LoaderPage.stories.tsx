@@ -8,7 +8,6 @@ import { LoaderScreenComponent, type LoaderScreenComponentProps } from '../../sc
 import { waitFor } from '../../utils/waitFor'
 
 const meta = {
-  title: 'Screens/Loader',
   component: LoaderScreenComponent,
   parameters: {
     actions: { disable: true },
@@ -18,6 +17,7 @@ const meta = {
     type: 'screen',
   },
   tags: ['dev'],
+  title: 'Screens/Loader',
 } satisfies Meta<LoaderScreenComponentProps>
 
 export default meta
@@ -34,11 +34,11 @@ export const Default: Story = {
       await step(Copilot.CHECKLIST_ITEM_LABEL[checklistItem], async () => {
         argsStore.updateArgs<LoaderScreenComponentProps>(ArgStoreKey.LoaderScreenComponent, {
           copilotState: {
+            current_checklist_error: null,
             current_checklist_item: checklistItem as Copilot.ChecklistItem,
             current_checklist_progress: index / length,
             is_fixing_current_checklist_item: false,
             module_status: Core.ModuleStatus.Running,
-            current_checklist_error: null,
           },
         })
 
@@ -61,11 +61,11 @@ export const Default: Story = {
 export const Error: Story = {
   args: {
     copilotState: {
+      current_checklist_error: 'Sorry but an error happened. Here is how you may fix it.',
       current_checklist_item: Copilot.ChecklistItem.CheckFreshclamDatabase,
       current_checklist_progress: 0.5,
       is_fixing_current_checklist_item: false,
       module_status: Core.ModuleStatus.Failed,
-      current_checklist_error: 'Sorry but an error happened. Here is how you may fix it.',
     },
   },
 }

@@ -36,11 +36,11 @@ const preview: Preview = {
 
   parameters: {
     backgrounds: {
+      default: 'Dark',
       values: [
         { name: 'Dark', value: '#0d1117' },
         { name: 'Light', value: '#f6f8fa' },
       ],
-      default: 'Dark',
     },
     controls: {
       matchers: {

@@ -17,11 +17,10 @@ export function Layout({ activeScreen, children, onScreenChange: onPageChange }:
       <TitleBar />
       <Content>
         <MainMenu activeScreen={activeScreen} onChange={onPageChange} />
-        <>
-          {children}
 
-          <Toaster />
-        </>
+        {children}
+
+        <Toaster />
       </Content>
     </Box>
   )

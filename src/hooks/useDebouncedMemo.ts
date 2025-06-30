@@ -9,7 +9,7 @@ export function useDebouncedMemo<Input, Output>(
   factory: (input: Input) => Output,
   delayInMs: number,
 ): Output {
-  const [debouncedInput] = useDebounce(input, delayInMs, { trailing: true, maxWait: 250 })
+  const [debouncedInput] = useDebounce(input, delayInMs, { maxWait: 250, trailing: true })
   // biome-ignore lint/correctness/useExhaustiveDependencies: `factory` must be a pure and immutable function.
   const memoizedOutput = useMemo(
     () => factory(debouncedInput),

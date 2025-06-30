@@ -1,6 +1,5 @@
-import styled, { css } from 'styled-components'
-
 import type { ReactNode } from 'react'
+import styled, { css } from 'styled-components'
 
 type ScreenBoxProps = {
   children: ReactNode

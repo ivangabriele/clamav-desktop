@@ -8,7 +8,7 @@ export type RowProps = Readonly<{
 }>
 export function Row({ key, date, isError, message }: RowProps) {
   return (
-    <Box key={key} $isError={isError}>
+    <Box $isError={isError} key={key}>
       <DateText>{date}</DateText>
       <MessageText>{message}</MessageText>
     </Box>

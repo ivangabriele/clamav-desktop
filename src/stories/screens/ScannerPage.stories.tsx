@@ -6,8 +6,8 @@ import { noop } from '@utils/noop'
 import { argsStore } from '../../../.storybook/argsStore'
 import { ArgStoreKey } from '../../../.storybook/argsStore/constants'
 import { useArgsStoreArgs } from '../../../.storybook/argsStore/useArgsStoreArgs'
-import { Layout } from '../../Layout'
 import { Screen } from '../../constants'
+import { Layout } from '../../Layout'
 import { ScannerScreenComponent, type ScannerScreenComponentProps } from '../../screens/Scanner/Component'
 import { waitFor } from '../../utils/waitFor'
 import { FAKE_ROOT_CORE_PATHS, listPathsAtFakePath } from './fakers'
@@ -18,7 +18,6 @@ const fakePaths = (): Promise<FileManager.FilePath[]> => {
 }
 
 const meta = {
-  title: 'Screens/Scanner',
   component: ScannerScreenComponent,
   parameters: {
     actions: { disable: true },
@@ -27,6 +26,7 @@ const meta = {
     type: 'screen',
   },
   tags: ['dev'],
+  title: 'Screens/Scanner',
 } satisfies Meta<ScannerScreenComponentProps>
 
 export default meta
@@ -53,7 +53,7 @@ export const Default: Story = {
     })
 
     return (
-      <Layout onScreenChange={goToScreen} activeScreen={Screen.Scanner}>
+      <Layout activeScreen={Screen.Scanner} onScreenChange={goToScreen}>
         <ScannerScreenComponent {...args} />
       </Layout>
     )
@@ -74,9 +74,9 @@ export const Scanning: Story = {
       })
 
       await waitFor(
-        faker.number.int({ min: 1, max: 100 }) <= 80
-          ? faker.number.int({ min: 0, max: 49 })
-          : faker.number.int({ min: 50, max: 150 }),
+        faker.number.int({ max: 100, min: 1 }) <= 80
+          ? faker.number.int({ max: 49, min: 0 })
+          : faker.number.int({ max: 150, min: 50 }),
       )
 
       progress += 0.01
@@ -98,7 +98,7 @@ export const Scanning: Story = {
     })
 
     return (
-      <Layout onScreenChange={goToScreen} activeScreen={Screen.Scanner}>
+      <Layout activeScreen={Screen.Scanner} onScreenChange={goToScreen}>
         <ScannerScreenComponent {...args} />
       </Layout>
     )

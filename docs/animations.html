@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
   <head>
     <style>
       *,
@@ -6,8 +6,8 @@
       *:after {
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        margin: 0;
         padding: 0;
+        margin: 0;
       }
 
       body {
@@ -19,12 +19,12 @@
       }
 
       section {
-        width: 30%;
         display: inline-block;
-        text-align: center;
+        width: 30%;
         min-height: 215px;
-        vertical-align: top;
         margin: 1%;
+        vertical-align: top;
+        text-align: center;
         background: #080915;
         border-radius: 5px;
       }
@@ -39,12 +39,12 @@
 
       .loader {
         position: relative;
+        display: inline-block;
         width: 60px;
         height: 60px;
-        border-radius: 50%;
         margin: 75px;
-        display: inline-block;
         vertical-align: middle;
+        border-radius: 50%;
       }
 
       .loader-star {
@@ -55,11 +55,11 @@
 
       .loader-1 .loader-outter {
         position: absolute;
-        border: 4px solid #f50057;
-        border-left-color: transparent;
-        border-bottom: 0;
         width: 100%;
         height: 100%;
+        border: 4px solid #f50057;
+        border-bottom: 0;
+        border-left-color: transparent;
         border-radius: 50%;
         -webkit-animation: loader-1-outter 1s cubic-bezier(0.42, 0.61, 0.58, 0.41) infinite;
         animation: loader-1-outter 1s cubic-bezier(0.42, 0.61, 0.58, 0.41) infinite;
@@ -67,14 +67,14 @@
 
       .loader-1 .loader-inner {
         position: absolute;
-        border: 4px solid #f50057;
-        border-radius: 50%;
+        top: calc(50% - 20px);
+        left: calc(50% - 20px);
         width: 40px;
         height: 40px;
-        left: calc(50% - 20px);
-        top: calc(50% - 20px);
-        border-right: 0;
+        border: 4px solid #f50057;
         border-top-color: transparent;
+        border-right: 0;
+        border-radius: 50%;
         -webkit-animation: loader-1-inner 1s cubic-bezier(0.42, 0.61, 0.58, 0.41) infinite;
         animation: loader-1-inner 1s cubic-bezier(0.42, 0.61, 0.58, 0.41) infinite;
       }
@@ -126,48 +126,48 @@
       /* ----------------     LOADER 2    ----------------- */
 
       .loader-2 {
-        width: 20em;
-        height: 20em;
-        font-size: 10px;
         position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 20em;
+        height: 20em;
+        font-size: 10px;
       }
 
       .loader-2 .face {
         position: absolute;
-        border-radius: 50%;
         border-style: solid;
+        border-radius: 50%;
         animation: animate 3s linear infinite;
       }
 
       .loader-2 .face:nth-child(1) {
+        --deg: -45deg;
         width: 100%;
         height: 100%;
         color: gold;
         border-color: currentColor transparent transparent currentColor;
         border-width: 0.2em 0.2em 0em 0em;
-        --deg: -45deg;
         animation-direction: normal;
       }
 
       .loader-2 .face:nth-child(2) {
+        --deg: -135deg;
         width: 70%;
         height: 70%;
         color: lime;
         border-color: currentColor currentColor transparent transparent;
         border-width: 0.2em 0em 0em 0.2em;
-        --deg: -135deg;
         animation-direction: reverse;
       }
 
       .loader-2 .face .circle {
         position: absolute;
-        width: 50%;
-        height: 0.1em;
         top: 50%;
         left: 50%;
+        width: 50%;
+        height: 0.1em;
         background-color: transparent;
         transform: rotate(var(--deg));
         transform-origin: left;
@@ -177,9 +177,9 @@
         position: absolute;
         top: -0.5em;
         right: -0.5em;
-        content: '';
         width: 1em;
         height: 1em;
+        content: '';
         background-color: currentColor;
         border-radius: 50%;
         box-shadow: 0 0 2em, 0 0 4em, 0 0 6em, 0 0 8em, 0 0 10em, 0 0 0 0.5em rgba(255, 255, 0, 0.1);

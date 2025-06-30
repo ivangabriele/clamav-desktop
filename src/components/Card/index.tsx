@@ -37,8 +37,8 @@ export function Card({ actions = [], children, gridArea, isCentered = false, isL
         <ActionBar $actionCount={actions.length}>
           {actions.map(action => (
             <button
-              key={action.label}
               disabled={action.isDisabled || isLoading}
+              key={action.label}
               onClick={action.callback}
               type="button"
             >
