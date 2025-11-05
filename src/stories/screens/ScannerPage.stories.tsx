@@ -64,7 +64,7 @@ export const Scanning: Story = {
   args: undefined,
   play: async () => {
     let progress = 0
-    while (progress <= 100) {
+    while (progress <= 1) {
       argsStore.updateArgs<ScannerScreenComponentProps>(ArgStoreKey.ScannerScreenComponent, {
         scannerState: {
           current_path: faker.system.filePath(),
