@@ -5063,6 +5063,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chromatic@npm:13.3.3":
+  version: 13.3.3
+  resolution: "chromatic@npm:13.3.3"
+  peerDependencies:
+    "@chromatic-com/cypress": ^0.*.* || ^1.0.0
+    "@chromatic-com/playwright": ^0.*.* || ^1.0.0
+  peerDependenciesMeta:
+    "@chromatic-com/cypress":
+      optional: true
+    "@chromatic-com/playwright":
+      optional: true
+  bin:
+    chroma: dist/bin.js
+    chromatic: dist/bin.js
+    chromatic-cli: dist/bin.js
+  checksum: 10/eb720137b4b0b8d1886cf1d1c94639c1868ba9cc34a5227f00fde9bedb18f25a6aedbda9b01048ca6e6cf42fa3f90aa9ddee04848cdf4c6d47c2babf5f105435
+  languageName: node
+  linkType: hard
+
 "chromium-bidi@npm:0.4.16":
   version: 0.4.16
   resolution: "chromium-bidi@npm:0.4.16"
@@ -5161,10 +5180,12 @@ __metadata:
     "@wdio/mocha-framework": "npm:8.38.2"
     "@wdio/spec-reporter": "npm:8.38.2"
     bhala: "npm:3.0.4"
+    chromatic: "npm:13.3.3"
     cross-env: "npm:7.0.3"
     dayjs: "npm:1.11.13"
     decompress: "npm:4.2.1"
     del: "npm:8.0.0"
+    dotenv-cli: "npm:11.0.0"
     download: "npm:8.0.0"
     env-paths: "npm:3.0.0"
     esm-path: "npm:1.0.1"
@@ -6033,10 +6054,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv-cli@npm:11.0.0":
+  version: 11.0.0
+  resolution: "dotenv-cli@npm:11.0.0"
+  dependencies:
+    cross-spawn: "npm:^7.0.6"
+    dotenv: "npm:^17.1.0"
+    dotenv-expand: "npm:^12.0.0"
+    minimist: "npm:^1.2.6"
+  bin:
+    dotenv: cli.js
+  checksum: 10/0dab973aa8d94163f9b17f7452f9c9b567baf67e6551c3d883f3ea1df9edbd69a9ea55cbc8e020026c9e8d8f01056087526d011c1829924483c8c72f9c17c79a
+  languageName: node
+  linkType: hard
+
+"dotenv-expand@npm:^12.0.0":
+  version: 12.0.3
+  resolution: "dotenv-expand@npm:12.0.3"
+  dependencies:
+    dotenv: "npm:^16.4.5"
+  checksum: 10/d9aaf051805c8fa64e7e3620936ecb38229a93f5603883e53856d6f57cd4ae93fb74baefdf0b03b1c0608bc3eefbbcb23912972d7303b6191a5c0e1688a8652f
+  languageName: node
+  linkType: hard
+
 "dotenv@npm:^16.3.1":
   version: 16.5.0
   resolution: "dotenv@npm:16.5.0"
   checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.4.5":
+  version: 16.6.1
+  resolution: "dotenv@npm:16.6.1"
+  checksum: 10/1d1897144344447ffe62aa1a6d664f4cd2e0784e0aff787eeeec1940ded32f8e4b5b506d665134fc87157baa086fce07ec6383970a2b6d2e7985beaed6a4cc14
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^17.1.0":
+  version: 17.2.3
+  resolution: "dotenv@npm:17.2.3"
+  checksum: 10/f8b78626ebfff6e44420f634773375c9651808b3e1a33df6d4cc19120968eea53e100f59f04ec35f2a20b2beb334b6aba4f24040b2f8ad61773f158ac042a636
   languageName: node
   linkType: hard
 
