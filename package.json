@@ -91,7 +91,7 @@
     "typescript": "5.8.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.0.6",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
     "@faker-js/faker": "9.7.0",
