@@ -94,7 +94,7 @@
     "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
-    "@faker-js/faker": "9.7.0",
+    "@faker-js/faker": "10.0.0",
     "@ivangabriele/biome-config": "1.5.0",
     "@ivangabriele/commitlint-config": "2.0.3",
     "@ivangabriele/tsconfig-react": "2.0.0",
