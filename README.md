@@ -24,11 +24,11 @@
 > [!WARNING]  
 > Clamav Desktop is a work in progress. I do not recommend using older releases (`<v0.4.0`)
 > as they were based on Electron, which can be slow for this type of application.  
-> **Please wait for the release of `v0.4.0`** . This version will be released soon
+> **Please wait for the release of `v0.4.0`**. This version will be released soon
 > and is expected to offer tremendous improvements over the previous ones.
 
 > [!NOTE]  
-> This README is for _users_ rather than _contributors_.**  
+> This README is for _users_, rather than _contributors_. 
 > If you wish to _contribute_ to ClamAV Desktop, you should read [CONTRIBUTING.md](CONTRIBUTING.md) instead.
 
 ---
@@ -87,7 +87,7 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 - [ ] Technical: macOS & Windows Code signing
 - [ ] Technical: Binaries embedding (check with official ClamAV team)
 - [ ] Technical: Releases `.x64.rpm` and `.arm64.rpm` formats  
-  (waiting for tauri-apps/tauri#4402 & tauri-apps/tauri#5202)
+  (Requires changes from tauri-apps/tauri#4402 & tauri-apps/tauri#5202 to be implemented.)
 - [ ] UX/UI: Full redesign
 
 
