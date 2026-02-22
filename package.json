@@ -148,7 +148,7 @@
     "lint-staged": "16.2.7",
     "make-dir-cli": "4.0.0",
     "openpgp": "6.3.0",
-    "ora": "8.2.0",
+    "ora": "9.3.0",
     "react-test-renderer": "19.2.4",
     "shelljs": "0.10.0",
     "storybook": "8.6.15",
