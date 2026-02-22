@@ -62,7 +62,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ['aarch64-apple-darwin', 'x86_64-apple-darwin']
+        # target: ['aarch64-apple-darwin', 'x86_64-apple-darwin']
+        target: ['aarch64-apple-darwin']
     runs-on: macos-14
     steps:
       - name: Checkout
