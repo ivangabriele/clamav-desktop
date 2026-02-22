@@ -18,7 +18,7 @@ jobs:
       image: ivangabriele/tauri:debian-bookworm-22
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       # https://github.com/Swatinem/rust-cache#example-usage
       - uses: Swatinem/rust-cache@v2
         with:
