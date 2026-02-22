@@ -92,8 +92,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@commitlint/cli": "19.8.1",
-    "@commitlint/config-conventional": "19.8.1",
+    "@commitlint/cli": "20.4.2",
+    "@commitlint/config-conventional": "20.4.2",
     "@faker-js/faker": "10.3.0",
     "@ivangabriele/biome-config": "1.5.1",
     "@ivangabriele/commitlint-config": "2.0.3",
