@@ -132,7 +132,7 @@
     "@wdio/mocha-framework": "8.38.2",
     "@wdio/spec-reporter": "8.38.2",
     "bhala": "3.0.4",
-    "chromatic": "13.3.5",
+    "chromatic": "15.1.1",
     "cross-env": "10.1.0",
     "decompress": "4.2.1",
     "del": "8.0.1",
