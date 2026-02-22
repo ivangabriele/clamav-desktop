@@ -81,7 +81,7 @@ jobs:
         with:
           components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
           rustflags: ''
-          toolchain: '1.87'
+          toolchain: '1.93'
       - name: Print versions
         run: |
           cat /etc/os-release
@@ -135,7 +135,7 @@ jobs:
         with:
           components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
           rustflags: ''
-          toolchain: '1.87'
+          toolchain: '1.93'
       - name: Print versions
         run: |
           rustc -V
@@ -182,7 +182,7 @@ jobs:
         with:
           components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
           rustflags: ''
-          toolchain: '1.87'
+          toolchain: '1.93'
       - name: Print versions
         run: |
           rustc -V
