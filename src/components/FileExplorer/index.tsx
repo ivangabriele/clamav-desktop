@@ -74,7 +74,7 @@ export function FileExplorer({ onChange, onExpand, rootPaths }: FileExplorerProp
   )
 
   return (
-    <Box className="FileExplorer">
+    <Box>
       {tree.map((treeNode, index) => (
         <Node key={treeNode.path} indexPath={[index]} treeNode={treeNode} onSelect={select} onExpand={expand} />
       ))}

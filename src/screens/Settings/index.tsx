@@ -72,7 +72,7 @@ export function Settings() {
           <CodeMirror
             basicSetup={CODE_MIRROR_OPTIONS}
             editable={!state.is_writing}
-            extensions={[langs.shell()]}
+            extensions={[langs.bash()]}
             height="384px"
             onChange={handleChange}
             theme={CODE_MIRROR_THEME}

@@ -67,10 +67,12 @@ pub async fn get_remote_version() -> Result<types::Version, String> {
         Some(config::ConfigValue::StringVal(value)) => value.to_string(),
         _ => globals::DEFAULT_FRESHCLAM_DNS_DATABASE_INFO.to_string(),
     };
-    let resolver = hickory_resolver::TokioAsyncResolver::tokio(
+    let mut resolver_builder = hickory_resolver::TokioResolver::builder_with_config(
         hickory_resolver::config::ResolverConfig::default(),
-        hickory_resolver::config::ResolverOpts::default(),
+        hickory_resolver::name_server::TokioConnectionProvider::default(),
     );
+    *resolver_builder.options_mut() = hickory_resolver::config::ResolverOpts::default();
+    let resolver = resolver_builder.build();
 
     let response = match resolver
         .lookup(dns_database_domain, hickory_resolver::proto::rr::RecordType::TXT)
@@ -84,7 +86,7 @@ pub async fn get_remote_version() -> Result<types::Version, String> {
         Some(record) => record,
         None => return Err("No TXT records found".to_string()),
     };
-    if let Some(hickory_resolver::proto::rr::RData::TXT(txt_record)) = record.data() {
+    if let hickory_resolver::proto::rr::RData::TXT(txt_record) = record.data() {
         // https://blog.clamav.net/2021/03/clamav-cvds-cdiffs-and-magic-behind.html
         //
         // ```
