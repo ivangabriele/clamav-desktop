@@ -36,7 +36,7 @@ jobs:
           rustflags: ''
           toolchain: '1.93'
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: yarn
           node-version: 24
