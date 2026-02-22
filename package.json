@@ -151,7 +151,7 @@
     "ora": "8.2.0",
     "react-test-renderer": "19.2.4",
     "shelljs": "0.10.0",
-    "storybook": "8.6.12",
+    "storybook": "8.6.15",
     "ts-node": "10.9.2",
     "type-fest": "4.41.0",
     "use-debounce": "10.1.0",
