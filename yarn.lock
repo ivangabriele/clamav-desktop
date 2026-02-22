@@ -5474,7 +5474,7 @@ __metadata:
     storybook: "npm:8.6.15"
     styled-components: "npm:6.3.11"
     ts-node: "npm:10.9.2"
-    type-fest: "npm:4.41.0"
+    type-fest: "npm:5.4.4"
     typescript: "npm:5.9.3"
     use-debounce: "npm:10.1.0"
     vite: "npm:6.4.1"
@@ -12226,6 +12226,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tagged-tag@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "tagged-tag@npm:1.0.0"
+  checksum: 10/e37653df3e495daa7ea7790cb161b810b00075bba2e4d6c93fb06a709e747e3ae9da11a120d0489833203926511b39e038a2affbd9d279cfb7a2f3fcccd30b5d
+  languageName: node
+  linkType: hard
+
 "tar-fs@npm:3.0.4":
   version: 3.0.4
   resolution: "tar-fs@npm:3.0.4"
@@ -12547,10 +12554,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:4.41.0, type-fest@npm:^4.2.0":
-  version: 4.41.0
-  resolution: "type-fest@npm:4.41.0"
-  checksum: 10/617ace794ac0893c2986912d28b3065ad1afb484cad59297835a0807dc63286c39e8675d65f7de08fafa339afcb8fe06a36e9a188b9857756ae1e92ee8bda212
+"type-fest@npm:5.4.4":
+  version: 5.4.4
+  resolution: "type-fest@npm:5.4.4"
+  dependencies:
+    tagged-tag: "npm:^1.0.0"
+  checksum: 10/0bbdca645f95740587f389a2d712fe8d5e9ab7d13e74aac97cf396112510abcaab6b75fd90d65172bc13b02fdfc827e6a871322cc9c1c1a5a2754d9ab264c6f5
   languageName: node
   linkType: hard
 
@@ -12572,6 +12581,13 @@ __metadata:
   version: 3.13.1
   resolution: "type-fest@npm:3.13.1"
   checksum: 10/9a8a2359ada34c9b3affcaf3a8f73ee14c52779e89950db337ce66fb74c3399776c697c99f2532e9b16e10e61cfdba3b1c19daffb93b338b742f0acd0117ce12
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^4.2.0":
+  version: 4.41.0
+  resolution: "type-fest@npm:4.41.0"
+  checksum: 10/617ace794ac0893c2986912d28b3065ad1afb484cad59297835a0807dc63286c39e8675d65f7de08fafa339afcb8fe06a36e9a188b9857756ae1e92ee8bda212
   languageName: node
   linkType: hard
 
