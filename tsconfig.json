@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "incremental": true,
+    "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "noImplicitAny": false,
     "noImplicitOverride": true,
