@@ -51,7 +51,7 @@ jobs:
         env:
           TARGET: ${{ matrix.target }}
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.target }}.deb
           path: src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
@@ -89,7 +89,7 @@ jobs:
         env:
           TARGET: ${{ matrix.target }}
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.target }}.dmg
           path: src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
@@ -124,7 +124,7 @@ jobs:
         env:
           TARGET: ${{ matrix.target }}
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.target }}.msi
           path: src-tauri/target/${{ matrix.target }}/release/bundle/msi/*.msi
