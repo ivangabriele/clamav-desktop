@@ -112,7 +112,7 @@ jobs:
 
   core_test_macos:
     name: Test Core (macos-14)
-    runs-on: macos-14
+    runs-on: macos-15
     env:
       PROJECT_ROOT_PATH: '/Users/runner/work/clamav-desktop/clamav-desktop'
       RUST_BACKTRACE: 1
