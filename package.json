@@ -133,7 +133,7 @@
     "@wdio/spec-reporter": "8.38.2",
     "bhala": "3.0.4",
     "chromatic": "13.3.5",
-    "cross-env": "7.0.3",
+    "cross-env": "10.1.0",
     "decompress": "4.2.1",
     "del": "8.0.1",
     "dotenv-cli": "11.0.0",
