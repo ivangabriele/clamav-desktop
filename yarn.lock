@@ -1489,10 +1489,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@faker-js/faker@npm:9.9.0":
-  version: 9.9.0
-  resolution: "@faker-js/faker@npm:9.9.0"
-  checksum: 10/b24b1be0fb3090d54abaaa3a814f37d1a7551f1207dcd330a1af2c70f6312a8b95ebb82653577757dd62f4cbbb56caa3c83513053253654dc3e286a05040ecbe
+"@faker-js/faker@npm:10.3.0":
+  version: 10.3.0
+  resolution: "@faker-js/faker@npm:10.3.0"
+  checksum: 10/ae06502156d918beed43bc939ad4a2b2b4696c5335ac6cfa52290cee23ffbcc4967c69a149118b3ec5c44d8cd7da690851fea4a93467e02d91b5281e3a6a8b60
   languageName: node
   linkType: hard
 
@@ -5386,7 +5386,7 @@ __metadata:
     "@biomejs/biome": "npm:1.9.4"
     "@commitlint/cli": "npm:19.8.1"
     "@commitlint/config-conventional": "npm:19.8.1"
-    "@faker-js/faker": "npm:9.9.0"
+    "@faker-js/faker": "npm:10.3.0"
     "@fontsource/poppins": "npm:5.2.7"
     "@fontsource/reddit-mono": "npm:5.2.8"
     "@ivangabriele/biome-config": "npm:1.5.1"
