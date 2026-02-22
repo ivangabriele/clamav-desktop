@@ -21,7 +21,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #99004D;
+    background-color: #99004d;
     border-radius: 2px;
     outline: 0;
   }
@@ -39,7 +39,7 @@ body {
   color: white;
   display: flex;
   flex-grow: 1;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 100%;
   font-weight: 300;
   height: 100%;
@@ -48,7 +48,13 @@ body {
   overflow: hidden;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
 }
 

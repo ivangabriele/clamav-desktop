@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "extends": ["@ivangabriele/biome-config"],
   "files": {
     "ignore": [
@@ -24,7 +24,9 @@
   "linter": {
     "rules": {
       "correctness": {
-        "noNodejsModules": "off"
+        "noNodejsModules": "off",
+        "noUndeclaredDependencies": "off",
+        "useImportExtensions": "off"
       },
       "style": {
         "noNamespace": "off"
@@ -43,11 +45,14 @@
       }
     },
     {
-      "include": ["./*.ts", "./configs/**/*.js"],
+      "include": ["./*.ts", "./configs/**/*.js", "./scripts/**/*.js", "./scripts/**/*.ts"],
       "linter": {
         "rules": {
           "style": {
             "noDefaultExport": "off"
+          },
+          "suspicious": {
+            "noConsole": "off"
           }
         }
       }

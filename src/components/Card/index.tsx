@@ -16,7 +16,7 @@ export function Card({ actions = [], children, gridArea, isCentered = false, isL
   const hasActionBar = actions.length > 0
 
   return (
-    <Box className="Card" style={{ gridArea }}>
+    <Box style={{ gridArea }}>
       <Main $withBottomPadding={!hasActionBar}>
         <Title>{title}</Title>
         {isLoading && (

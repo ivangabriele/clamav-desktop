@@ -6,8 +6,8 @@ type ScreenStoryBoxProps = Readonly<{
 }>
 export function ScreenStoryBox({ children }: ScreenStoryBoxProps) {
   return (
-    <Box className="Box">
-      <ScreenBox className="ScreenBox">{children}</ScreenBox>
+    <Box>
+      <ScreenBox>{children}</ScreenBox>
     </Box>
   )
 }
