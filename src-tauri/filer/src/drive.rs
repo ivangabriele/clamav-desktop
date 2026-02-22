@@ -10,26 +10,20 @@ pub fn list() -> Vec<String> {
         return vec!["/".to_string()];
     }
 
-    // TODO Use `winapi` for that (but it seems dead)?
-    // https://docs.rs/winapi/latest/winapi/
     if cfg!(windows) {
-        let args = common::utils::as_strings(vec!["logicaldisk", "get", "name"]);
+        let args = common::utils::as_strings(vec![
+            "-NoProfile",
+            "-Command",
+            "Get-CimInstance Win32_LogicalDisk | Select-Object -ExpandProperty Name",
+        ]);
 
-        return match cli::exec("wmic".to_string(), args) {
-            Ok(stdout) => {
-                let mut drives: Vec<String> = stdout
-                    .split("\n")
-                    .map(|line_as_str| line_as_str.trim())
-                    .filter(|line_as_str| !line_as_str.is_empty())
-                    .map(String::from)
-                    .collect();
-
-                // We remove the command output header "Name"
-                drives.remove(0);
-
-                // TODO Split lines beforehand in internal `cli` lib via `BufReader.lines()`.
-                drives
-            }
+        return match cli::exec("powershell".to_string(), args) {
+            Ok(stdout) => stdout
+                .split("\n")
+                .map(|line| line.trim())
+                .filter(|line| !line.is_empty())
+                .map(String::from)
+                .collect(),
             Err(..) => EMPTY_STRING_VECTOR,
         };
     }

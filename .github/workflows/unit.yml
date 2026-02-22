@@ -160,7 +160,7 @@ jobs:
         working-directory: ./src-tauri
 
   core_test_windows:
-    name: Test Core (windows-2022)
+    name: Test Core (windows-2025)
     runs-on: windows-2025
     env:
       PROJECT_ROOT_PATH: 'D:\a\clamav-desktop\clamav-desktop'
@@ -173,7 +173,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           cache-on-failure: true
-          key: unit_core_test_windows-2022
+          key: unit_core_test_windows-2025
           prefix-key: rust-cache
           shared-key: v0
           workspaces: './src-tauri -> target'
