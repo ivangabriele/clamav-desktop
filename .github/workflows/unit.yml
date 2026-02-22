@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Install Node.js dependencies
         run: yarn
       - name: Run
@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Install Node.js dependencies
         run: yarn
       - name: Run
@@ -91,7 +91,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Install Node.js dependencies
         run: yarn
       - name: Prepare core build
@@ -144,7 +144,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Install Node.js dependencies
         run: yarn
       # https://github.com/tauri-apps/tauri/issues/3142
@@ -191,7 +191,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Install Node.js dependencies
         run: yarn
       # https://github.com/tauri-apps/tauri/issues/3142

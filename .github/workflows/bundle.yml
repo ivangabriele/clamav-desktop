@@ -43,7 +43,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Prepare
         run: yarn --frozen-lockfile
       - name: Bundle
@@ -80,7 +80,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Prepare
         run: yarn --frozen-lockfile
       - name: Bundle
@@ -115,7 +115,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Prepare
         run: yarn --frozen-lockfile
       - name: Bundle
