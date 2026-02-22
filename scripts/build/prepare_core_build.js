@@ -21,7 +21,7 @@ const ALLOWED_TARGETS = [
 
 // `[process.platform]`: target triple
 const DEFAULT_TARGET_MAP = {
-  darwin: 'x86_64-apple-darwin',
+  darwin: 'aarch64-apple-darwin',
   linux: 'x86_64-unknown-linux-gnu',
   win32: 'x86_64-pc-windows-msvc',
 }
