@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Install
         run: yarn
       - name: Lint commits (last 100)
@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Install
         run: yarn
       - name: Run
@@ -55,7 +55,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: yarn
-          node-version: 22
+          node-version: 24
       - name: Install
         run: yarn
       - name: Run
