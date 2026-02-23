@@ -185,6 +185,10 @@ Cargo.lock
 # Python virtual environment
 venv/
 
+# Storybook
+/storybook-static
+*storybook.log
+
 # Tarpaulin coverage output
 cobertura.xml
 
@@ -201,5 +205,4 @@ cobertura.xml
 /src-tauri/sidecars/*
 !/src-tauri/sidecars/.gitkeep
 
-*storybook.log
 /*.zip
