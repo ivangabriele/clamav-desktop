@@ -134,7 +134,7 @@
     "del": "8.0.1",
     "dotenv-cli": "11.0.0",
     "download": "8.0.0",
-    "env-paths": "3.0.0",
+    "env-paths": "4.0.0",
     "esm-path": "1.0.1",
     "execa": "9.6.1",
     "fs-extra": "11.3.3",
