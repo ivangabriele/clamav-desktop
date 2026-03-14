@@ -1,6 +1,6 @@
 import { existsSync, promises as fs } from 'node:fs'
 import { join } from 'node:path'
-import { B } from 'bhala'
+import consola from 'consola'
 import decompress from 'decompress'
 import { deleteAsync } from 'del'
 import download from 'download'
@@ -20,7 +20,7 @@ const OS_WITH_ARCH_MAP = {
 export async function downloadClamavBuild(target, rootPath) {
   // We only download the build for Windows, for simplicity. For Linux and macOS, we build ClamAV binaries from source.
   if (process.platform !== 'win32') {
-    B.info('[prepare_core_build.js]', 'Not a Windows machine. Skipping build download...')
+    consola.info('[prepare_core_build.js]', 'Not a Windows machine. Skipping build download...')
 
     return
   }
@@ -39,7 +39,7 @@ export async function downloadClamavBuild(target, rootPath) {
   const targetBuildDirectoryPath = join(resourcesPath, 'clamav')
 
   if (existsSync(targetBuildDirectoryPath)) {
-    B.info('[prepare_core_build.js]', 'ClamAV build already downloaded. Skipping build download...')
+    consola.info('[prepare_core_build.js]', 'ClamAV build already downloaded. Skipping build download...')
 
     return
   }
@@ -54,15 +54,18 @@ export async function downloadClamavBuild(target, rootPath) {
   ].join('/')
   const signatureDownloadUrl = `${buildDownloadUrl}.sig`
 
-  B.log('[prepare_core_build.js]', `Downloading ClamAV v${clamavVersion} build for target: ${targetSlug}...`)
+  consola.log('[prepare_core_build.js]', `Downloading ClamAV v${clamavVersion} build for target: ${targetSlug}...`)
   await download(buildDownloadUrl, resourcesPath)
-  B.log('[prepare_core_build.js]', `Downloading ClamAV v${clamavVersion} build signature for target: ${targetSlug}...`)
+  consola.log(
+    '[prepare_core_build.js]',
+    `Downloading ClamAV v${clamavVersion} build signature for target: ${targetSlug}...`,
+  )
   await download(signatureDownloadUrl, resourcesPath)
 
   // -----------------------------------------------------------------------------
   // Verify ClamAV build signature
 
-  B.log('[prepare_core_build.js]', `Verifying ClamAV v${clamavVersion} build signature...`)
+  consola.log('[prepare_core_build.js]', `Verifying ClamAV v${clamavVersion} build signature...`)
   const publicKeyArmored = await fs.readFile(signaturePublicKeyPath, 'utf8')
   const signatureArmored = await fs.readFile(downloadedBuildArchiveSignaturePath, 'utf8')
   const zipFile = await fs.readFile(downloadedBuildArchivePath)
@@ -84,7 +87,7 @@ export async function downloadClamavBuild(target, rootPath) {
   try {
     await verificationResult.signatures[0].verified // Throws an error if verification fails
   } catch (err) {
-    B.error('[prepare_core_build.js]', `ClamAV v${clamavVersion} build signature verification failed.`)
+    consola.error('[prepare_core_build.js]', `ClamAV v${clamavVersion} build signature verification failed.`)
     console.error(err)
 
     process.exit(1)
@@ -93,22 +96,22 @@ export async function downloadClamavBuild(target, rootPath) {
   // -----------------------------------------------------------------------------
   // Extract ClamAV build
 
-  B.log('[prepare_core_build.js]', `Extracting ClamAV v${clamavVersion} build...`)
+  consola.log('[prepare_core_build.js]', `Extracting ClamAV v${clamavVersion} build...`)
   await decompress(downloadedBuildArchivePath, resourcesPath)
 
   // -----------------------------------------------------------------------------
   // Clean up downloaded files
 
-  B.log('[prepare_core_build.js]', 'Cleaning up downloaded files...')
+  consola.log('[prepare_core_build.js]', 'Cleaning up downloaded files...')
   await deleteAsync([downloadedBuildArchivePath, downloadedBuildArchiveSignaturePath])
 
   // -----------------------------------------------------------------------------
   // Normalize extracted directory name
 
-  B.log('[prepare_core_build.js]', 'Normalizing extracted directory name...')
+  consola.log('[prepare_core_build.js]', 'Normalizing extracted directory name...')
   await move(downloadedBuildDirectoryPath, targetBuildDirectoryPath)
 
   // -----------------------------------------------------------------------------
 
-  B.success('[prepare_core_build.js]', `ClamAV v${clamavVersion} build successfully downloaded.`)
+  consola.success('[prepare_core_build.js]', `ClamAV v${clamavVersion} build successfully downloaded.`)
 }
