@@ -1,13 +1,9 @@
 name: Release
 
 on:
+  push:
+    tags: ['v*']
   workflow_dispatch:
-  # workflow_run:
-  #   workflows:
-  #     - Unit
-  #     - Integration
-  #   types:
-  #     - completed
 
 jobs:
   draft:
@@ -17,51 +13,145 @@ jobs:
     steps:
       - name: Get Version
         id: get_version
-        uses: battila7/get-version-action@v2.3.0
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
       - name: Draft
-        uses: release-drafter/release-drafter@v6
+        uses: release-drafter/release-drafter@v7
         with:
-          version: ${{ steps.get_version.outputs.version-without-v }}
+          version: ${{ steps.get_version.outputs.version }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # release:
-  #   name: Release
-  #   needs:
-  #     - draft
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     matrix:
-  #       include:
-  #         - os: macos-latest
-  #         - os: ubuntu-latest
-  #         - os: windows-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Setup
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         cache: yarn
-  #         node-version: 22
-  #     - name: Install
-  #       run: yarn
-  #     - name: Build
-  #       run: yarn build
-  #     - name: Release
-  #       run: yarn release
-  #       env:
-  #         # https://www.electron.build/code-signing#how-to-disable-code-signing-during-the-build-process-on-macos
-  #         CSC_IDENTITY_AUTO_DISCOVERY: false
-  #         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+  release_deb:
+    name: Release DEB (${{ matrix.target }})
+    needs: draft
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ['aarch64-unknown-linux-gnu', 'x86_64-unknown-linux-gnu']
+    runs-on: ubuntu-latest
+    container:
+      image: ivangabriele/tauri:debian-bookworm-22
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install core build requirements
+        run: make setup-debian
+      - if: ${{ matrix.target == 'aarch64-unknown-linux-gnu' }}
+        name: Install ARM64 build requirements
+        run: |
+          make setup-debian-arm64
+          ln -sf /usr/bin/pkg-config /usr/bin/aarch64-linux-gnu-pkg-config
+          echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
+          rustflags: ''
+          target: ${{ matrix.target }}
+          toolchain: '1.93'
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: yarn
+          node-version: 24
+      - name: Prepare
+        run: yarn --frozen-lockfile
+      - name: Bundle
+        run: yarn bundle:deb --target ${{ matrix.target }}
+        env:
+          TARGET: ${{ matrix.target }}
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # publish:
-  #   name: Publish
-  #   needs:
-  #     - release
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Publish
-  #       uses: ivangabriele/publish-latest-release@v3
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+  release_dmg:
+    name: Release DMG (${{ matrix.target }})
+    needs: draft
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ['aarch64-apple-darwin', 'x86_64-apple-darwin']
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install core build requirements
+        run: make setup-macos
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
+          target: ${{ matrix.target }}
+          rustflags: ''
+          toolchain: '1.93'
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: yarn
+          node-version: 24
+      - name: Prepare
+        run: yarn --frozen-lockfile
+      - name: Bundle
+        run: yarn bundle:dmg --target ${{ matrix.target }}
+        env:
+          TARGET: ${{ matrix.target }}
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release_msi:
+    name: Release MSI (${{ matrix.target }})
+    needs: draft
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ['aarch64-pc-windows-msvc', 'x86_64-pc-windows-msvc']
+    runs-on: windows-2025
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: 'cargo,clippy,rust-docs,rust-src,rustc,rustfmt'
+          rustflags: ''
+          target: ${{ matrix.target }}
+          toolchain: '1.93'
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: yarn
+          node-version: 24
+      - name: Prepare
+        run: yarn --frozen-lockfile
+      - name: Bundle
+        run: yarn bundle:msi --target ${{ matrix.target }}
+        env:
+          TARGET: ${{ matrix.target }}
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: src-tauri/target/${{ matrix.target }}/release/bundle/msi/*.msi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Publish
+    needs:
+      - release_deb
+      - release_dmg
+      - release_msi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
