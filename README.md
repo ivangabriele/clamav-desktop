@@ -4,28 +4,16 @@
 </p>
 
 <p align="center">
-  <a aria-label="Go to the latest Github release" href="https://github.com/ivangabriele/clamav-desktop/releases">
-    <img alt="Latest GitHub release version including pre-releases" src="https://img.shields.io/github/v/release/ivangabriele/clamav-desktop?include_prereleases&sort=semver&style=for-the-badge&labelColor=000">
-  </a>
-  <a aria-label="Open the AGPL-3.0 license" href="https://github.com/ivangabriele/clamav-desktop/blob/main/LICENSE">
-    <img alt="AGPL-3.0 license" src="https://img.shields.io/github/license/ivangabriele/clamav-desktop?style=for-the-badge&labelColor=000">
-  </a>
-  <a aria-label="Go to the main branch unit workflow history" href="https://github.com/ivangabriele/clamav-desktop/actions?query=branch%3Amain+workflow%3AUnit">
-    <img alt="Latest unit workflow status for main branch" src="https://img.shields.io/github/actions/workflow/status/ivangabriele/clamav-desktop/unit.yml?branch=main&label=Unit&style=for-the-badge&labelColor=000">
-  </a>
-  <a aria-label="Go to the main branch integration workflow history" href="https://github.com/ivangabriele/clamav-desktop/actions?query=branch%3Amain+workflow%3AIntegration">
-    <img alt="Latest integration workflow status for main branch" src="https://img.shields.io/github/actions/workflow/status/ivangabriele/clamav-desktop/integration.yml?branch=main&label=Integration&style=for-the-badge&labelColor=000">
-  </a>
-  <a aria-label="Go to code coverage dashboard" href="https://app.codecov.io/github/ivangabriele/clamav-desktop">
-    <img alt="Latest GitHub workflow status for main branch" src="https://img.shields.io/codecov/c/github/ivangabriele/clamav-desktop?style=for-the-badge&labelColor=000">
-  </a>
+  <!--<a aria-label="Go to the latest Github release" href="https://github.com/ivangabriele/clamav-desktop/releases"><img alt="" aria-hidden="true" src="https://img.shields.io/github/v/release/ivangabriele/clamav-desktop?include_prereleases&sort=semver&style=for-the-badge&labelColor=000"></a>-->
+  <a aria-label="Open the AGPL-3.0 license" href="https://github.com/ivangabriele/clamav-desktop/blob/main/LICENSE"><img alt="" aria-hidden="true" src="https://img.shields.io/github/license/ivangabriele/clamav-desktop?style=for-the-badge&labelColor=000"></a>
+  <a aria-label="Go to the main branch unit workflow history" href="https://github.com/ivangabriele/clamav-desktop/actions?query=branch%3Amain+workflow%3AUnit"><img alt="" aria-hidden="true" src="https://img.shields.io/github/actions/workflow/status/ivangabriele/clamav-desktop/unit.yml?branch=main&label=Unit&style=for-the-badge&labelColor=000"></a>
+  <a aria-label="Go to the main branch integration workflow history" href="https://github.com/ivangabriele/clamav-desktop/actions?query=branch%3Amain+workflow%3AIntegration"><img alt="" aria-hidden="true" src="https://img.shields.io/github/actions/workflow/status/ivangabriele/clamav-desktop/integration.yml?branch=main&label=E2E&style=for-the-badge&labelColor=000"></a>
+  <a aria-label="Go to code coverage dashboard" href="https://app.codecov.io/github/ivangabriele/clamav-desktop"><img alt="" aria-hidden="true" src="https://img.shields.io/codecov/c/github/ivangabriele/clamav-desktop?style=for-the-badge&labelColor=000"></a>
+  <a aria-label="Go to the ClamAV Desktop Stoat live chat server" href="https://stt.gg/xH2w834e" target="_blank" rel="noreferrer"><img alt="" aria-hidden="true" src="https://img.shields.io/badge/Live%20Chat-000?color=8C24EC&style=for-the-badge&labelColor=000&logo=revoltdotchat"></a>
 </p>
 
 > [!WARNING]  
-> Clamav Desktop is a work in progress. I do not recommend using older releases (`<v0.4.0`)
-> as they were based on Electron, which can be slow for this type of application.  
-> **Please wait for the release of `v0.4.0`**. This version will be released soon
-> and is expected to offer tremendous improvements over the previous ones.
+> Clamav Desktop is a work in progress.
 
 > [!NOTE]  
 > This README is for _users_, rather than _contributors_. 
@@ -89,5 +77,3 @@ This roadmap is not set in stone and is prone to change unexpectedly while we're
 - [ ] Technical: Releases `.x64.rpm` and `.arm64.rpm` formats  
   (Requires changes from tauri-apps/tauri#4402 & tauri-apps/tauri#5202 to be implemented.)
 - [ ] UX/UI: Full redesign
-
-
