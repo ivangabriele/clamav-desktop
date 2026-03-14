@@ -26,7 +26,7 @@ pub async fn get_dashboard_state(
     let (mut write, mut read) = ws_stream.split();
 
     let client_message = types::ClientMessage {
-        id: cuid::cuid1().expect("Failed to generate CUID."),
+        id: uuid::Uuid::new_v4().to_string(),
         action: "Ping".to_string(),
         data: serde_json::json!({}),
     };
