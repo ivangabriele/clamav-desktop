@@ -1,4 +1,4 @@
-import { B } from 'bhala'
+import consola from 'consola'
 import { getAbsolutePath } from 'esm-path'
 
 import { buildClamavFromSource } from './actions/buildClamavFromSource.js'
@@ -34,22 +34,22 @@ if (!CONTROLLED_TARGET) {
   process.exit(0)
 }
 if (!ALLOWED_TARGETS.includes(CONTROLLED_TARGET)) {
-  B.error('[prepare_core_build.js]', `Invalid target: \`${CONTROLLED_TARGET}\`.`)
+  consola.error('[prepare_core_build.js]', `Invalid target: \`${CONTROLLED_TARGET}\`.`)
 
   process.exit(1)
 }
 
-B.info('[prepare_core_build.js]', 'Downloading ClamAV standalone build...')
+consola.info('[prepare_core_build.js]', 'Downloading ClamAV standalone build...')
 await downloadClamavBuild(CONTROLLED_TARGET, ROOT_PATH)
 
-B.info('[prepare_core_build.js]', 'Building translator sidecars...')
+consola.info('[prepare_core_build.js]', 'Building translator sidecars...')
 await buildTranslatorSidecars(ROOT_PATH)
 
-B.info('[prepare_core_build.js]', 'Downloading ClamAV source...')
+consola.info('[prepare_core_build.js]', 'Downloading ClamAV source...')
 await downloadClamavSource(ROOT_PATH)
 
-B.info('[prepare_core_build.js]', 'Building ClamAV from source...')
+consola.info('[prepare_core_build.js]', 'Building ClamAV from source...')
 await buildClamavFromSource(CONTROLLED_TARGET, ROOT_PATH)
 
-B.info('[prepare_core_build.js]', 'Normalizing sidecar names...')
+consola.info('[prepare_core_build.js]', 'Normalizing sidecar names...')
 await normalizeSidecarNames(CONTROLLED_TARGET, ROOT_PATH)

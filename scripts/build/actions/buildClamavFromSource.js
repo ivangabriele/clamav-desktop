@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs'
 import { join } from 'node:path'
-import { B } from 'bhala'
+import consola from 'consola'
 import { execa } from 'execa'
 
 /**
@@ -9,7 +9,7 @@ import { execa } from 'execa'
 export async function buildClamavFromSource(target, rootPath) {
   // We only build ClamAV binaries from source for Linux and macOS. For Windows, we download the build.
   if (!['darwin', 'linux'].includes(process.platform)) {
-    B.info('[prepare_core_build.js]', 'Not a Linux or macOS machine. Skipping ClamAV build...')
+    consola.info('[prepare_core_build.js]', 'Not a Linux or macOS machine. Skipping ClamAV build...')
 
     return
   }
@@ -18,10 +18,10 @@ export async function buildClamavFromSource(target, rootPath) {
   const buildDirectoryPath = join(sourceDirectoryPath, 'build')
   const sidecarsDirectoryPath = join(rootPath, 'src-tauri/sidecars')
 
-  B.info('[prepare_core_build.js]', 'Preparing ClamAV build...')
+  consola.info('[prepare_core_build.js]', 'Preparing ClamAV build...')
   await fs.mkdir(buildDirectoryPath, { recursive: true })
 
-  B.info('[prepare_core_build.js]', 'Configuring ClamAV build...')
+  consola.info('[prepare_core_build.js]', 'Configuring ClamAV build...')
   let buildConfigResponse
   // https://github.com/Cisco-Talos/clamav/blob/main/INSTALL-cross-linux-arm64.md#build-clamav
   if (target === 'aarch64-unknown-linux-gnu') {
@@ -65,27 +65,27 @@ export async function buildClamavFromSource(target, rootPath) {
     })
   }
   if (buildConfigResponse.failed) {
-    B.error('[prepare_core_build.js]', 'ClamAV build failed.')
+    consola.error('[prepare_core_build.js]', 'ClamAV build failed.')
 
     process.exit(1)
   }
 
-  B.info('[prepare_core_build.js]', 'Building ClamAV...')
+  consola.info('[prepare_core_build.js]', 'Building ClamAV...')
   const buildResponse = await execa('cmake', ['--build', '.'], {
     cwd: buildDirectoryPath,
     reject: false,
     stdio: 'inherit',
   })
   if (buildResponse.failed) {
-    B.error('[prepare_core_build.js]', 'ClamAV build failed.')
+    consola.error('[prepare_core_build.js]', 'ClamAV build failed.')
 
     process.exit(1)
   }
 
-  B.info('[prepare_core_build.js]', 'Moving ClamAV binaries into sidecars directory...')
+  consola.info('[prepare_core_build.js]', 'Moving ClamAV binaries into sidecars directory...')
   await fs.rename(join(buildDirectoryPath, 'clamd/clamd'), join(sidecarsDirectoryPath, 'clamd'))
   await fs.rename(join(buildDirectoryPath, 'clamscan/clamscan'), join(sidecarsDirectoryPath, 'clamscan'))
   await fs.rename(join(buildDirectoryPath, 'freshclam/freshclam'), join(sidecarsDirectoryPath, 'freshclam'))
 
-  B.success('[prepare_core_build.js]', 'ClamAV successfully built.')
+  consola.success('[prepare_core_build.js]', 'ClamAV successfully built.')
 }

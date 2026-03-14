@@ -1,10 +1,10 @@
-import { B } from 'bhala'
+import consola from 'consola'
 import { deleteAsync } from 'del'
 import { getAbsolutePath } from 'esm-path'
 
 const ROOT_PATH = getAbsolutePath(import.meta.url, '../..')
 
-B.info('[clean.js]', 'Cleaning...')
+consola.info('[clean.js]', 'Cleaning...')
 await deleteAsync(
   [
     './daemon/target',
@@ -18,4 +18,4 @@ await deleteAsync(
   { cwd: ROOT_PATH },
 )
 
-B.success('[clean.js]', 'Cleaned.')
+consola.success('[clean.js]', 'Cleaned.')

@@ -1,10 +1,10 @@
-import { B } from 'bhala'
+import consola from 'consola'
 import { deleteAsync } from 'del'
 import { getAbsolutePath } from 'esm-path'
 
 const ROOT_PATH = getAbsolutePath(import.meta.url, '../..')
 
-B.info('[prune.js]', 'Pruning...')
+consola.info('[prune.js]', 'Pruning...')
 await deleteAsync(
   [
     './coverage',
@@ -20,4 +20,4 @@ await deleteAsync(
   { cwd: ROOT_PATH },
 )
 
-B.success('[prune.js]', 'Pruned.')
+consola.success('[prune.js]', 'Pruned.')
