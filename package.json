@@ -122,7 +122,7 @@
     "@types/react-test-renderer": "19.1.0",
     "@types/shelljs": "0.10.0",
     "@types/styled-components": "5.1.36",
-    "@vitejs/plugin-react": "5.1.4",
+    "@vitejs/plugin-react": "6.0.1",
     "@wdio/cli": "8.38.2",
     "@wdio/local-runner": "8.38.2",
     "@wdio/mocha-framework": "8.38.2",
