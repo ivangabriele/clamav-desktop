@@ -127,7 +127,7 @@
     "@wdio/local-runner": "8.38.2",
     "@wdio/mocha-framework": "8.38.2",
     "@wdio/spec-reporter": "8.38.2",
-    "chromatic": "15.2.0",
+    "chromatic": "16.0.0",
     "consola": "3.4.2",
     "cross-env": "10.1.0",
     "decompress": "4.2.1",
