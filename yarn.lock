@@ -5062,9 +5062,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromatic@npm:15.2.0":
-  version: 15.2.0
-  resolution: "chromatic@npm:15.2.0"
+"chromatic@npm:16.0.0":
+  version: 16.0.0
+  resolution: "chromatic@npm:16.0.0"
   peerDependencies:
     "@chromatic-com/cypress": ^0.*.* || ^1.0.0
     "@chromatic-com/playwright": ^0.*.* || ^1.0.0
@@ -5077,7 +5077,7 @@ __metadata:
     chroma: dist/bin.js
     chromatic: dist/bin.js
     chromatic-cli: dist/bin.js
-  checksum: 10/66353aaf937897d77c95e9162169330c526ad8d07a9997190a2bb2938feabe051add65d6718c0fc2eb813f0361b828d69eff5df4513c43b672f9c8514100a556
+  checksum: 10/ee5223da81048458a67d274b9ac96a9446708f1b8fe12742d8888e052ebede9f318075eef75512eb2bdc47e82090485dc5bbe4d8df0f7a025816a8db597aa32d
   languageName: node
   linkType: hard
 
@@ -5181,7 +5181,7 @@ __metadata:
     "@wdio/local-runner": "npm:8.38.2"
     "@wdio/mocha-framework": "npm:8.38.2"
     "@wdio/spec-reporter": "npm:8.38.2"
-    chromatic: "npm:15.2.0"
+    chromatic: "npm:16.0.0"
     consola: "npm:3.4.2"
     cross-env: "npm:10.1.0"
     dayjs: "npm:1.11.20"
