@@ -39,7 +39,7 @@ uuid = { version = "1", features = ["v4"] }
 dev = { path = "./dev" }
 filer = { path = "./filer" }
 futures-util = "0.3.32"
-hickory-resolver = "0.25.2"
+hickory-resolver = "0.26.0"
 regex = "1.12.3"
 reqwest = "0.13.2"
 serde = { version = "1.0.228", features = ["derive"] }
