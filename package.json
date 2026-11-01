@@ -5,7 +5,7 @@
   "version": "0.3.24",
   "type": "module",
   "engines": {
-    "node": "24"
+    "node": "26"
   },
   "scripts": {
     "prebuild": "yarn clean && yarn build:webview && node ./scripts/build/prepare_core_build.js",
@@ -114,7 +114,7 @@
     "@types/fs-extra": "11.0.4",
     "@types/jest": "30.0.0",
     "@types/lodash.debounce": "4.0.9",
-    "@types/node": "24.10.13",
+    "@types/node": "26.6.6",
     "@types/numeral": "2.0.5",
     "@types/ramda": "0.31.1",
     "@types/react": "19.2.14",
