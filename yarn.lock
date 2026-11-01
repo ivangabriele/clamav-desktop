@@ -2508,13 +2508,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sindresorhus/merge-streams@npm:^2.1.0":
-  version: 2.3.0
-  resolution: "@sindresorhus/merge-streams@npm:2.3.0"
-  checksum: 10/798bcb53cd1ace9df84fcdd1ba86afdc9e0cd84f5758d26ae9b1eefd8e8887e5fc30051132b9e74daf01bb41fa5a2faf1369361f83d76a3b3d7ee938058fd71c
-  languageName: node
-  linkType: hard
-
 "@sindresorhus/merge-streams@npm:^4.0.0":
   version: 4.0.0
   resolution: "@sindresorhus/merge-streams@npm:4.0.0"
@@ -5186,7 +5179,7 @@ __metadata:
     cross-env: "npm:10.1.0"
     dayjs: "npm:1.11.20"
     decompress: "npm:4.2.1"
-    del: "npm:8.0.1"
+    del: "npm:9.0.1"
     dotenv-cli: "npm:11.0.0"
     download: "npm:8.0.0"
     env-paths: "npm:4.0.0"
@@ -5922,18 +5915,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"del@npm:8.0.1":
-  version: 8.0.1
-  resolution: "del@npm:8.0.1"
+"del@npm:9.0.1":
+  version: 9.0.1
+  resolution: "del@npm:9.0.1"
   dependencies:
-    globby: "npm:^14.0.2"
+    globby: "npm:^16.2.4"
     is-glob: "npm:^4.0.3"
-    is-path-cwd: "npm:^3.0.0"
+    is-path-cwd: "npm:^4.0.1"
     is-path-inside: "npm:^4.0.0"
-    p-map: "npm:^7.0.2"
+    p-map: "npm:^7.0.8"
     presentable-error: "npm:^0.0.1"
     slash: "npm:^5.1.0"
-  checksum: 10/53ed4a379a68c90e7d6d3bcce09c49229e77de9a946d0a5fc25f45b16c950cb8665986b7d0d0423416c03bfd43e0f31e528c5a19c558fe47449be9d6fae7f846
+  checksum: 10/bbff2370d400bb1115d1258cb29969a863cee877bf22962662f2141147f4d7b4adaccef745ff9341811550260104a3d1d96e40b7054167179a8fb8a0f96e7d1f
   languageName: node
   linkType: hard
 
@@ -7343,17 +7336,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^14.0.2":
-  version: 14.1.0
-  resolution: "globby@npm:14.1.0"
+"globby@npm:^16.2.4":
+  version: 16.2.4
+  resolution: "globby@npm:16.2.4"
   dependencies:
-    "@sindresorhus/merge-streams": "npm:^2.1.0"
+    "@sindresorhus/merge-streams": "npm:^4.0.0"
     fast-glob: "npm:^3.3.3"
-    ignore: "npm:^7.0.3"
-    path-type: "npm:^6.0.0"
+    ignore: "npm:^7.0.5"
+    is-path-inside: "npm:^4.0.0"
+    micromatch: "npm:^4.0.8"
     slash: "npm:^5.1.0"
-    unicorn-magic: "npm:^0.3.0"
-  checksum: 10/e527ff54f0dddf60abfabd0d9e799768619d957feecd8b13ef60481f270bfdce0d28f6b09267c60f8064798fb3003b8ec991375f7fe0233fbce5304e1741368c
+    unicorn-magic: "npm:^0.4.0"
+  checksum: 10/c638692255f250285584c6809a6345fb13ae7335d9e6e7621427167c51278a7a40503059bd3ebf8376f836ebd4d22035441694b04ad2d63775079cb9b8437823
   languageName: node
   linkType: hard
 
@@ -7657,10 +7651,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore@npm:^7.0.3":
-  version: 7.0.5
-  resolution: "ignore@npm:7.0.5"
-  checksum: 10/f134b96a4de0af419196f52c529d5c6120c4456ff8a6b5a14ceaaa399f883e15d58d2ce651c9b69b9388491d4669dda47285d307e827de9304a53a1824801bc6
+"ignore@npm:^7.0.5":
+  version: 7.0.14
+  resolution: "ignore@npm:7.0.14"
+  checksum: 10/47ed87f5943d538b5320a8aff31e09e5b7a87505fbddf254f86604f222486b0fa36993269acab5697d5b707d336d0c26b8fb24b0adb2ddbea0aa7ce225757458
   languageName: node
   linkType: hard
 
@@ -7911,10 +7905,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-path-cwd@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "is-path-cwd@npm:3.0.0"
-  checksum: 10/bc34d13b6a03dfca4a3ab6a8a5ba78ae4b24f4f1db4b2b031d2760c60d0913bd16a4b980dcb4e590adfc906649d5f5132684079a3972bd219da49deebb9adea8
+"is-path-cwd@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "is-path-cwd@npm:4.0.1"
+  checksum: 10/134f3cc8a6fda4cbc4301c8c178a68de92f0f4208d78fc3e2a0e4ffce9087f0ed14b5f6bcc4ba7c6a8c77f814e7a374ae897d85da7b00f8c95b3d0a4a0b82ac7
   languageName: node
   linkType: hard
 
@@ -10036,6 +10030,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"p-map@npm:^7.0.8":
+  version: 7.1.1
+  resolution: "p-map@npm:7.1.1"
+  checksum: 10/edc3b791c092701b4d3e9f453f6cf3ab7f4a2d07350a5a3cb189a519516af3b51058e33395595882906b1547dc3acbecfc2fd970f61c14f35507400bd02a8d50
+  languageName: node
+  linkType: hard
+
 "p-timeout@npm:^2.0.1":
   version: 2.0.1
   resolution: "p-timeout@npm:2.0.1"
@@ -10208,13 +10209,6 @@ __metadata:
     lru-cache: "npm:^11.0.0"
     minipass: "npm:^7.1.2"
   checksum: 10/2b4257422bcb870a4c2d205b3acdbb213a72f5e2250f61c80f79c9d014d010f82bdf8584441612c8e1fa4eb098678f5704a66fa8377d72646bad4be38e57a2c3
-  languageName: node
-  linkType: hard
-
-"path-type@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "path-type@npm:6.0.0"
-  checksum: 10/b9f6eaf7795c48d5c9bc4c6bc3ac61315b8d36975a73497ab2e02b764c0836b71fb267ea541863153f633a069a1c2ed3c247cb781633842fc571c655ac57c00e
   languageName: node
   linkType: hard
 
@@ -12289,6 +12283,13 @@ __metadata:
   version: 0.3.0
   resolution: "unicorn-magic@npm:0.3.0"
   checksum: 10/bdd7d7c522f9456f32a0b77af23f8854f9a7db846088c3868ec213f9550683ab6a2bdf3803577eacbafddb4e06900974385841ccb75338d17346ccef45f9cb01
+  languageName: node
+  linkType: hard
+
+"unicorn-magic@npm:^0.4.0":
+  version: 0.4.1
+  resolution: "unicorn-magic@npm:0.4.1"
+  checksum: 10/445bcbe77d17ae0c823312e9ae5158037ebef9de1fd72796520de1236475ee887519f82f9b061fc6c98a11a5b877f1572168d8475df52bb46c1397f4882956ce
   languageName: node
   linkType: hard
 
